@@ -1,0 +1,267 @@
+/*  CSS Login */
+
+
+
+.bg-image-vertical {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+}
+
+@media (min-width: 1025px) {
+    .h-custom-2 {
+        height: 100%;
+    }
+}
+
+
+
+.img{
+    padding: 10px 0 20px;
+    position: relative;
+    margin: 0 15px;
+
+}
+
+.title{
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 45px;
+    line-height: 45px;
+    color: #43aca0;
+    padding: 10px 0 20px;
+    position: relative;
+    text-transform: uppercase;
+    margin: 0 15px;
+}
+
+
+.subtitle {
+    text-align: center;
+    box-sizing: border-box;
+    color: #000f;
+    line-height: 28px;
+    font-weight: 400;
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin: 8px 15px 30px 15px;
+}
+
+
+.inputText {
+    box-sizing: border-box;
+    margin: 0;
+    font: inherit;
+    font-family: inherit;
+    display: block;
+    width: 100%;
+    line-height: 1.42857143;
+    box-shadow: none;
+    padding: 0px 0px 4px 20px;
+    height: 46px;
+    font-size: 14px;
+    border-radius: 0;
+    outline: 0;
+    transition: .1s;
+    border: 1px solid #ddd;
+    background: #f2f2f2;
+    color: #555;
+}
+
+
+
+
+
+.btnstyle{
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-font-smoothing: antialiased !important;
+    box-sizing: border-box;
+    margin: 0;
+    font: inherit;
+    overflow: visible;
+    -webkit-appearance: button;
+    display: inline-block;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    color: #fff;
+    border: 0;
+    border-radius: 0;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: .1s;
+    outline: 0;
+    box-shadow: none;
+    font-family: 'Open Sans', sans-serif;
+    background: #43aca0;
+    width: 100%;
+    margin-bottom: 7px;
+}
+
+btnstyle:hover{
+    background-color: #afdadc;
+    transition: 0.7s;
+
+}
+
+
+.subtitle {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+    margin: 0 0 10px;
+    -webkit-font-smoothing: antialiased !important;
+    line-height: 28px;
+    font-weight: 400;
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+    color: #777;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-bottom: 40px;
+}
+
+.registrati {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+    margin: 0 0 10px;
+    -webkit-font-smoothing: antialiased !important;
+    line-height: 28px;
+    font-weight: 400;
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+    color: #777;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 40px;
+}
+
+
+.recupero {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+    margin: 0 0 10px;
+    -webkit-font-smoothing: antialiased !important;
+    line-height: 28px;
+    font-weight: 400;
+    font-family: 'Lato', sans-serif;
+    text-align: -webkit-right;
+    color: #777;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+
+
+a:link {
+    color: #43aca0;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #43aca0;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #afdadc;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #43aca0;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+
+h5{
+    color: white;
+}
+
+
+/* -------------------- CSS Recovery password -------------------------------- */
+
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: .75em;
+    padding-right: .75em;
+}
+.card-registration .select-arrow {
+    top: 13px;
+}
+
+
+.form-select{
+    box-sizing: border-box;
+    margin: 0;
+    font: inherit;
+    font-family: inherit;
+    display: block;
+    width: 100%;
+    line-height: 1.42857143;
+    box-shadow: none;
+    padding: 0px 0px 4px 20px;
+    height: 46px;
+    font-size: 14px;
+    border-radius: 0;
+    outline: 0;
+    transition: .1s;
+    border: 1px solid #ddd;
+    background: #f2f2f2;
+    color: #555;
+}
+
+
+
+
+#myInput {
+    background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 100%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+  }
+  
+  #myUL {
+    /* Remove default list styling */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #myUL li a {
+    border: 1px solid #ddd; /* Add a border to all links */
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6; /* Grey background color */
+    padding: 12px; /* Add some padding */
+    text-decoration: none; /* Remove default text underline */
+    font-size: 18px; /* Increase the font-size */
+    color: black; /* Add a black text color */
+    display: block; /* Make it into a block element to fill the whole list */
+  }
+  
+  #myUL li a:hover:not(.header) {
+    background-color: #eee; /* Add a hover effect to all links, except for headers */
+  }

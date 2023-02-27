@@ -1,0 +1,23 @@
+###
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "alessiospina930@gmail.com",
+  "password": "provaprova"
+}
+###
+POST http://localhost:3000/auth/signup/op
+Content-Type: application/json
+
+{
+  "name": "a",
+  "surname": "a",
+  "password": "a",
+  "email": "a",
+  "role": "SUPERVISOR"
+}
+
+
+###
+GET http://localhost:8080/api/auth/check/token/eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJSYXRhdG91aWxsZTIzLUJhY2tlbmQiLCJzdWIiOiJKV1QgQXV0aCBQcm92aWRlciIsImVtYWlsIjoiYWxlc3Npb3NwaW5hOTMwQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2ODg5NTk1NywiZXhwIjoxNjY4OTcyMjU3fQ.qyChb9Sg7kuJ3JRN5oAonI88r8jXRrKc4McRNTPIvRul6Rf4C5fOuqPcq55XozOFHsJydeOdlk2WpymQ2fpatg
