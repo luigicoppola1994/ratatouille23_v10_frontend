@@ -1,19 +1,15 @@
 /* eslint-disable prettier/prettier */
 
 
-
-
 let pageObjt = undefined;
 
 $(function(){
     pageObjt = {
         selectors: {
-            nameInputTextDip: $('#nameDip'),
-            surnameInputTextDip: $('#surnameDip'),
-            emailInputTextDip: $('#emailDip'),
-            passwordInputTextDip: $('#passwordDip'),
-            roleInputDip: $('#role'),
-            insertButton: $('#btn_insert'),
+            nameDish: $('#dishName'),
+            descDish: $('#dishDescription'),
+            category: $( "#select" ),
+            dishButton: $('#ciao'),
         },
         functions: {
             initPage: function () {
@@ -21,32 +17,32 @@ $(function(){
             },
             initEvents: function (){
 
-                pageObjt.selectors.insertButton.click(function(e) {
+                pageObjt.selectors.dishButton.click(function(e) {
                     console.log('clicked')
-                    const name= pageObjt.selectors.nameInputTextDip.val()
-                    const surname= pageObjt.selectors.surnameInputTextDip.val()
-                    const email = pageObjt.selectors.emailInputTextDip.val()
-                    const password = pageObjt.selectors.passwordInputTextDip.val()
-                   // const role = pageObj.selectors.roleInputDip.val()
-                   const role = "SUPERVISOR"
+                    const nomePortata= pageObjt.selectors.nameDish.val()
+                    const descDish= pageObjt.selectors.descDish.val()
+                    const allergeni = arr.toString()
+                    const categoria = pageObjt.selectors.category.val()
+                   
 
 
 
-                   console.log(role)
                    
 
                     $.ajax({
                         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-                        url: 'http://localhost:3000/auth/signup/op',
+                        url: 'http://localhost:3000/api/dish/add',
                         type: 'POST', //send it through get method
                         dataType: "json",
                     
                         data: {
-                          email: email,
-                          password: password,
-                          name: name,
-                          surname: surname,
-                          role: role
+                          name: email,
+                          description: password,
+                          allergens: name,
+                          cost: 10,
+                          category_id: categoria,
+                          menu_id: 33
+                          
                         },
                         success: function(data, textStatus, xhr) {
 
@@ -56,7 +52,7 @@ $(function(){
                             if(token) {
                                 sessionStorage.setItem("jwt", token);
                                 window.location.replace("dashboard");
-                                addListOp(email,password,name,surname,role)
+                                //addListOp(email,password,name,surname,role)
                                 
                             }
                         },
@@ -72,15 +68,3 @@ $(function(){
     }
     pageObjt.functions.initPage()
 })
-
-
-
-
-
-
-
-
-
-
-
-

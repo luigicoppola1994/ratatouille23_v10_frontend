@@ -1,0 +1,27 @@
+#output {
+    padding: 20px;
+    background: #dadada;
+  }
+  
+  form {
+    margin-top: 20px;
+  }
+  
+  select {
+    width: 300px;
+  }
+
+
+  input.multibox{
+    height: 10px;
+   width: 10px;
+  }
+
+  
+
+  label{
+    padding: 5px;
+    font-size: 15px;
+    text-transform:uppercase;
+    margin-left: 5px;
+  }

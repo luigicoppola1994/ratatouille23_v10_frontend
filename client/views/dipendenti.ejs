@@ -36,12 +36,14 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
   <script src="custom/js/registerOp.js"></script>
+  
 
 
 
 </head>
 
-<body class="g-sidenav-show   " style="background-color: #afdadc" onload="change()">
+<body class="g-sidenav-show   " style="background-color: #afdadc" onload=" change(), generateListOp()">
+  
   <div class="min-height-300 position-absolute w-100" style="background-color: #43aca0"></div>
   <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
     <div class="sidenav-header">
@@ -259,28 +261,24 @@
                 <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
               </svg> Crea</button>
 
-
-
-
-            </div>
-
-            <div class="card-header pb-0">
+ </div>    
+             <div class="card-header pb-0">
               <h6>Gestione personale</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
+                <table class="table align-items-center mb-0" >
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dipendente</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Identificativo</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ruolo</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Data inserimento</th>
                       <th class="text-secondary opacity-7"></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
+                  <tbody id="myTable">
+                    <!--<tr>
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div>
@@ -448,7 +446,7 @@
                         </a>
                       </td>
                     </tr>
-                  </tbody>
+                  </tbody>-->
                 </table>
               </div>
             </div>

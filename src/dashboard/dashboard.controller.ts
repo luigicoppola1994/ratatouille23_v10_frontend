@@ -44,6 +44,14 @@ export class DashboardController {
      @Get('/validate')    
      @Render('validate')
      async validate() { return }
+
+     @Get('/menu')    
+     @Render('menu')
+     async menu() { return }
+
+     @Get('/provaselect')    
+     @Render('provaselect')
+     async provaselect() { return }
  
 
 
@@ -52,6 +60,8 @@ export class DashboardController {
      async enable(@Param() token : string){
         return token
      }
+
+
 
 
 }

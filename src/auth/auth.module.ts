@@ -7,6 +7,7 @@ import { SessionSerializer } from './session.serializer';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
+import { DishController } from 'src/dish/dish.controller';
 
 @Module({
     imports: [

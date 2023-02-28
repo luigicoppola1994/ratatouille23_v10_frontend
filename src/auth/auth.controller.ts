@@ -56,6 +56,18 @@ export class AuthController {
     }
 
 
+    @UseGuards(AuthenticatedGuard)
+    @Get('/api/restaurant/users/SUPERVISOR')
+    async createListOp(@Request() req){
+        return this.authService.createListOp(req.user)
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @Get('/api/allergens/all')
+    async createListAllergens(@Request() req){
+        return this.authService.createListAllergens(req.user)
+    }
+
 
     
     
