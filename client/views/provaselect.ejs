@@ -8,8 +8,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../custom/js/globals.js"></script>
 	
   <style>
+
+
+
 
   .card {
   background-color: #ffffff;
@@ -19,68 +23,78 @@
   width: 400px;
 }
 
-input[type="text"] {
-  border: 1px solid #cccccc;
-  border-radius: 4px;
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: 20px;
+
+}
+
+/* Stile dell'input di testo */
+.tag-input input[type="text"] {
+  border: none;
+  padding: 10px;
   font-size: 16px;
-  padding: 8px;
   width: 100%;
+  outline: none;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+/* Stile del contenitore dell'input tags */
+.tag-input-container {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-li {
-  cursor: pointer;
-  padding: 8px;
-}
-
+/* Stile del contenitore dei tag */
 .tags-container {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  margin-top: 10px;
 }
 
+/* Stile di ogni tag */
 .tag {
-  background-color: #f5f5f5;
-  border-radius: 4px;
+  background-color: #43aca0;
+  color: #fff;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 5px;
+  margin-bottom: 5px;
   display: flex;
   align-items: center;
-  padding: 4px 8px;
-  margin-right: 8px;
-  margin-bottom: 8px;
 }
 
-.tag-name {
-  margin-right: 8px;
-}
-
-.tag-remove {
+/* Stile dell'icona di cancellazione del tag */
+.tag .tag-close {
+  margin-left: 5px;
   cursor: pointer;
-  color: #999999;
-  font-size: 14px;
-  font-weight: bold;
 }
 
-.tag-remove:hover {
-  color: #ff0000;
+/* Stile del placeholder dell'input di testo */
+.tag-input input[type="text"]::placeholder {
+  color: #999;
 }
 
 
-/* allergeni*/
-/* allergeni*/
+
+/* allergeni */
 body {
         font-family: Arial, sans-serif;
-        background-color: #f8f8f8;
+        background-color: #43aca0;
       }
 
       table {
         border-collapse: collapse;
         margin: 20px 0;
-        background-color: #fff;
+        background-color: #43aca0;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
       }
 
@@ -105,14 +119,14 @@ body {
         padding: 10px;
         border: none;
         border-radius: 4px;
-        background-color: #4caf50;
+        background-color: #43aca0;
         color: #fff;
         font-weight: bold;
         cursor: pointer;
       }
 
       button:hover {
-        background-color: #3e8e41;
+        background-color: #43aca0;
       }
 
 
@@ -128,7 +142,7 @@ body {
 }
 
 #add-button {
-  background-color: #4CAF50;
+  background-color: #43aca0;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -142,7 +156,7 @@ body {
 
 
 
-/* categoria */
+
 
 
 h2 {
@@ -168,17 +182,9 @@ label {
   font-size: 16px;
 }
 
-input[type="text"] {
-  flex-grow: 1;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  margin-right: 8px;
-  font-size: 16px;
-}
 
 button {
-  background-color: #4CAF50;
+  background-color: #43aca0;
   color: white;
   border: none;
   border-radius: 4px;
@@ -188,8 +194,61 @@ button {
 }
 
 button:hover {
-  background-color: #3e8e41;
+  background-color: #43aca0;
 }
+
+
+
+
+/* GESTISCE L'INPUT PORTATA*/
+#search {
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+  outline: none;
+}
+
+#product-list {
+  position: absolute;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  z-index: 1;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#product-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#product-list li:hover {
+  background-color: #f2f2f2;
+}
+
+ul#product-list {
+  max-width: 100%; /* l'elemento può espandersi fino alla larghezza massima disponibile */
+  width: inherit;
+}
+
+
+
+
+
+
+
 
 
 </style>
@@ -197,44 +256,90 @@ button:hover {
   </style>
 
 </head>
-<body>
+<body onload="generateListAllergens()">
  
 
  
 
   <div class="card">
-
-
+     
     <!--  PORTATA PRODOTTO -->
-    <label for="search">Cerca prodotto alimentare:</label>
+    <label for="search">Nome Portata:</label>
     <input type="text" id="search" name="search" autocomplete="off">
     
     <ul id="product-list"></ul>
+  
+    
+   
 
 
     <!--  INGREDIENTI -->
-  
+    <label>Descrizione:</label>
     <div class="tag-input-container">
       <div class="tag-input">
-        <input type="text" id="tag-input" placeholder="Aggiungi un tag...">
+        <input type="text" id="tag-input" placeholder="Clicca ENTER per aggiungere l'ingrediente.">
         <input type="hidden" id="descrizione" name="descrizione">
       </div>
       <div class="tags-container"></div>
     </div>
 
-    <!-- ALLERGENI-->
-    <h1>Tabella di Allergeni</h1>
-  
-    <table id="checkbox-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Seleziona</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    
+
+
+
+
+
+
+
+
+
+
+    <section>
+           
+      <details>
+      <summary>
+      Vuoi aggiungere allergeni?
+      </summary>
+      <p>
+        <table id="checkbox-table">
+          <thead>
+            
+          </thead>
+          <tbody></tbody>
+        </table>
+          </p>
+      </details>
+     
+      </section>
+
+
+      <style>
+
+section {
+  max-width: 450px;
+  margin-top: 20px;
+}
+
+details {
+  background:#43aca0;
+  color: white;
+  padding: 15px;
+  margin-bottom: 2px;
+  border-radius: 25px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 1.2em;
+}
+      </style>
+
+
+
+
+
+
 
    <!-- CATEGORIA -->
      
@@ -305,60 +410,7 @@ button:hover {
 
 
   
-    <script>
-      const data = [
-        {id: 1, name: "Checkbox 1"},
-        {id: 2, name: "Checkbox 2"},
-        {id: 3, name: "Checkbox 3"},
-        {id: 4, name: "Checkbox 4"},
-        {id: 5, name: "Checkbox 5"}
-      ];
-
-      const tbody = document.querySelector("#checkbox-table tbody");
-      const submitButton = document.querySelector("#submit-button");
-
-      // Popola la tabella con le checkbox
-      data.forEach((item) => {
-        const tr = document.createElement("tr");
-        const tdId = document.createElement("td");
-        const tdName = document.createElement("td");
-        const tdCheckbox = document.createElement("td");
-        const checkbox = document.createElement("input");
-
-        tdId.textContent = item.id;
-        tdName.textContent = item.name;
-
-        checkbox.type = "checkbox";
-        checkbox.value = item.id;
-
-        tdCheckbox.appendChild(checkbox);
-
-        tr.appendChild(tdId);
-        tr.appendChild(tdName);
-        tr.appendChild(tdCheckbox);
-
-        tbody.appendChild(tr);
-      });
-
-      // Restituisce un array di ID delle checkbox selezionate
-      function getSelectedCheckboxes() {
-        const checkboxes = document.querySelectorAll("#checkbox-table tbody input[type='checkbox']");
-        const selected = [];
-        checkboxes.forEach((checkbox) => {
-          if (checkbox.checked) {
-            selected.push(parseInt(checkbox.value));
-          }
-        });
-        return selected;
-      }
-
-      // Aggiunge un listener al bottone "Conferma Selezione"
-      submitButton.addEventListener("click", () => {
-        const selectedCheckboxes = getSelectedCheckboxes();
-        alert(selectedCheckboxes);
-      });
-    </script>
-  
+    
   
 
   </div>

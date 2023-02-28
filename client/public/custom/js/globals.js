@@ -200,22 +200,51 @@ function generateListAllergens(){
 
 function buildCheckBox(data){
   
-  
+ 
 
+  const tbody = document.querySelector("#checkbox-table tbody");
+  const submitButton = document.querySelector("#submit-button");
 
-var checkboxsection=[];
+  // Popola la tabella con le checkbox
+  data.forEach((item) => {
+    const tr = document.createElement("tr");
+    const tdId = document.createElement("td");
+    const tdName = document.createElement("td");
+    const tdCheckbox = document.createElement("td");
+    const checkbox = document.createElement("input");
 
+    tdId.textContent = item.id;
+    tdName.textContent = item.name;
 
-  for (var i = 0; i < data.length; i++){
+    checkbox.type = "checkbox";
+    checkbox.value = item.id;
 
-  
-  var checkboxtemp=' <label> '+
-        '<input class="multibox" type="checkbox" value="'+data[i].id+'" name="allergeno">'+data[i].name+'</label>';
-     checkboxsection.push(checkboxtemp);      
-  
-};
+    tdCheckbox.appendChild(checkbox);
 
-$(".checkbox").html(checkboxsection.join(""));
+    tr.appendChild(tdId);
+    tr.appendChild(tdName);
+    tr.appendChild(tdCheckbox);
+
+    tbody.appendChild(tr);
+  });
+
+  // Restituisce un array di ID delle checkbox selezionate
+  function getSelectedCheckboxes() {
+    const checkboxes = document.querySelectorAll("#checkbox-table tbody input[type='checkbox']");
+    const selected = [];
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        selected.push(parseInt(checkbox.value));
+      }
+    });
+    return selected;
+  }
+
+  // Aggiunge un listener al bottone "Conferma Selezione"
+  submitButton.addEventListener("click", () => {
+    const selectedCheckboxes = getSelectedCheckboxes();
+    alert(selectedCheckboxes);
+  });
 
 
 
