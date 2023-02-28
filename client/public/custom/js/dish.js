@@ -1,31 +1,33 @@
 /* eslint-disable prettier/prettier */
 
-
-let pageObjt = undefined;
-
-$(function(){
-    pageObjt = {
-        selectors: {
-            nameDish: $('#dishName'),
-            descDish: $('#dishDescription'),
-            category: $( "#select" ),
-            dishButton: $('#ciao'),
-        },
-        functions: {
-            initPage: function () {
-                pageObjt.functions.initEvents()
-            },
-            initEvents: function (){
-
-                pageObjt.selectors.dishButton.click(function(e) {
-                    console.log('clicked')
-                    const nomePortata= pageObjt.selectors.nameDish.val()
-                    const descDish= pageObjt.selectors.descDish.val()
-                    const allergeni = arr.toString()
-                    const categoria = pageObjt.selectors.category.val()
-                   
+ // Restituisce un array di ID delle checkbox selezionate
+ function getSelectedCheckboxes() {
+    const checkboxes = document.querySelectorAll("#checkbox-table tbody input[type='checkbox']");
+    const selected = [];
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        selected.push(parseInt(checkbox.value));
+      }
+    });
+    return selected;
+  }
 
 
+
+
+
+function addPortata(){
+
+                 var nomePortata =document.getElementById("search").value
+                 var descPortata = descrizioneInput.value
+                 var allergeniPortata = getSelectedCheckboxes()
+                 var categoria = document.getElementById("select_elementi").value
+                 var prezzo = document.getElementById("price").value
+
+                 
+
+
+             
 
                    
 
@@ -36,18 +38,17 @@ $(function(){
                         dataType: "json",
                     
                         data: {
-                          name: email,
-                          description: password,
-                          allergens: name,
-                          cost: 10,
+                          name: nomePortata,
+                          description: descPortata,
+                          allergens: allergeniPortata,
+                          cost: prezzo,
                           category_id: categoria,
-                          menu_id: 33
                           
                         },
                         success: function(data, textStatus, xhr) {
 
 
-                            alert("Auth ok")
+                            alert("PORTATA AGGIUNTA")
                             const token = data
                             if(token) {
                                 sessionStorage.setItem("jwt", token);
@@ -62,9 +63,5 @@ $(function(){
 
                         }
                     });
-                })
-            }
-        }
-    }
-    pageObjt.functions.initPage()
-})
+
+}

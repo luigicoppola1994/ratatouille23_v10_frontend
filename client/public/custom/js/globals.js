@@ -228,24 +228,13 @@ function buildCheckBox(data){
     tbody.appendChild(tr);
   });
 
-  // Restituisce un array di ID delle checkbox selezionate
-  function getSelectedCheckboxes() {
-    const checkboxes = document.querySelectorAll("#checkbox-table tbody input[type='checkbox']");
-    const selected = [];
-    checkboxes.forEach((checkbox) => {
-      if (checkbox.checked) {
-        selected.push(parseInt(checkbox.value));
-      }
-    });
-    return selected;
-  }
 
-  // Aggiunge un listener al bottone "Conferma Selezione"
-  submitButton.addEventListener("click", () => {
-    const selectedCheckboxes = getSelectedCheckboxes();
-    alert(selectedCheckboxes);
-  });
 
+
+
+ 
+
+ 
 
 
 }
@@ -469,3 +458,11 @@ function generateListCategorie(){
 
 
 } 
+
+
+
+
+
+
+
+
