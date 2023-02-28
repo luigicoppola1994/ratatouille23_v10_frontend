@@ -194,24 +194,7 @@ export class AuthService {
         return response
     }
 
-    async createListAllergens(token: string): Promise<boolean> {
-        let response: boolean | undefined = undefined
-        this.logger.log("creaLista() - incoming request with obj: " + JSON.stringify(token))
-        const config = {
-            headers: {
-              Authorization: 'Bearer ' + token,
-            }
-        }
-        
-        try {
-            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/allergens/all",config)).data
-        } catch (error) {
-            this.logger.error("register() - error: " + JSON.stringify(error))
-            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-        return response
-    }
-
+    
 
 
   

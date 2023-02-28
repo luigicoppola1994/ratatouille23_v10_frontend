@@ -343,3 +343,129 @@ function buildTable(data){
 
   }
 }
+
+
+
+
+function generateListCategorie(){
+
+
+  $.ajax({
+       // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+       url: 'http://localhost:3000/api/category/all',
+       type: 'GET', //send it through get method
+         dataType: "json",
+    
+       
+   
+       success: function(data, textStatus, xhr) {
+        
+         const obj = JSON.parse(xhr.responseText);
+         var categories = JSON.stringify(obj.data)
+         var categorie = JSON.parse(categories)   
+         
+         
+         console.log(categorie);
+
+         buildSelect(categorie)
+        
+ 
+ 
+ 
+         
+                   
+       },
+       error: function(xhr, status, error) {
+           alert("Auth ko")
+           console.log(xhr.responseText);
+ 
+       }
+   });
+ 
+ 
+ 
+ } 
+
+
+ function buildSelect(categorie){
+  
+  const elementi = categorie;
+  const selectElementi = document.getElementById("select_elementi");
+  const inputNuovoElemento = document.getElementById("input_nuovo_elemento");
+  const btnAggiungi = document.getElementById("btn_aggiungiCtg");
+
+  // Popola la select con gli elementi
+  for (const elemento of elementi) {
+    const option = document.createElement("option");
+    option.value = elemento.id;
+    option.text = elemento.name;
+    selectElementi.add(option);
+  }
+  btnAggiungi.addEventListener("click", (event) => {
+    event.preventDefault();
+    const nuovoElemento = inputNuovoElemento.value.trim();
+  
+    if (nuovoElemento !== "") {
+      const elementoPresente = elementi.find((el) => el.name === nuovoElemento);
+      if (elementoPresente) {
+        // l'elemento è già presente nella select, non fare nulla
+        alert("Categoria già esistente!")
+        inputNuovoElemento.value = "";
+        return;
+      }
+      
+  
+      const nuovoId = Math.max(...elementi.map((el) => el.id)) + 1;
+      const nuovoElementoObj = { id: nuovoId, name: nuovoElemento };
+      //createCategory(nuovoElemento);
+      elementi.push(nuovoElementoObj);
+  
+      const option = document.createElement("option");
+      option.value = nuovoElementoObj.id;
+      option.text = nuovoElementoObj.name;
+      selectElementi.add(option);
+     inputNuovoElemento.value = "";
+    }
+  });
+
+
+
+
+ }
+
+
+
+ function createCategory(nuovoElemento){
+
+  $.ajax({
+    // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+    url: 'http://localhost:3000/api/category/add',
+    type: 'POST', //send it through get method
+      dataType: "json",
+      data: {
+       
+        name: nuovoElemento
+      },
+ 
+    
+
+    success: function(data, textStatus, xhr) {
+     
+       alert( " Categoria inserita")
+     
+
+
+
+      
+                
+    },
+    error: function(xhr, status, error) {
+        alert("Errore inserimento categoria")
+        console.log(xhr.responseText);
+
+    }
+});
+
+
+
+} 

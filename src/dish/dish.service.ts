@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { CategoryRequestDto } from './category.request.dto';
 import { DishRequestDto } from './dish.request.dto';
 
 @Injectable()
@@ -34,6 +35,60 @@ export class DishService {
         }
         return response
     }
+
+    async getCategory(token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("register() - incoming request with obj: " + JSON.stringify(token))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/category/all",config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+    }
+
+    async addCategory(category : CategoryRequestDto, token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("register() - incoming request with obj: " + JSON.stringify(category))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        try {
+            response = (await this.httpService.axiosRef.post("http://localhost:8080/api/category/add",category,config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+    }
+
+
+    async createListAllergens(token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("creaLista() - incoming request with obj: " + JSON.stringify(token))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/allergens/all",config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+    }
+
 
 
 

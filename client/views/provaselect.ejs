@@ -132,6 +132,34 @@ body {
 
 
     /* Categoria*/
+
+/* Stile dell'etichetta del campo di input */
+.input-container label {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+/* Stile del campo di input */
+.input-container input[type="text"] {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+#buttonAddCtg {
+  border-color: #f2f2f2;
+}
+
+
+
+
+
+
       .select-container {
   display: flex;
   align-items: center;
@@ -256,8 +284,17 @@ ul#product-list {
   </style>
 
 </head>
-<body onload="generateListAllergens()">
- 
+<body class="g-sidenav-show   " style="background-color: #afdadc" onload=" change(), generateListAllergens(),generateListCategorie()">
+
+
+
+
+
+
+
+
+  <div class="min-height-300 position-absolute w-100" style="background-color: #43aca0"></div>
+  
 
  
 
@@ -292,7 +329,7 @@ ul#product-list {
 
 
 
-
+<!--ALLERGENI -->
 
     <section>
            
@@ -313,11 +350,48 @@ ul#product-list {
       </section>
 
 
+
+
+<section>
+<!-- CATEGORIE-->
+<details>
+  <summary>
+    Vuoi assegnare una categoria?
+  </summary>
+  <p>
+
+    <select id="select_elementi"></select>
+  <div class="input-container">
+    <input type="text" placeholder="Categoria Personalizzata..." id="input_nuovo_elemento">
+    <button type="buttonAddCtg" id="btn_aggiungiCtg">Aggiungi</button>
+  </div>
+  </p>
+</details>
+
+</section>
+
+
+<p> <label>Prezzo (euro):</label>
+<input type="text" id="price"></input>
+ </p>
+
+<button> Crea Portata </button>
+
+
+
+  
+
+
+
+
+
       <style>
 
 section {
   max-width: 450px;
   margin-top: 20px;
+  margin-bottom: 15px;
+
 }
 
 details {
@@ -333,6 +407,20 @@ summary {
   font-weight: 900;
   font-size: 1.2em;
 }
+
+
+costo {
+  background:#43aca0;
+  color: white;
+  padding: 15px;
+  margin-bottom: 2px;
+  border-radius: 25px;
+}
+
+boxcosto{
+  font-weight: 900;
+  font-size: 1.2em;
+}
       </style>
 
 
@@ -341,70 +429,16 @@ summary {
 
 
 
-   <!-- CATEGORIA -->
-     
 
 
-   
-    <h2>Seleziona un elemento:</h2>
-    <select id="select_elementi"></select>
-    <div class="input-container">
-      <label for="input_nuovo_elemento">Aggiungi:</label>
-      <input type="text" id="input_nuovo_elemento">
-      <button type="button" id="btn_aggiungi">Aggiungi</button>
-    </div>
 
-    <h2>Costo:</h2>
-    <input type="text"></input>
-<br><br>
-    <button> Crea Portata </button>
 
 
  
 
   
 
-  <script>
-    const elementi = [
-      {id: 1, nome: "Elemento 1"},
-      {id: 2, nome: "Elemento 2"},
-      {id: 3, nome: "Elemento 3"},
-      {id: 4, nome: "Elemento 4"},
-      {id: 5, nome: "Elemento 5"}
-    ];
-
-    const selectElementi = document.getElementById("select_elementi");
-    const inputNuovoElemento = document.getElementById("input_nuovo_elemento");
-    const btnAggiungi = document.getElementById("btn_aggiungi");
-
-    // Popola la select con gli elementi
-    for (const elemento of elementi) {
-      const option = document.createElement("option");
-      option.value = elemento.id;
-      option.text = elemento.nome;
-      selectElementi.add(option);
-    }
-
-    // Aggiungi un nuovo elemento alla select
-    btnAggiungi.addEventListener("click", (event) => {
-      event.preventDefault();
-      const nuovoElemento = inputNuovoElemento.value.trim();
-
-      if (nuovoElemento !== "") {
-        const nuovoId = Math.max(...elementi.map(el => el.id)) + 1;
-        const nuovoElementoObj = {id: nuovoId, nome: nuovoElemento};
-        elementi.push(nuovoElementoObj);
-
-        const option = document.createElement("option");
-        option.value = nuovoElementoObj.id;
-        option.text = nuovoElementoObj.nome;
-        selectElementi.add(option);
-
-        inputNuovoElemento.value = "";
-      }
-    });
   
-  </script>
 
 
 

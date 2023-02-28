@@ -62,11 +62,6 @@ export class AuthController {
         return this.authService.createListOp(req.user)
     }
 
-    @UseGuards(AuthenticatedGuard)
-    @Get('/api/allergens/all')
-    async createListAllergens(@Request() req){
-        return this.authService.createListAllergens(req.user)
-    }
 
 
     
