@@ -1,4 +1,5 @@
-/* eslint-disable prettier/prettier */
+
+
 
  // Restituisce un array di ID delle checkbox selezionate
  function getSelectedCheckboxes() {
@@ -20,8 +21,16 @@ function addPortata(){
 
                  var nomePortata =document.getElementById("search").value
                  var descPortata = descrizioneInput.value
-                 var allergeniPortata = getSelectedCheckboxes()
-                 var categoria = document.getElementById("select_elementi").value
+                 var allergeniPortata = getSelectedCheckboxes();
+
+
+                 var selectDaVerificare = document.getElementById("select_elementi");
+                 var indiceSelezionato = selectDaVerificare.selectedIndex;
+                 var valoreSelezionato = selectDaVerificare.options[indiceSelezionato];
+                 var valoreDentroLopzione = valoreSelezionato.value;
+                 var categoria = valoreSelezionato.text;
+
+
                  var prezzo = document.getElementById("price").value
 
                  
@@ -42,13 +51,14 @@ function addPortata(){
                           description: descPortata,
                           allergens: allergeniPortata,
                           cost: prezzo,
-                          category_id: categoria,
+                          categoryName: categoria,
                           
                         },
                         success: function(data, textStatus, xhr) {
 
 
                             alert("PORTATA AGGIUNTA")
+
                             const token = data
                             if(token) {
                                 sessionStorage.setItem("jwt", token);
@@ -65,3 +75,49 @@ function addPortata(){
                     });
 
 }
+
+
+function generateListDishes(){
+
+
+    $.ajax({
+         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+         url: 'http://localhost:3000/api/restaurant/users/SUPERVISOR',
+         type: 'GET', //send it through get method
+           dataType: "json",
+      
+         
+     
+         success: function(data, textStatus, xhr) {
+          
+           const obj = JSON.parse(xhr.responseText);
+           var utente = JSON.stringify(obj.data)
+           var user = JSON.parse(utente)   
+           
+           
+           buildTable(user)
+          
+   
+   
+   
+           
+                     
+         },
+         error: function(xhr, status, error) {
+             alert("Auth ko")
+             console.log(xhr.responseText);
+   
+         }
+     });
+   
+   
+   
+   } 
+   
+   
+
+
+
+
+   
+

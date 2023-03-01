@@ -35,6 +35,8 @@ export class DashboardController {
 
 
 
+
+
     /* @Get('/validate/:token')    
     @Render('validate')
     async validate(@Param() token : string) { 
@@ -61,7 +63,9 @@ export class DashboardController {
         return token
      }
 
-
+     @Get('/creamenu')    
+     @Render('creamenu')
+     async creazionemenu() { return }
 
 
 }

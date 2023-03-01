@@ -37,6 +37,14 @@ export class DishController {
     }
 
 
+    /*
+    @UseGuards(AuthenticatedGuard)
+    @Get('api/category/all')
+    async getDishes(@Request() req) {
+        return this.dishService.getDishes( req.user)
+    }*/
+
+
 
 
 
