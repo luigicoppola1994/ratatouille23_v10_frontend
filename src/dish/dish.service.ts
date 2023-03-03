@@ -92,5 +92,85 @@ export class DishService {
 
 
 
+    async generateListDishes(token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("creaLista() - incoming request with obj: " + JSON.stringify(token))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/dish/all",config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+    }
+
+
+
+    async getCategoryById(categoryId: Number, token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("creaLista() - incoming request with obj: " + JSON.stringify(categoryId))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/category/"+categoryId,config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+    }
+
+
+    async addPriority(id: Number, categoriaDto: CategoryRequestDto, token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("creaLista() - incoming request with obj: " + JSON.stringify(id))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.post("http://localhost:8080/api/category/priority/add/"+id,categoriaDto,config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+    }
+
+
+
+    async generateListDishesAllergens(token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("creaLista() - incoming request with obj: " + JSON.stringify(token))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/dishallergens/all",config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+    }
+
+
+
+
 
 }

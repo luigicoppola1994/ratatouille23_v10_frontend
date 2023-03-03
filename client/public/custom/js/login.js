@@ -26,8 +26,9 @@ $(function(){
                         type: 'POST', //send it through get method,
                         dataType: "json",
                         data: {
-                          email: email,
-                          password: password
+                         email: email,
+                         password: password
+                        
                         },
                         success: function(data, textStatus, xhr) {
                            

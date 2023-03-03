@@ -6,6 +6,26 @@
     width: 400px;
     }
 
+ 
+    .card-container {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+   
+    
+    .card-right {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 16px;
+      margin-left: 10px;
+      margin-right: 10px;
+      flex-basis: 70%;
+    }
+    
+
+
 
 
 
@@ -291,4 +311,37 @@
   boxcosto {
     font-weight: 900;
     font-size: 1.2em;
+  }
+
+
+
+
+
+
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  tr{
+    background-color: white ;
+  }
+  
+  .allergeni {
+    font-size: 12px;
+    font-style: italic;
   }

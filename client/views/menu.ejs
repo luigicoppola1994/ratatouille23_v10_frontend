@@ -14,6 +14,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="../custom/js/globals.js"></script>
   <script src="../custom/js/dish.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
   <style>
    
@@ -26,12 +27,12 @@
 </head>
 
 <body class="g-sidenav-show   " style="background-color: #afdadc"
-  onload=" change(), generateListAllergens(),generateListCategorie()">
+  onload=" change(), generateListAllergens(),generateListCategorie(), generateListDishes()">
 
-<!-- CREO LA CARD DI SINISTRA-->
-  <div class="card">
-
-    <!--  PORTATA PRODOTTO -->
+  <div class="card-container">
+  <!-- CREO LA CARD DI SINISTRA-->
+    <div class="card">
+          <!--  PORTATA PRODOTTO -->
     <label for="search">Nome Portata:</label>
     <input type="text" id="search" name="search" autocomplete="off">
 
@@ -90,6 +91,44 @@
       </div>
       <div class="tags-container"></div>
     </div>
+
+
+
+    <script>
+      const tagInput = document.querySelector('#tag-input');
+      const tagsContainer = document.querySelector('.tags-container');
+      const descrizioneInput = document.querySelector('#descrizione');
+      let tags = [];
+      tagInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          const tag = tagInput.value.trim();
+          if (tag !== '') {
+            tags.push(tag);
+            tagInput.value = '';
+            renderTags();
+          }
+        }
+      });
+      function renderTags() {
+        tagsContainer.innerHTML = '';
+        tags.forEach((tag, index) => {
+          const tagElement = document.createElement('div');
+          tagElement.classList.add('tag');
+          tagElement.innerHTML = `
+        <span class="tag-name">${tag}</span>
+        <span class="tag-remove" data-index="${index}">&times;</span>
+      `;
+          tagElement.querySelector('.tag-remove').addEventListener('click', (event) => {
+            const index = parseInt(event.target.getAttribute('data-index'));
+            tags.splice(index, 1);
+            renderTags();
+          });
+          tagsContainer.appendChild(tagElement);
+        });
+        descrizioneInput.value = tags.join(', ');
+      }
+    </script>
 
 
 
@@ -155,63 +194,31 @@
 
 
 
+
   
    
 
-    <div class="card">
-      <!-- Contenuto della seconda card -->cio
-    </div>
+       
+  <div class="card-right">
+    <div class="card-body px-0 pt-0 pb-2">
+        <table>
+          <thead>
+            <tr>
+              <th>Portata</th>
+              <th>Ingredienti</th>
+              <th>Categoria</th>
+              <th>Allergeni</th>
+              <th>Costo</th>
+            </tr>
+          </thead>
+          <tbody id="myTable">
+          </tbody>
+        </table>
+      </div>
+    </div>    
+</div>
  
 
 
-
-  <script>
-    const tagInput = document.querySelector('#tag-input');
-    const tagsContainer = document.querySelector('.tags-container');
-    const descrizioneInput = document.querySelector('#descrizione');
-
-    let tags = [];
-
-    tagInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        const tag = tagInput.value.trim();
-        if (tag !== '') {
-          tags.push(tag);
-          tagInput.value = '';
-          renderTags();
-        }
-      }
-    });
-
-    function renderTags() {
-      tagsContainer.innerHTML = '';
-      tags.forEach((tag, index) => {
-        const tagElement = document.createElement('div');
-        tagElement.classList.add('tag');
-        tagElement.innerHTML = `
-      <span class="tag-name">${tag}</span>
-      <span class="tag-remove" data-index="${index}">&times;</span>
-    `;
-        tagElement.querySelector('.tag-remove').addEventListener('click', (event) => {
-          const index = parseInt(event.target.getAttribute('data-index'));
-          tags.splice(index, 1);
-          renderTags();
-        });
-        tagsContainer.appendChild(tagElement);
-      });
-      descrizioneInput.value = tags.join(', ');
-    }
-
-  </script>
-
-
-
-
+</div>
   
-
-
-
-</body>
-
-</html>
