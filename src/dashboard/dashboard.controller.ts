@@ -67,5 +67,13 @@ export class DashboardController {
      @Render('creamenu')
      async creazionemenu() { return }
 
+     @Get('/componimenu')    
+     @Render('componimenu')
+     async componimenu() { return }
+
+     @Get('/dragdrop')    
+     @Render('dragdrop')
+     async dragdrop() { return }
+
 
 }

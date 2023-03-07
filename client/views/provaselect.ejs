@@ -6,8 +6,69 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="../custom/js/dish.js"></script>
+
+
+
+
 
   <style>
+    /* CSS per il menù del ristorante */
+    /* Stilizza l'elemento div con l'ID menu-container */
+    #menu-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Stilizza l'elemento h2 per le categorie */
+    .category h2 {
+      font-style: italic;
+      font-weight: bold;
+      margin: 20px 0 10px;
+    }
+
+    /* Stilizza l'elemento div per i piatti */
+    .dish {
+      margin-bottom: 30px;
+    }
+
+    /* Stilizza l'elemento div per il nome del piatto */
+    .dish-name {
+      font-weight: bold;
+    }
+
+    /* Stilizza l'elemento div per gli ingredienti del piatto */
+    .dish-description:before {
+      content: "INGREDIENTI: ";
+      font-weight: bold;
+    }
+
+    /* Stilizza l'elemento div per gli allergeni del piatto */
+    .dish-allergens:before {
+      content: "ALLERGENI: ";
+      font-weight: bold;
+    }
+
+    /* Stilizza l'elemento div per il costo del piatto */
+    .dish-cost:before {
+      content: "COSTO: ";
+      font-weight: bold;
+    }
+
+
+
+
+
+
+
+
+
+    /* fine menu stampa*/
+    .contain {
+      display: flex;
+      flex-direction: row;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background-color: #f7f7f7;
@@ -19,6 +80,16 @@
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       width: 350px;
 
+    }
+
+    .card-destra {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 16px;
+      margin-left: 10px;
+      margin-right: 10px;
+      flex-basis: 70%;
     }
 
     #select-container {
@@ -58,7 +129,7 @@
 
     button {
       padding: 5px 10px;
-      background-color: #ff6b6b;
+      background-color: #43aca0;
       color: #fff;
       border: none;
       border-radius: 3px;
@@ -67,7 +138,8 @@
     }
 
     button:hover {
-      background-color: #ff4d4d;
+      background-color: #8bbbb5;
+
     }
 
     /*   menu generatore          */
@@ -81,7 +153,7 @@
       font-weight: normal;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: #8b0000;
+      color: #43aca0;
     }
 
     #menu {
@@ -140,36 +212,137 @@
       margin: 0;
       padding: 0;
       font-weight: bold;
-      color: #8b0000;
+      color: #43aca0;
+    }
+
+
+    /*  MENU        */
+    .list-group {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .list-group-item {
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .list-group-item:last-child {
+      border-bottom: none;
+    }
+
+
+    .contain {
+      display: flex;
+      flex-direction: row;
     }
   </style>
 
 
 </head>
 
-<body>
+<body onload="printMenu(),riempiSelect()">
 
-  <button class="btn" id="add-select-btn">Aggiungi categoria</button>
-  <button class="btn" id="generaMenu" onclick="generaMenu()">Genera menu</button>
-  <button onclick="creaJSONdish()">CREA</button>
 
-  <div class="card" id="select-container"></div>
+  <div class="contain">
+    <!-- CREO LA CARD DI SINISTRA-->
+    <div class="card">
+      <button class="btn" id="add-select-btn">Aggiungi categoria</button>
+      <button class="btn" id="generaMenu" onclick="generaMenu()">Genera menu</button>
+      <button onclick="creaJSONdish()">CREA</button>
+
+
+
+
+      <div class="card" id="select-container"></div>
+
+    </div>
+
+
+    <div class="card-destra">
+      <div class="card-body p-3">
+        <div class="card-body pt-4 p-3">
+          <h1>Menu Ristorante</h1>
+          <ul class="list-group"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- CREO LA CARD DI SINISTRA-->
+  <!--  PORTATA PRODOTTO -->
+
 
   <!-- MENU GENERATOR-->
-  <h1>Menu</h1>
-  <ul id="menu"></ul>
+
+
+  </div>
+
+
 
 
 
 
 
   <script>
+    function generateListCategorie() {
+
+
+      $.ajax({
+        // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+        url: 'http://localhost:3000/api/category/all',
+        type: 'GET', //send it through get method
+        dataType: "json",
+
+
+
+        success: function (data, textStatus, xhr) {
+
+          const obj = JSON.parse(xhr.responseText);
+          var categories = JSON.stringify(obj.data)
+          var categorie = JSON.parse(categories)
+
+
+          console.log(categorie);
+
+          buildSelect(categorie)
+
+
+
+
+
+
+        },
+        error: function (xhr, status, error) {
+          alert("Auth ko")
+          console.log(xhr.responseText);
+
+        }
+      });
+
+
+
+    }
+
+
+
+
+  </script>
+
+
+
+
+  <script>
+    function riempiSelect(){
     const selectContainer = document.getElementById('select-container');
     const addSelectBtn = document.getElementById('add-select-btn');
 
     let position = 0;
 
-    function addSelect() {
+    function addSelect() 
+    {
       const selectWrapper = document.createElement('div');
       selectWrapper.classList.add('select-wrapper');
 
@@ -180,63 +353,76 @@
       const select = document.createElement('select');
       select.setAttribute('name', 'categoria');
 
-      // Popolo le opzioni della select dal JSON ottenuto dalla chiamata AJAX
 
-      data = [
-        {
-          "id": 54,
-          "name": "primo piatto di carne",
-          "priority": 0
+      $.ajax({
+        // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+        url: 'http://localhost:3000/api/category/all',
+        type: 'GET', //send it through get method
+        dataType: "json",
+
+
+
+        success: function (data, textStatus, xhr) {
+
+          const obj = JSON.parse(xhr.responseText);
+          var categories = JSON.stringify(obj.data)
+          var categorie = JSON.parse(categories)
+
+
+          console.log(categorie);
+
+          categorie.forEach((categoria) => {
+            const option = document.createElement('option');
+            option.setAttribute('value', categoria.id);
+            option.textContent = categoria.name;
+            select.appendChild(option);
+          });
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.textContent = 'Elimina';
+          deleteBtn.addEventListener('click', () => {
+            selectWrapper.remove();
+            // Aggiorno il numero della posizione di tutte le select rimanenti
+            const selectWrappers = document.querySelectorAll('.select-wrapper');
+            selectWrappers.forEach((wrapper, index) => {
+              const selectNumber = wrapper.querySelector('.select-number');
+              selectNumber.textContent = index + 1;
+            });
+          });
+
+          selectWrapper.appendChild(selectNumber);
+          selectWrapper.appendChild(select);
+          selectWrapper.appendChild(deleteBtn);
+
+          selectContainer.appendChild(selectWrapper);
+
+
+
+          addSelectBtn.addEventListener('click', addSelect);
+
+
+
+
+
+
+
         },
-        {
-          "id": 55,
-          "name": "primo ",
-          "priority": 1
-        },
-        {
-          "id": 58,
-          "name": "primo piatto",
-          "priority": 3
-        },
-        {
-          "id": 63,
-          "name": "pizzeria",
-          "priority": 0
-        }];
+        error: function (xhr, status, error) {
+          alert("Auth ko")
+          console.log(xhr.responseText);
 
-
-
-      data.forEach((categoria) => {
-        const option = document.createElement('option');
-        option.setAttribute('value', categoria.id);
-        option.textContent = categoria.name;
-        select.appendChild(option);
+        }
       });
 
-      const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'Elimina';
-      deleteBtn.addEventListener('click', () => {
-        selectWrapper.remove();
-        // Aggiorno il numero della posizione di tutte le select rimanenti
-        const selectWrappers = document.querySelectorAll('.select-wrapper');
-        selectWrappers.forEach((wrapper, index) => {
-          const selectNumber = wrapper.querySelector('.select-number');
-          selectNumber.textContent = index + 1;
-        });
-      });
 
-      selectWrapper.appendChild(selectNumber);
-      selectWrapper.appendChild(select);
-      selectWrapper.appendChild(deleteBtn);
 
-      selectContainer.appendChild(selectWrapper);
+
+
+
     }
-
-
     addSelectBtn.addEventListener('click', addSelect);
 
-
-
+  }
 
 
   </script>
@@ -422,9 +608,9 @@
             cost: dish.cost,
             categoryName,
             nameAllergens: allergenNames,
-            idDish : dish.id,
-            idCategory: category.id,
-          
+            idDish: dish.id,
+            idCategory: dish.categoryId,
+
           };
         });
 
@@ -444,6 +630,20 @@
 
 
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

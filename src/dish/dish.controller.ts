@@ -66,6 +66,11 @@ export class DishController {
         return this.dishService.generateListDishesAllergens( req.user)
     }
 
+    @UseGuards(AuthenticatedGuard)
+    @Get('/api/dish/category/:id')
+    async getDishesByCategoryId(@Param("id") id: Number, @Request() req){
+        return this.dishService.getDishesByCategoryId(id,req.user)
+    }
 
 
 

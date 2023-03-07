@@ -169,7 +169,23 @@ export class DishService {
         return response
     }
 
-
+    async getDishesByCategoryId(categoryId: Number, token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("creaLista() - incoming request with obj: " + JSON.stringify(categoryId))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/dish/category/"+categoryId,config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+    }
 
 
 

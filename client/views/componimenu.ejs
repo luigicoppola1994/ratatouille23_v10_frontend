@@ -33,7 +33,7 @@
 
 
   <div class="min-height-300 position-absolute w-100" style="background-color: #43aca0"></div>
-  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main" >
+  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " style="overflow-y: auto" id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html " target="_blank">
@@ -42,22 +42,157 @@
       </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <div class="navbar-absolute" id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-tag text-warning text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">{nome della categoria}</span>
-          </a>
-        </li>
+    <button class="btn" id="add-select-btn">Aggiungi categoria</button>
+  <button class="btn" id="generaMenu" onclick="generaMenu()">Genera menu</button>
+  <button onclick="creaJSONdish()">CREA</button>
+
+  <div class="card" id="select-container"></div>
+
+  
+ 
         
 
   
         
       </ul>
     </div>
+
+
+
+    <script>
+        const selectContainer = document.getElementById('select-container');
+        const addSelectBtn = document.getElementById('add-select-btn');
+    
+        let position = 0;
+    
+        function addSelect() {
+          const selectWrapper = document.createElement('div');
+          selectWrapper.classList.add('select-wrapper');
+    
+          const selectNumber = document.createElement('span');
+          selectNumber.classList.add('select-number');
+          selectNumber.textContent = document.querySelectorAll('.select-wrapper').length + 1;
+    
+          const select = document.createElement('select');
+          select.setAttribute('name', 'categoria');
+    
+          // Popolo le opzioni della select dal JSON ottenuto dalla chiamata AJAX
+    
+          data = [
+            {
+              "id": 54,
+              "name": "primo piatto di carne",
+              "priority": 0
+            },
+            {
+              "id": 55,
+              "name": "primo ",
+              "priority": 1
+            },
+            {
+              "id": 58,
+              "name": "primo piatto",
+              "priority": 3
+            },
+            {
+              "id": 63,
+              "name": "pizzeria",
+              "priority": 0
+            }];
+    
+    
+    
+          data.forEach((categoria) => {
+            const option = document.createElement('option');
+            option.setAttribute('value', categoria.id);
+            option.textContent = categoria.name;
+            select.appendChild(option);
+          });
+    
+          const deleteBtn = document.createElement('button');
+          deleteBtn.textContent = 'Elimina';
+          deleteBtn.addEventListener('click', () => {
+            selectWrapper.remove();
+            // Aggiorno il numero della posizione di tutte le select rimanenti
+            const selectWrappers = document.querySelectorAll('.select-wrapper');
+            selectWrappers.forEach((wrapper, index) => {
+              const selectNumber = wrapper.querySelector('.select-number');
+              selectNumber.textContent = index + 1;
+            });
+          });
+    
+          selectWrapper.appendChild(selectNumber);
+          selectWrapper.appendChild(select);
+          selectWrapper.appendChild(deleteBtn);
+    
+          selectContainer.appendChild(selectWrapper);
+        }
+    
+    
+        addSelectBtn.addEventListener('click', addSelect);
+    
+    
+    
+    
+    
+      </script>
+    
+    
+    
+    
+    
+    
+      <script>
+        function generaMenu() {
+          const selectWrappers = document.querySelectorAll('.select-wrapper');
+    
+          selectWrappers.forEach((wrapper) => {
+            const select = wrapper.querySelector('select');
+            const id = select.value;
+            const priority = wrapper.querySelector('.select-number').textContent;
+    
+            alert("Categoria " + id + "Priorità " + priority)
+            var pos = priority
+    
+    
+            $.ajax({
+              // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+              url: '/api/category/priority/add/' + id,
+              type: 'POST', //send it through get method
+              dataType: "json",
+    
+              data: {
+                priority: pos
+    
+              },
+              success: function (data, textStatus, xhr) {
+    
+    
+                alert("PRIORITA' AGGIUNTA")
+    
+                const token = data
+                if (token) {
+                  sessionStorage.setItem("jwt", token);
+                  //  window.location.replace("dashboard");
+                  //addListOp(email,password,name,surname,role)
+    
+                }
+              },
+              error: function (xhr, status, error) {
+                alert("Auth ko")
+                console.log(xhr.responseText);
+    
+              }
+            });
+    
+    
+    
+          });
+        }
+    
+      </script>
+
+
 
 
  <script>
@@ -367,253 +502,3 @@ document.querySelector('#sidenav-collapse-main ul').innerHTML = sidenavHTML;
 </body>
 
 </html>
-  
-
-<!--
-
-<script>
-  const dishesComplete =[
-  {name: "pizza", description: "cera, pomodoro, pane", cost: 3, categoryName: "primo", nameAllergens: "glutine, lattosio"},
-  {name: "pane", description: "burro, pomodoro, pane", cost: 5, categoryName: "antipasto", nameAllergens: "glutine"}
-];
-
-const category= [
-  {id: 54, name: "primo piatto di carne", priority: 1},
-  {id: 55, name: "primo ", priority:3},
-  {id: 58, name: "primo piatto", priority: 2}
-];
-
-const menu = document.getElementById("menu");
-const categories = document.querySelector(".categories");
-
-// Ordina le categorie in base alla priority
-const sortedCategories = category.sort((a, b) => a.priority - b.priority);
-
-// Crea un elenco per ogni categoria e aggiungilo al menù
-sortedCategories.forEach(category => {
-  const categoryEl = document.createElement("li");
-  categoryEl.classList.add("category");
-  categoryEl.textContent = category.name;
-  categories.appendChild(categoryEl);
-
-  // Filtra i piatti per la categoria corrente
-  const categoryDishes = dishesComplete.filter(dish => dish.categoryName === category.name);
-
-  // Crea un elenco per i piatti della categoria e aggiungilo all'elemento della categoria
-  const dishListEl = document.createElement("ul");
-  dishListEl.classList.add("dishes");
-  categoryEl.appendChild(dishListEl);
-
-  // Aggiungi ogni piatto alla lista dei piatti della categoria corrente
-  categoryDishes.forEach(dish => {
-    const dishEl = document.createElement("li");
-    dishEl.classList.add("dish");
-    dishListEl.appendChild(dishEl);
-
-    const dishNameEl = document.createElement("div");
-    dishNameEl.classList.add("dish-name");
-    dishNameEl.textContent = dish.name;
-    dishEl.appendChild(dishNameEl);
-
-    const dishDescriptionEl = document.createElement("div");
-    dishDescriptionEl.classList.add("dish-description");
-    dishDescriptionEl.textContent = dish.description;
-    dishEl.appendChild(dishDescriptionEl);
-
-    const dishCostEl = document.createElement("div");
-    dishCostEl.classList.add("dish-cost");
-    dishCostEl.textContent = `€${dish.cost}`;
-    dishEl.appendChild(dishCostEl);
-  });
-});
-
-</script>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--<!DOCTYPE html>
-<html>
-  <head>
-
-
-    <style>
-
-body {
-  font-family: Arial, sans-serif;
-}
-
-header {
-  background-color: #333;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-}
-
-nav {
-  display: flex;
-}
-
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-nav ul li {
-  margin-right: 1rem;
-  cursor: pointer;
-}
-
-nav ul li.active {
-  text-decoration: underline;
-}
-
-main {
-  margin: 2rem;
-}
-
-#menu-items {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.menu-item {
-  background-color: #eee;
-  border-radius: 0.5rem;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  margin-bottom: 1rem;
-  width: calc(33.33% - 1rem);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.menu-item img {
-  max-width: 100%;
-  margin-bottom: 1rem;
-}
-
-.menu-item h2 {
-  margin-top: 0;
-}
-
-.menu-item p {
-  margin: 0;
-  flex-grow: 1;
-}
-
-.menu-item .price {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-top: 1rem;
-}
-
-.menu-item .allergens {
-  margin-top: 1rem;
-}
-
-.menu-item .allergens span {
-  display: inline-block;
-  background-color: #333;
-  color: white;
-  border-radius: 0.5rem;
-  padding: 0.2rem 0.5rem;
-  margin-right: 0.5rem;
-}
-
-    </style>
-    <title>Menu</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div id="menu">
-        <div id="categories"></div>
-        <div id="items"></div>
-      </div>
-      
-
-
-
-<script>
-// Seleziona gli elementi HTML
-const categoriesContainer = document.getElementById("categories");
-const itemsContainer = document.getElementById("items");
-
-// Crea un array delle categorie presenti
-const categories = [];
-data.forEach(item => {
-  if (item.categoryId && !categories.includes(item.categoryId)) {
-    categories.push(item.categoryId);
-  }
-});
-
-// Crea i pulsanti per selezionare la categoria
-categories.forEach(category => {
-  const button = document.createElement("button");
-  button.innerText = `Categoria ${category}`;
-  button.addEventListener("click", () => {
-    // Filtra gli oggetti per la categoria selezionata
-    const items = data.filter(item => item.categoryId === category);
-    // Visualizza gli oggetti nella sezione "items"
-    itemsContainer.innerHTML = "";
-    items.forEach(item => {
-      const div = document.createElement("div");
-      div.innerHTML = `
-        <h3>${item.name}</h3>
-        <p>${item.description}</p>
-        <p>Costo: ${item.cost} euro</p>
-      `;
-      itemsContainer.appendChild(div);
-    });
-  });
-  categoriesContainer.appendChild(button);
-});
-
-    
-</script>
-
-
-
-
-
-
-
-
-  </body>
-</html>
-*/
