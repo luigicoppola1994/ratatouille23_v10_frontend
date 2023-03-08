@@ -28,6 +28,8 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+ 
+
   
 
 <style>
@@ -144,13 +146,72 @@ margin-right: 5px;
 
 
 
+/* Stile del menu */
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  font-family: 'Montserrat', sans-serif;
+  margin: 20px;
+}
+
+/* Stile di ogni categoria */
+.category {
+  width: 45%;
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px #ccc;
+}
+
+/* Stile del titolo della categoria */
+.category h2 {
+  margin-top: 0;
+  font-size: 28px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #333;
+}
+
+/* Stile della descrizione della portata */
+.dish-description {
+  font-style: italic;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Stile del prezzo della portata */
+.dish-price {
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Stile del nome degli allergeni */
+.dish-allergens {
+  font-size: 14px;
+  color: #cc0000;
+  margin-top: 5px;
+}
+
+/* Stile dei separatori tra le portate */
+.separator {
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px -20px;
+}
+
+
 </style>
 
 
 
 </head>
 
-<body class="g-sidenav-show   " style="background-color: #afdadc" onload="generateListCategorie()" >
+<body class="g-sidenav-show   " style="background-color: #afdadc" onload="generateListCategorie(),creaJSONdish()" >
 
 
   <div class="min-height-300 position-absolute w-100" style="background-color: #43aca0"></div>
@@ -300,12 +361,28 @@ margin-right: 5px;
         <div class="col-lg-12 mb-lg-0 mb-4" >
           <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
-              
+               <center><h2>Menu Ristorante</h2></center> 
+               <button onclick="window.location.reload()">AGGIORNA</button>
+                <div class="menu">
+                    <!-- Qui va il codice HTML generato dal JSON -->
+                    <script>
+                        
+                       
+
+
+
+
+
+
+
+                    </script>
+                </div>
+
             </div>
             <div class="card-body p-3">
               <div class="card-body pt-4 p-3">
                 <ul class="list-group">
-                  ciao
+                  
                   
                 </ul>
               </div>

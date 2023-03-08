@@ -73,7 +73,7 @@ $(function () {
         handle: "span",
         update: function (event, ui) {
             var position = ui.item.index() + 1;
-            alert("La categoria " + ui.item.text() + " è stata spostata in posizione " + position);
+           // alert("La categoria " + ui.item.text() + " è stata spostata in posizione " + position);
         }
     });
 });
@@ -93,7 +93,7 @@ function printMenu() {
         if(!isChecked)
            position=0;
 
-        alert(`La categoria "${li.textContent}" è in posizione ${position} ed è ${isChecked ? "selezionata" : "non selezionata"}`);
+        //alert(`La categoria "${li.textContent}" è in posizione ${position} ed è ${isChecked ? "selezionata" : "non selezionata"}`);
         
         searchInListCategory(li.textContent, position)
 
@@ -167,7 +167,7 @@ function searchInListCategory(nameCategory, position) {
             var categories = JSON.stringify(obj.data)
             var categorie = JSON.parse(categories)
 
-            alert("CATEGORIA PASSATA: " + nameCategory + "POSIZIONE: " + position)
+            //alert("CATEGORIA PASSATA: " + nameCategory + "POSIZIONE: " + position)
             console.log(categorie);
 
 
@@ -176,7 +176,7 @@ function searchInListCategory(nameCategory, position) {
             const categoria = categorie.find(obj => obj.name === nameCategory);
 
             const id = categoria.id;
-            alert(`L'id della categoria ${nameCategory} è ${id} in posizione ${position}`);
+          //  alert(`L'id della categoria ${nameCategory} è ${id} in posizione ${position}`);
 
 
             addPriority(id, position)
@@ -200,7 +200,7 @@ function searchInListCategory(nameCategory, position) {
 
 //CHIAMATA AJAX CHE INSERISCE LA PRIORITY AD UNA CATEGORIA PASSATA PER PARAMETRO
 function addPriority(id, position) {
-    alert("AJAX: id " + id + "Posizione: " + position)
+    //alert("AJAX: id " + id + "Posizione: " + position)
     $.ajax({
         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
         url: '/api/category/priority/add/' + id,
@@ -214,7 +214,7 @@ function addPriority(id, position) {
         success: function (data, textStatus, xhr) {
 
 
-            alert("PRIORITA' AGGIUNTA")
+            //alert("PRIORITA' AGGIUNTA")
 
             const token = data
             if (token) {
@@ -231,3 +231,159 @@ function addPriority(id, position) {
         }
     });
 }
+
+
+
+//CREA IL JSON CON TUTTE LE INFORMAZIONI SULLE CATEGORIE E ALLERGENI
+
+function creaJSONdish() {
+
+
+
+
+
+
+    axios.all([
+      axios.get('/api/dish/all'),
+      axios.get('/api/category/all'),
+      axios.get('/api/allergens/all'),
+      axios.get('/api/dishallergens/all')
+    ]).then(axios.spread((dishesRes, categoriesRes, allergensRes, dishAllergensRes) => {
+
+
+
+
+
+      let obj1 = JSON.parse(JSON.stringify(dishesRes.data));
+      const dishes = JSON.parse(JSON.stringify(obj1.data))
+
+
+
+      let obj2 = JSON.parse(JSON.stringify(categoriesRes.data));
+      const category = JSON.parse(JSON.stringify(obj2.data))
+
+      let obj3 = JSON.parse(JSON.stringify(allergensRes.data));
+      const allergens = JSON.parse(JSON.stringify(obj3.data));
+
+      let obj4 = JSON.parse(JSON.stringify(dishAllergensRes.data));
+      const dishes_allergens = JSON.parse(JSON.stringify(obj4.data));
+
+      //alert(JSON.stringify(obj2.data))
+
+
+
+
+
+
+
+      const dishesComplete = dishes.map(dish => {
+        const categoryName = category.find(cat => cat.id === dish.categoryId)?.name || '';
+        const categorys = category.find(cat => cat.id === dish.categoryId);
+         const priority = categorys ? categorys.priority : null;
+
+
+        const allergenNames = dishes_allergens.filter(da => da.dishId === dish.id)
+          .map(da => allergens.find(a => a.id === da.allergenId)?.name)
+          .join(', ');
+        return {
+          name: dish.name,
+          description: dish.description,
+          cost: dish.cost,
+          categoryName,
+          nameAllergens: allergenNames,
+          idDish: dish.id,
+          idCategory: dish.categoryId,
+          priority : priority
+
+        };
+      });
+
+      console.log(dishesComplete);
+      printMenuRes(dishesComplete);
+
+
+
+
+    })).catch(error => {
+      console.log(error);
+    });
+
+
+  }
+
+
+
+  //PRENDE IL JSON COMPLETO DI TUTTE LE INFO E CREA UN NUOVO JSON DOVE OGNI PORTATA E' ORDINATA NELLA PROPRIA CATEGORIA 
+  //A SUA VOLTA ORDINATA IN MODO CRESCENTE IN BASE ALLA PRIORITY
+  function printMenuRes(dishesComplete){
+    const menuElement = document.querySelector('.menu');
+  
+    const result = dishesComplete.reduce((acc, curr) => {
+      const categoryName = curr.categoryName;
+      if (!acc[categoryName]) {
+        acc[categoryName] = [];
+      }
+      acc[categoryName].push(curr);
+      return acc;
+    }, {});
+    
+    const orderedCategories = Object.keys(result).filter(category => {
+      return result[category][0].priority > 0;
+    }).sort((a, b) => {
+      return result[a][0].priority - result[b][0].priority;
+    });
+    
+    const orderedResult = {};
+    orderedCategories.forEach((category) => {
+      orderedResult[category] = result[category];
+    });
+    
+    console.log(orderedResult);
+    Object.keys(orderedResult).forEach((categoryName) => {
+      const categoryElement = document.createElement('div');
+      categoryElement.classList.add('category');
+    
+      const categoryTitleElement = document.createElement('h2');
+      categoryTitleElement.innerText = categoryName;
+      categoryElement.appendChild(categoryTitleElement);
+    
+      const dishes = orderedResult[categoryName];
+    
+      dishes.forEach((dish) => {
+        const dishElement = document.createElement('div');
+    
+        const dishNameElement = document.createElement('h3');
+        dishNameElement.innerText = dish.name;
+        dishElement.appendChild(dishNameElement);
+        
+        const dishPriceElement = document.createElement('p');
+        dishPriceElement.classList.add('dish-price');
+        dishPriceElement.innerText = dish.cost + '€';
+        dishElement.appendChild(dishPriceElement);
+    
+        const dishDescriptionElement = document.createElement('p');
+        dishDescriptionElement.classList.add('dish-description');
+        dishDescriptionElement.innerText = dish.description;
+        dishElement.appendChild(dishDescriptionElement);
+    
+        const dishAllergensElement = document.createElement('p');
+        dishAllergensElement.classList.add('dish-allergens');
+        dishAllergensElement.innerText = 'Allergeni: ' + dish.nameAllergens;
+        dishElement.appendChild(dishAllergensElement);
+    
+        categoryElement.appendChild(dishElement);
+      });
+    
+      menuElement.appendChild(categoryElement);
+    });
+  }
+  
+
+  function updateMenu() {
+    const menuElement = document.querySelector('.menu');
+    while (menuElement.firstChild) {
+      menuElement.removeChild(menuElement.firstChild);
+    }
+    // Chiamata a printMenuRes con la nuova lista di portate aggiornata
+    printMenuRes(newDishesList);
+  }

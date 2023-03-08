@@ -559,75 +559,7 @@
 
 
   <script>
-    function creaJSONdish() {
-
-
-
-
-
-
-      axios.all([
-        axios.get('/api/dish/all'),
-        axios.get('/api/category/all'),
-        axios.get('/api/allergens/all'),
-        axios.get('/api/dishallergens/all')
-      ]).then(axios.spread((dishesRes, categoriesRes, allergensRes, dishAllergensRes) => {
-
-
-
-
-
-        let obj1 = JSON.parse(JSON.stringify(dishesRes.data));
-        const dishes = JSON.parse(JSON.stringify(obj1.data))
-
-
-
-        let obj2 = JSON.parse(JSON.stringify(categoriesRes.data));
-        const category = JSON.parse(JSON.stringify(obj2.data))
-
-        let obj3 = JSON.parse(JSON.stringify(allergensRes.data));
-        const allergens = JSON.parse(JSON.stringify(obj3.data));
-
-        let obj4 = JSON.parse(JSON.stringify(dishAllergensRes.data));
-        const dishes_allergens = JSON.parse(JSON.stringify(obj4.data));
-
-
-
-
-
-
-
-        const dishesComplete = dishes.map(dish => {
-          const categoryName = category.find(cat => cat.id === dish.categoryId)?.name || '';
-          const allergenNames = dishes_allergens.filter(da => da.dishId === dish.id)
-            .map(da => allergens.find(a => a.id === da.allergenId)?.name)
-            .join(', ');
-          return {
-            name: dish.name,
-            description: dish.description,
-            cost: dish.cost,
-            categoryName,
-            nameAllergens: allergenNames,
-            idDish: dish.id,
-            idCategory: dish.categoryId,
-
-          };
-        });
-
-        console.log(dishesComplete);
-        alert(JSON.stringify(dishesComplete))
-
-
-
-
-
-      })).catch(error => {
-        console.log(error);
-      });
-
-
-    }
-
+    
 
   </script>
 
