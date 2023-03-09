@@ -1,0 +1,846 @@
+<!--
+=========================================================
+* Argon Dashboard 2 - v2.0.4
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://www.creative-tim.com/license)
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../custom/img/apple-icon.png">
+    <title>
+        Ratatouille23 </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <!-- Nucleo Icons -->
+    <link href="../vendor/argon/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="../vendor/argon/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="../vendor/argon//css/nucleo-svg.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link id="pagestyle" href="../vendor/argon/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+    <!--<link id="pagestyle3" href="../custom/css/dish.css" rel="stylesheet" />-->
+
+
+    <link id="pagestyle2" href="../custom/css/login.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+    <script src="custom/js/registerOp.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!--<script src="../custom/js/globals.js"></script>-->
+    <script src="../custom/js/dish.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        /*  autocompletamento   */
+        #product-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            z-index: 999;
+            background-color: #fff;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+            max-height: 200px;
+            /* Altezza massima dell'elenco */
+            overflow-y: auto;
+            /* Scorrimento verticale */
+        }
+
+        #product-list li {
+            padding: 8px 12px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #product-list li:hover {
+            background-color: #f5f5f5;
+        }
+
+        .inputText {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 16px;
+        }
+
+        .inputText:focus {
+            outline: none;
+            border-color: #4d90fe;
+            box-shadow: 0 0 0 2px rgba(77, 144, 254, 0.2);
+        }
+
+        #product-list.hidden {
+            display: none;
+        }
+
+
+
+        /* stile ingredienti*/
+        /* Stile dell'input di testo */
+        .tag-input input[type="text"] {
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+        }
+
+        /* Stile del contenitore dell'input tags */
+        .tag-input-container {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* Stile del contenitore dei tag */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        /* Stile di ogni tag */
+        .tag {
+            background-color: #43aca0;
+            color: #fff;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Stile dell'icona di cancellazione del tag */
+        .tag .tag-close {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        /* Stile del placeholder dell'input di testo */
+        .tag-input input[type="text"]::placeholder {
+            color: #999;
+        }
+
+
+
+
+
+
+
+
+
+
+        /* stile per allergeni*/
+        /* allergeni */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #43aca0;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #43aca0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        th,
+        td {
+            padding: 10px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr {
+
+            background-color: white;
+        }
+
+        input[type=checkbox] {
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #43aca0;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #43aca0;
+        }
+    </style>
+
+
+</head>
+
+<body class="g-sidenav-show   " style="background-color: #afdadc"
+    onload=" change(), generateListAllergens(),generateListCategorie(), buildTableDishes()">
+
+    <div class="min-height-300 position-absolute w-100" style="background-color: #43aca0"></div>
+    <aside
+        class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
+        id="sidenav-main">
+        <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+                aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html "
+                target="_blank">
+                <!--<img src="../custom/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">-->
+                <span class="ms-1 font-weight-bold">Ratatouille23</span>
+            </a>
+        </div>
+        <hr class="horizontal dark mt-0">
+        <div class="navbar-absolute " id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link " href="/dashboard">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/dipendenti">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dipendenti</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="/attivita">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Attività</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../pages/virtual-reality.html">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-app text-info text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Virtual Reality</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../pages/rtl.html">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">RTL</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../pages/profile.html">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../pages/sign-in.html">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Sign In</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../pages/sign-up.html">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-collection text-info text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Sign Up</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+    </aside>
+    <main class="main-content position-relative border-radius-lg ">
+        <!-- Navbar -->
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
+            data-scroll="false">
+            <div class="container-fluid py-1 px-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
+                                href="javascript:;">Pages</a></li>
+                        <li class="breadcrumb-item text-sm text-white active" aria-current="page">Dipendenti</li>
+                    </ol>
+                    <h6 class="font-weight-bolder text-white mb-0">Dipendenti</h6>
+                </nav>
+                <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                    <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                        <div class="input-group">
+                            <span class="input-group-text text-body"><i class="fas fa-search"
+                                    aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" placeholder="Type here...">
+                        </div>
+                    </div>
+                    <ul class="navbar-nav  justify-content-end">
+                        <li class="nav-item d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
+                                <i class="fa fa-user me-sm-1"></i>
+                                <span class="d-sm-inline d-none" id="signUser">Sign In</span>
+                            </a>
+                        </li>
+                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+                                <div class="sidenav-toggler-inner">
+                                    <i class="sidenav-toggler-line bg-white"></i>
+                                    <i class="sidenav-toggler-line bg-white"></i>
+                                    <i class="sidenav-toggler-line bg-white"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item px-3 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-white p-0">
+                                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-bell cursor-pointer"></i>
+                            </a>
+                            <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
+                                aria-labelledby="dropdownMenuButton">
+                                <li class="mb-2">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-1">
+                                            <div class="my-auto">
+                                                <img src="../custom/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    <span class="font-weight-bold">New message</span> from Laur
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    13 minutes ago
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-1">
+                                            <div class="my-auto">
+                                                <img src="../custom/img/small-logos/logo-spotify.svg"
+                                                    class="avatar avatar-sm bg-gradient-dark  me-3 ">
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    <span class="font-weight-bold">New album</span> by Travis Scott
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    1 day
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                        <div class="d-flex py-1">
+                                            <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+                                                <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                    <title>credit-card</title>
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <g transform="translate(-2169.000000, -745.000000)"
+                                                            fill="#FFFFFF" fill-rule="nonzero">
+                                                            <g transform="translate(1716.000000, 291.000000)">
+                                                                <g transform="translate(453.000000, 454.000000)">
+                                                                    <path class="color-background"
+                                                                        d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
+                                                                        opacity="0.593633743"></path>
+                                                                    <path class="color-background"
+                                                                        d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z">
+                                                                    </path>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="text-sm font-weight-normal mb-1">
+                                                    Payment successfully completed
+                                                </h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    <i class="fa fa-clock me-1"></i>
+                                                    2 days
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- End Navbar -->
+
+
+
+
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <button class="btn" id="addOp" type="submit" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal" href="forget-password.html"
+                                style="position: absolute ; right:20px"><svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor" class="bi bi-person-add"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                                    <path
+                                        d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
+                                </svg> Crea</button>
+
+                        </div>
+                        <div class="card-header pb-0">
+                            <h6>Gestione portate</h6>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Portata</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Allergeni</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Categoria</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Prezzo</th> 
+                                                <th class="text-secondary opacity-7"></th>
+                                           
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myTableDishesComplete">
+                                        
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer pt-3  ">
+                <div class="container-fluid">
+                    <div class="row align-items-center justify-content-lg-between">
+                        <div class="col-lg-6 mb-lg-0 mb-4">
+                            <div class="copyright text-center text-sm text-muted text-lg-start">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>,
+                                made with <i class="fa fa-heart"></i> by
+                                <a href="https://www.creative-tim.com" class="font-weight-bold"
+                                    target="_blank">Ratatouille</a>
+                                for a better web.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+
+
+
+
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Aggiungi dipendente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                </div>
+                <div class="modal-body justify-content-center">
+                    <p class="recupero justify-content-center">Crea un account a ciascun dipendente inserendo i seguenti
+                        dati:</p>
+
+                    <!-- FORM --->
+
+
+                    <form>
+
+
+
+
+                        <!-- NOME PORTATA CON AUTOCOMPLETAMENTO-->
+                        <div class="mb-3">
+                            <label for="search">Nome Portata:</label>
+                            <input class="inputText" type="text" id="search" name="search" autocomplete="off">
+                            <ul id="product-list"></ul>
+                        </div>
+
+                        <script>
+                            const searchInput = document.querySelector('#search');
+                            const productList = document.querySelector('#product-list');
+
+
+                            searchInput.addEventListener('input', async (event) => {
+                                const searchTerm = event.target.value;
+                                if (searchTerm.length < 2) {
+                                    productList.innerHTML = '';
+                                    return;
+                                }
+
+                                const response = await fetch(`https://it.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&search_simple=1&action=process&json=1&fields=product_name_it`);
+                                const data = await response.json();
+                                const products = data.products.filter(product => {
+                                    const productName = product.product_name_it;
+                                    return productName && (productName.toLowerCase() === searchTerm.toLowerCase() || productName.toLowerCase().startsWith(`${searchTerm.toLowerCase()} `));
+                                });
+
+                                productList.innerHTML = '';
+                                products.forEach(product => {
+                                    const li = document.createElement('li');
+                                    li.textContent = product.product_name_it;
+                                    li.addEventListener('click', () => {
+                                        searchInput.value = product.product_name_it;
+                                        productList.innerHTML = '';
+                                    });
+                                    productList.appendChild(li);
+                                });
+                            });
+
+                            // Nasconde la lista dei prodotti quando si clicca fuori dall'input
+                            document.addEventListener('click', (event) => {
+                                if (event.target !== searchInput && event.target !== productList) {
+                                    productList.innerHTML = '';
+                                }
+                            });
+                        </script>
+
+
+                        <!--FINE PORTATA-->
+
+                        <!-- ABILITA SECONDA LINGUA 
+                        <select id="language-select">
+                            <option value="">Seleziona una lingua</option>
+                            <option value="ar">Arabo</option>
+                            <option value="bg">Bulgaro</option>
+                            <option value="bn">Bengalese</option>
+                            <option value="ca">Catalano</option>
+                            <option value="cs">Ceco</option>
+                            <option value="da">Danese</option>
+                            <option value="de">Tedesco</option>
+                            <option value="el">Greco</option>
+                            <option value="en">Inglese</option>
+                            <option value="es">Spagnolo</option>
+                            <option value="et">Estone</option>
+                            <option value="fa">Persiano</option>
+                            <option value="fi">Finlandese</option>
+                            <option value="fr">Francese</option>
+                            <option value="he">Ebraico</option>
+                            <option value="hi">Hindi</option>
+                            <option value="hr">Croato</option>
+                            <option value="hu">Ungherese</option>
+                            <option value="id">Indonesiano</option>
+                            <option value="it">Italiano</option>
+                            <option value="ja">Giapponese</option>
+                            <option value="ka">Georgiano</option>
+                            <option value="kk">Kazako</option>
+                            <option value="ko">Coreano</option>
+                            <option value="lt">Lituano</option>
+                            <option value="lv">Lettone</option>
+                            <option value="ms">Malese</option>
+                            <option value="nl">Olandese</option>
+                            <option value="no">Norvegese</option>
+                            <option value="pl">Polacco</option>
+                            <option value="pt">Portoghese</option>
+                            <option value="ro">Rumeno</option>
+                            <option value="ru">Russo</option>
+                            <option value="sk">Slovacco</option>
+                            <option value="sl">Sloveno</option>
+                            <option value="sr">Serbo</option>
+                            <option value="sv">Svedese</option>
+                            <option value="th">Thailandese</option>
+                            <option value="tr">Turco</option>
+                            <option value="uk">Ucraino</option>
+                            <option value="vi">Vietnamita</option>
+                            <option value="zh">Cinese</option>
+                          </select>
+                          -->
+
+
+
+
+
+
+                        <!-- NOME PORTATA CON AUTOCOMPLETAMENTO SECONDA LINGUA-->
+                        <div class="mb-3">
+                            <label for="searchLan">Nome Portata:</label>
+                            <input class="inputText" type="text" id="search" name="searchLan" autocomplete="off">
+                            <ul id="product-list"></ul>
+                        </div>
+
+                        <script>
+                            const searchInputLan = document.querySelector('#search');
+                            const productListLan = document.querySelector('#product-list');
+
+
+                            searchInput.addEventListener('input', async (event) => {
+                                const searchTerm = event.target.value;
+                                if (searchTerm.length < 2) {
+                                    productList.innerHTML = '';
+                                    return;
+                                }
+
+                                const response = await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&search_simple=1&action=process&json=1`);
+                                const data = await response.json();
+                                const products = data.products.filter(product => {
+                                    const productName = product.product_name_it;
+                                    return productName && (productName.toLowerCase() === searchTerm.toLowerCase() || productName.toLowerCase().startsWith(`${searchTerm.toLowerCase()} `));
+                                });
+
+                                productList.innerHTML = '';
+                                products.forEach(product => {
+                                    const li = document.createElement('li');
+                                    li.textContent = product.product_name_it;
+                                    li.addEventListener('click', () => {
+                                        searchInput.value = product.product_name_it;
+                                        productList.innerHTML = '';
+                                    });
+                                    productList.appendChild(li);
+                                });
+                            });
+
+                            // Nasconde la lista dei prodotti quando si clicca fuori dall'input
+                            document.addEventListener('click', (event) => {
+                                if (event.target !== searchInput && event.target !== productList) {
+                                    productList.innerHTML = '';
+                                }
+                            });
+                        </script>
+
+
+                        <!--FINE PORTATA SECONDA LINGUA-->
+
+                        <div class="mb-3">
+                            <!--  INGREDIENTI -->
+                            <label>Descrizione:</label>
+                            <div class="tag-input-container">
+                                <div class="tag-input">
+                                    <input type="text" id="tag-input"
+                                        placeholder="Clicca ENTER per aggiungere l'ingrediente.">
+                                    <input type="hidden" id="descrizione" name="descrizione">
+                                </div>
+                                <div class="tags-container"></div>
+                            </div>
+                        </div>
+
+
+                        <script>
+                            const tagInput = document.querySelector('#tag-input');
+                            const tagsContainer = document.querySelector('.tags-container');
+                            const descrizioneInput = document.querySelector('#descrizione');
+                            let tags = [];
+                            tagInput.addEventListener('keydown', (event) => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault();
+                                    const tag = tagInput.value.trim();
+                                    if (tag !== '') {
+                                        tags.push(tag);
+                                        tagInput.value = '';
+                                        renderTags();
+                                    }
+                                }
+                            });
+                            function renderTags() {
+                                tagsContainer.innerHTML = '';
+                                tags.forEach((tag, index) => {
+                                    const tagElement = document.createElement('div');
+                                    tagElement.classList.add('tag');
+                                    tagElement.innerHTML = `
+                              <span class="tag-name">${tag}</span>
+                              <span class="tag-remove" data-index="${index}">&times;</span>
+                            `;
+                                    tagElement.querySelector('.tag-remove').addEventListener('click', (event) => {
+                                        const index = parseInt(event.target.getAttribute('data-index'));
+                                        tags.splice(index, 1);
+                                        renderTags();
+                                    });
+                                    tagsContainer.appendChild(tagElement);
+                                });
+                                descrizioneInput.value = tags.join(', ');
+                            }
+                        </script>
+
+
+                        <!-- FINE INGREDIENTI-->
+
+                        <!--ALLERGENI -->
+
+                        <section>
+
+                            <details>
+                                <summary>
+                                    Vuoi aggiungere allergeni?
+                                </summary>
+                                <p>
+                                <table id="checkbox-table">
+                                    <thead>
+
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                </p>
+                            </details>
+
+                        </section>
+
+                        <!-- FINE ALLERGENI-->
+                        <section>
+                            <!-- CATEGORIE-->
+                            <details>
+                                <summary>
+                                    Vuoi assegnare una categoria?
+                                </summary>
+                                <p>
+
+                                    <select id="select_elementi"></select>
+                                <div class="input-container">
+                                    <input type="text" placeholder="Categoria Personalizzata..."
+                                        id="input_nuovo_elemento">
+                                    <button type="buttonAddCtg" id="btn_aggiungiCtg">Aggiungi</button>
+                                </div>
+                                </p>
+                            </details>
+
+                        </section>
+
+                        <!--FINE CATEGORIE-->
+
+                        <div class="mb-3">
+                            <label for="price">Prezzo:</label>
+                            <input class="inputText" type="text" id="price">
+                        </div>
+
+
+
+
+                    </form>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="btnstyle" class="btn btn-secondary" data-bs-dismiss="modal"
+                        style="background-color: #43aca0" id="btn_insertPortata"
+                        onclick="addPortata()">INSERISCI</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!--   Core JS Files   -->
+    <script src="../vendor/argon/js/core/popper.min.js"></script>
+    <script src="../vendor/argon/js/core/bootstrap.min.js"></script>
+    <script src="../vendor/argon/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="../vendor/argon/js/plugins/smooth-scrollbar.min.js"></script>
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+                damping: '0.5'
+            }
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../vendor/argon/js/argon-dashboard.min.js?v=2.0.4"></script>
+    <script src="../custom/js/globals.js"></script>
+</body>
+
+
+
+</html>

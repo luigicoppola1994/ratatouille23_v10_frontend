@@ -1,225 +1,534 @@
 <!DOCTYPE html>
-<html>
-
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="./vendor/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="./vendor/img/favicon.png">
+  <title>
+    Dashboard Admin
+  </title>
+   <!--     Fonts and icons     -->
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+   <!-- Nucleo Icons -->
+   <link href="../vendor/argon/css/nucleo-icons.css" rel="stylesheet" />
+   <link href="../vendor/argon/css/nucleo-svg.css" rel="stylesheet" />
+   <!-- Font Awesome Icons -->
+   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+   <link href="../vendor/argon//css/nucleo-svg.css" rel="stylesheet" />
+   <!-- CSS Files -->
+   <link id="pagestyle" href="../vendor/argon/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+  <link id="pagestyle2" href="/custom/css/login.css" rel="stylesheet" type="text/css">
 
-
-
-  <title>Crea portata</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link id="pagestyle2" href="../custom/css/dish.css" rel="stylesheet" />
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="../custom/js/globals.js"></script>
   <script src="../custom/js/dish.js"></script>
+  <script src="../custom/js/globals.js"></script>
+  <script src="../custom/js/category.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-  <style>
-   
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+  
+
+<style>
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 17px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #43aca0;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #43aca0;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
 
 
 
 
-  </style>
+
+
+
+#buttonPriority {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #43aca0;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#buttonPrint {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #43aca0;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+#buttonPrint:disabled {
+  /* Stile per il tasto disabilitato */
+  background-color: grey;
+  color: black;
+}
+
+/* Utilizza il colore #43aca0 come colore di sfondo */
+body {
+background-color: #43aca0;
+}
+
+/* Stile per la lista delle categorie */
+ul.categories {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+/* Stile per ogni elemento della lista delle categorie */
+ul.categories li {
+background-color: #fff;
+border-radius: 4px;
+box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+color: #333;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+padding: 10px;
+}
+
+/* Stile per il pulsante "nascondi" */
+ul.categories li button {
+background-color: #43aca0;
+border: none;
+border-radius: 4px;
+color: #fff;
+cursor: pointer;
+font-size: 16px;
+padding: 5px 10px;
+}
+
+/* Stile per l'icona del pulsante "nascondi" */
+ul.categories li button i {
+margin-right: 5px;
+}
+
+
+
+/* Stile del menu */
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  font-family: 'Montserrat', sans-serif;
+  margin: 20px;
+}
+
+/* Stile di ogni categoria */
+.category {
+  width: 45%;
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px #ccc;
+}
+
+/* Stile del titolo della categoria */
+.category h2 {
+  margin-top: 0;
+  font-size: 28px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #333;
+}
+
+/* Stile della descrizione della portata */
+.dish-description {
+  font-style: italic;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Stile del prezzo della portata */
+.dish-price {
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Stile del nome degli allergeni */
+.dish-allergens {
+  font-size: 14px;
+  color: #cc0000;
+  margin-top: 5px;
+}
+
+/* Stile dei separatori tra le portate */
+.separator {
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px -20px;
+}
+
+
+
+button.refresh {
+  display: inline-block;
+  background-color: #43aca0;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+button.refresh i {
+  margin-right: 10px;
+}
+
+button.refresh:hover {
+  background-color: #2c7b73;
+}
+
+
+</style>
+
+
 
 </head>
 
-<body class="g-sidenav-show   " style="background-color: #afdadc"
-  onload=" change(), generateListAllergens(),generateListCategorie(), generateListDishes()">
-
-  <div class="card-container">
-  <!-- CREO LA CARD DI SINISTRA-->
-    <div class="card">
-          <!--  PORTATA PRODOTTO -->
-    <label for="search">Nome Portata:</label>
-    <input type="text" id="search" name="search" autocomplete="off">
-
-    <ul id="product-list"></ul>
-
-<!-- FUNZIONE COMPLETAMENTO API DI FOODFACT-->
+<body class="g-sidenav-show   " style="background-color: #afdadc" onload="change(),generateListCategorie(),creaJSONdish()" >
 
 
-    <script>
-      const searchInput = document.querySelector('#search');
-      const productList = document.querySelector('#product-list');
-  
-  
-      searchInput.addEventListener('input', async (event) => {
-        const searchTerm = event.target.value;
-        if (searchTerm.length < 2) {
-          productList.innerHTML = '';
-          return;
-        }
-  
-        const response = await fetch(`https://it.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&search_simple=1&action=process&json=1&fields=product_name_it`);
-        const data = await response.json();
-        const products = data.products.filter(product => {
-          const productName = product.product_name_it;
-          return productName && (productName.toLowerCase() === searchTerm.toLowerCase() || productName.toLowerCase().startsWith(`${searchTerm.toLowerCase()} `));
-        });
-  
-        productList.innerHTML = '';
-        products.forEach(product => {
-          const li = document.createElement('li');
-          li.textContent = product.product_name_it;
-          li.addEventListener('click', () => {
-            searchInput.value = product.product_name_it;
-            productList.innerHTML = '';
-          });
-          productList.appendChild(li);
-        });
-      });
-  
-      // Nasconde la lista dei prodotti quando si clicca fuori dall'input
-      document.addEventListener('click', (event) => {
-        if (event.target !== searchInput && event.target !== productList) {
-          productList.innerHTML = '';
-        }
-      });
-    </script>
+  <div class="min-height-300 position-absolute w-100" style="background-color: #43aca0"></div>
+  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main" >
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html " target="_blank">
+        <p class="titletext">Ratatouille23</p>
 
-
-
-    <!--  INGREDIENTI -->
-    <label>Descrizione:</label>
-    <div class="tag-input-container">
-      <div class="tag-input">
-        <input type="text" id="tag-input" placeholder="Clicca ENTER per aggiungere l'ingrediente.">
-        <input type="hidden" id="descrizione" name="descrizione">
-      </div>
-      <div class="tags-container"></div>
+      </a>
     </div>
+    <center><button id="buttonPriority" onclick="printMenu();genera()">GENERA MENU'</button> </center>   
 
+    <hr class="horizontal dark mt-0 ">
+    
+      
+    <div class="navbar-absolute" id="sidenav-collapse-main">
+<!--   CREA LA LISTA DI CATEGORIA DRAG E DROP-->
+      <ul id="categories-list" class="categories">
 
-
-    <script>
-      const tagInput = document.querySelector('#tag-input');
-      const tagsContainer = document.querySelector('.tags-container');
-      const descrizioneInput = document.querySelector('#descrizione');
-      let tags = [];
-      tagInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          event.preventDefault();
-          const tag = tagInput.value.trim();
-          if (tag !== '') {
-            tags.push(tag);
-            tagInput.value = '';
-            renderTags();
-          }
-        }
-      });
-      function renderTags() {
-        tagsContainer.innerHTML = '';
-        tags.forEach((tag, index) => {
-          const tagElement = document.createElement('div');
-          tagElement.classList.add('tag');
-          tagElement.innerHTML = `
-        <span class="tag-name">${tag}</span>
-        <span class="tag-remove" data-index="${index}">&times;</span>
-      `;
-          tagElement.querySelector('.tag-remove').addEventListener('click', (event) => {
-            const index = parseInt(event.target.getAttribute('data-index'));
-            tags.splice(index, 1);
-            renderTags();
-          });
-          tagsContainer.appendChild(tagElement);
-        });
-        descrizioneInput.value = tags.join(', ');
-      }
-    </script>
-
-
-
-
-
-
-
-
-
-
-    <!--ALLERGENI -->
-
-    <section>
-
-      <details>
-        <summary>
-          Vuoi aggiungere allergeni?
-        </summary>
-        <p>
-        <table id="checkbox-table">
-          <thead>
-
-          </thead>
-          <tbody></tbody>
-        </table>
-        </p>
-      </details>
-
-    </section>
-
-
-
-
-    <section>
-      <!-- CATEGORIE-->
-      <details>
-        <summary>
-          Vuoi assegnare una categoria?
-        </summary>
-        <p>
-
-          <select id="select_elementi"></select>
-        <div class="input-container">
-          <input type="text" placeholder="Categoria Personalizzata..." id="input_nuovo_elemento">
-          <button type="buttonAddCtg" id="btn_aggiungiCtg">Aggiungi</button>
-        </div>
-        </p>
-      </details>
-
-    </section>
-
-
-    <p> <label>Prezzo (euro):</label>
-      <input type="text" id="price"></input>
-    </p>
-
-    <button id="add_portata" onclick="addPortata()"> Crea Portata </button>
-
-
-
-
-  </div>
-
-
-
-
-  
+    </ul>
+<!--       FINE CREAZIONE-->
    
+     </div>
 
-       
-  <div class="card-right">
-    <div class="card-body px-0 pt-0 pb-2">
-        <table>
-          <thead>
-            <tr>
-              <th>Portata</th>
-              <th>Ingredienti</th>
-              <th>Categoria</th>
-              <th>Allergeni</th>
-              <th>Costo</th>
-              <th> </th>
-            </tr>
-          </thead>
-          <tbody id="myTable">
-          </tbody>
-        </table>
+  </aside>
+  <main class="main-content position-relative border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="/attivita">Attività</a></li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Menù</li>
+          </ol>
+          <h3 class="font-weight-bolder text-white mb-0" id="nameCategoryMenu"></h3>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group">
+              <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" placeholder="Type here...">
+            </div>
+          </div>
+          <ul class="navbar-nav  justify-content-end">
+            <li class="nav-item d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none" id="signUser">Sign In</span>
+              </a>
+            </li>
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line bg-white"></i>
+                  <i class="sidenav-toggler-line bg-white"></i>
+                  <i class="sidenav-toggler-line bg-white"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-white p-0">
+                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-bell cursor-pointer"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">New message</span> from Laur
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          13 minutes ago
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="./assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm bg-gradient-dark  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">New album</span> by Travis Scott
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          1 day
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+                        <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                          <title>credit-card</title>
+                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                              <g transform="translate(1716.000000, 291.000000)">
+                                <g transform="translate(453.000000, 454.000000)">
+                                  <path class="color-background" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z" opacity="0.593633743"></path>
+                                  <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          Payment successfully completed
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          2 days
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>    
-</div>
- 
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+    
+      <div class="row mt-4">
+        <div class="col-lg-12 mb-lg-0 mb-4" >
+          <div class="card z-index-2 h-100">
+            <div class="card-header pb-0 pt-3 bg-transparent">
+              <button class="refresh" onclick="window.location.reload()"><i class="fas fa-sync-alt"></i>STAMPA ULTIMO MENU GENERATO</button>
+               <center><h2>Menu Ristorante</h2></center> 
+                <div class="menu">
+                    <!-- Qui va il codice HTML generato dal JSON -->
+                    <script>
+                        
+                       
 
 
-</div>
+
+
+
+
+
+                    </script>
+                </div>
+
+            </div>
+            <div class="card-body p-3">
+              <div class="card-body pt-4 p-3">
+                <ul class="list-group">
+                  
+                  
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
   
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      </div>
+      <footer class="footer pt-3  ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                © Ratatouille23 | All rights reserved <script>
+                  document.write(new Date().getFullYear())
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+  <!--   Core JS Files   -->
+  <script src="./vendor/argon/js/core/popper.min.js"></script>
+  <script src="./vendor/argon/js/core/bootstrap.min.js"></script>
+  <script src="./vendor/argon/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="./vendor/argon/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="./vendor/argon/js/plugins/chartjs.min.js"></script>
+
+    
+
+  
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!---->

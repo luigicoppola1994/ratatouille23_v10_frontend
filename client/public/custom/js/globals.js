@@ -65,19 +65,23 @@ if(window.location.pathname == "/dipendenti"){
 
 //GESTISCO L'ATTIVITA'
 if(window.location.pathname == "/attivita"){
+
+  var sign5 = document. getElementById("signUser").innerHTML= user.name + " " +user.surname;
  
   //TASTO AGGIUNGI DELL'ATTIVITA' DIVENTA MODIFICA SE HO GIA' INSERITO UN RISTORANTE
   if(user.restaurantId != null)
     var sign4 = document.getElementById("addPut").innerHTML = "Modifica"
 
-    
-
 
 }
 
 
+//GESTISCO LA PAGINA DEL MENU
+if(window.location.pathname == "/menu"){
 
+  var sign5 = document. getElementById("signUser").innerHTML= user.name + " " +user.surname;
 
+}
 
 
 
@@ -315,9 +319,6 @@ function buildTable(data){
                       </a>
                     </td>
                   </tr>`
-
-
-
 
 
 

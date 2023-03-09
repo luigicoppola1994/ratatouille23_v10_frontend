@@ -71,9 +71,13 @@ export class DashboardController {
      @Render('componimenu')
      async componimenu() { return }
 
-     @Get('/dragdrop')    
-     @Render('dragdrop')
+     @Get('/menuportate')    
+     @Render('menuportate')
      async dragdrop() { return }
+
+     @Get('/portate')    
+     @Render('portate')
+     async portate() { return }
 
 
 }

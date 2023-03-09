@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+  <title>Crea portata</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link id="pagestyle2" href="../custom/css/dish.css" rel="stylesheet" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../custom/js/globals.js"></script>
+  <script src="../custom/js/dish.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <style>
+   
+
+
+
+
+  </style>
+
+</head>
+
+<body class="g-sidenav-show   " style="background-color: #afdadc"
+  onload=" change(), generateListAllergens(),generateListCategorie(), generateListDishes()">
+
+  <div class="card-container">
+  <!-- CREO LA CARD DI SINISTRA-->
+    <div class="card">
+          <!--  PORTATA PRODOTTO -->
+    <label for="search">Nome Portata:</label>
+    <input type="text" id="search" name="search" autocomplete="off">
+
+    <ul id="product-list"></ul>
+
+<!-- FUNZIONE COMPLETAMENTO API DI FOODFACT-->
+
+
+    <script>
+      const searchInput = document.querySelector('#search');
+      const productList = document.querySelector('#product-list');
+  
+  
+      searchInput.addEventListener('input', async (event) => {
+        const searchTerm = event.target.value;
+        if (searchTerm.length < 2) {
+          productList.innerHTML = '';
+          return;
+        }
+  
+        const response = await fetch(`https://it.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&search_simple=1&action=process&json=1&fields=product_name_it`);
+        const data = await response.json();
+        const products = data.products.filter(product => {
+          const productName = product.product_name_it;
+          return productName && (productName.toLowerCase() === searchTerm.toLowerCase() || productName.toLowerCase().startsWith(`${searchTerm.toLowerCase()} `));
+        });
+  
+        productList.innerHTML = '';
+        products.forEach(product => {
+          const li = document.createElement('li');
+          li.textContent = product.product_name_it;
+          li.addEventListener('click', () => {
+            searchInput.value = product.product_name_it;
+            productList.innerHTML = '';
+          });
+          productList.appendChild(li);
+        });
+      });
+  
+      // Nasconde la lista dei prodotti quando si clicca fuori dall'input
+      document.addEventListener('click', (event) => {
+        if (event.target !== searchInput && event.target !== productList) {
+          productList.innerHTML = '';
+        }
+      });
+    </script>
+
+
+
+    <!--  INGREDIENTI -->
+    <label>Descrizione:</label>
+    <div class="tag-input-container">
+      <div class="tag-input">
+        <input type="text" id="tag-input" placeholder="Clicca ENTER per aggiungere l'ingrediente.">
+        <input type="hidden" id="descrizione" name="descrizione">
+      </div>
+      <div class="tags-container"></div>
+    </div>
+
+
+
+    <script>
+      const tagInput = document.querySelector('#tag-input');
+      const tagsContainer = document.querySelector('.tags-container');
+      const descrizioneInput = document.querySelector('#descrizione');
+      let tags = [];
+      tagInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          const tag = tagInput.value.trim();
+          if (tag !== '') {
+            tags.push(tag);
+            tagInput.value = '';
+            renderTags();
+          }
+        }
+      });
+      function renderTags() {
+        tagsContainer.innerHTML = '';
+        tags.forEach((tag, index) => {
+          const tagElement = document.createElement('div');
+          tagElement.classList.add('tag');
+          tagElement.innerHTML = `
+        <span class="tag-name">${tag}</span>
+        <span class="tag-remove" data-index="${index}">&times;</span>
+      `;
+          tagElement.querySelector('.tag-remove').addEventListener('click', (event) => {
+            const index = parseInt(event.target.getAttribute('data-index'));
+            tags.splice(index, 1);
+            renderTags();
+          });
+          tagsContainer.appendChild(tagElement);
+        });
+        descrizioneInput.value = tags.join(', ');
+      }
+    </script>
+
+
+
+
+
+
+
+
+
+
+    <!--ALLERGENI -->
+
+    <section>
+
+      <details>
+        <summary>
+          Vuoi aggiungere allergeni?
+        </summary>
+        <p>
+        <table id="checkbox-table">
+          <thead>
+
+          </thead>
+          <tbody></tbody>
+        </table>
+        </p>
+      </details>
+
+    </section>
+
+
+
+
+    <section>
+      <!-- CATEGORIE-->
+      <details>
+        <summary>
+          Vuoi assegnare una categoria?
+        </summary>
+        <p>
+
+          <select id="select_elementi"></select>
+        <div class="input-container">
+          <input type="text" placeholder="Categoria Personalizzata..." id="input_nuovo_elemento">
+          <button type="buttonAddCtg" id="btn_aggiungiCtg">Aggiungi</button>
+        </div>
+        </p>
+      </details>
+
+    </section>
+
+
+    <p> <label>Prezzo (euro):</label>
+      <input type="text" id="price"></input>
+    </p>
+
+    <button id="add_portata" onclick="addPortata()"> Crea Portata </button>
+
+
+
+
+  </div>
+
+
+
+
+  
+   
+
+       
+  <div class="card-right">
+    <div class="card-body px-0 pt-0 pb-2">
+        <table>
+          <thead>
+            <tr>
+              <th>Portata</th>
+              <th>Ingredienti</th>
+              <th>Categoria</th>
+              <th>Allergeni</th>
+              <th>Costo</th>
+              <th> </th>
+            </tr>
+          </thead>
+          <tbody id="myTables">
+          </tbody>
+        </table>
+      </div>
+    </div>    
+</div>
+ 
+
+
+</div>
+  

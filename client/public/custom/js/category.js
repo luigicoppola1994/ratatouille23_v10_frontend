@@ -80,6 +80,12 @@ $(function () {
 
 
 
+
+
+
+
+
+
 //AGGIUNGE PRIORITA' ALLE CATEGORIE E CHIAMA LA STAMPA DEL MENU
 function printMenu() {
 
@@ -102,51 +108,7 @@ function printMenu() {
 
     });
 
-    /*selectWrappers.forEach((wrapper) => {
-      const select = wrapper.querySelector('select');
-      const id = select.value;
-      const priority = wrapper.querySelector('.select-number').textContent;
-
-      alert("Categoria " + id + "Priorità " + priority)
-      var pos = priority
-
-
-      $.ajax({
-        // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-        url: '/api/category/priority/add/' + id,
-        type: 'POST', //send it through get method
-        dataType: "json",
-
-        data: {
-          priority: pos
-
-        },
-        success: function (data, textStatus, xhr) {
-
-
-          alert("PRIORITA' AGGIUNTA")
-
-          const token = data
-          if (token) {
-            sessionStorage.setItem("jwt", token);
-            //  window.location.replace("dashboard");
-            //addListOp(email,password,name,surname,role)
-
-          }
-        },
-        error: function (xhr, status, error) {
-          alert("Auth ko")
-          console.log(xhr.responseText);
-
-        }
-      });
-
-
-
-    });*/
 }
-
-
 
 
 // RESTITUISCE JSON DI TUTTE LE CATEGORIE
@@ -176,10 +138,10 @@ function searchInListCategory(nameCategory, position) {
             const categoria = categorie.find(obj => obj.name === nameCategory);
 
             const id = categoria.id;
-          //  alert(`L'id della categoria ${nameCategory} è ${id} in posizione ${position}`);
 
-
+            
             addPriority(id, position)
+
 
 
         },
@@ -213,9 +175,7 @@ function addPriority(id, position) {
         },
         success: function (data, textStatus, xhr) {
 
-
-            //alert("PRIORITA' AGGIUNTA")
-
+           // alert("MENU' GENERATO")
             const token = data
             if (token) {
                 sessionStorage.setItem("jwt", token);
@@ -375,15 +335,31 @@ function creaJSONdish() {
       });
     
       menuElement.appendChild(categoryElement);
+
     });
+
+
   }
   
 
-  function updateMenu() {
-    const menuElement = document.querySelector('.menu');
-    while (menuElement.firstChild) {
-      menuElement.removeChild(menuElement.firstChild);
-    }
-    // Chiamata a printMenuRes con la nuova lista di portate aggiornata
-    printMenuRes(newDishesList);
+
+
+
+  function enablePrint() {
+    var button = document.getElementById("buttonPrint");
+    button.disabled = false;
   }
+
+  function disablePrint() {
+    var button = document.getElementById("buttonPrint");
+    button.disabled = true;
+  }
+  
+
+  function genera() {
+    document.getElementById("buttonPriority").innerHTML = "GENERATO";
+    setTimeout(function(){ 
+      document.getElementById("buttonPriority").innerHTML = "GENERA MENU";
+    }, 3000); // 3000 millisecondi = 3 secondi
+  }
+  
