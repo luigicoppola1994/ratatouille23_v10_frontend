@@ -31,7 +31,6 @@ function buildTableDishes() {
     const dishes_allergens = JSON.parse(JSON.stringify(obj4.data));
 
 
-    alert("AXIOS")
 
 
 
@@ -44,6 +43,8 @@ function buildTableDishes() {
       return {
         name: dish.name,
         description: dish.description,
+        nameLan : dish.nameLan,
+        descriptionLan: dish.descriptionLan,
         cost: dish.cost,
         categoryName,
         nameAllergens: allergenNames
@@ -62,33 +63,40 @@ function buildTableDishes() {
 }
 
 
-
+//FUNZIONE PER POPOLARE LA TABELLA CON LE INFO DELLE PORTATE
 function  popolaDishes(dishesComplete){
 
 // Seleziona la tabella nel DOM
 const table = document.getElementById('myTableDishesComplete');
 // Esempio di dati JSON
 const data = dishesComplete
-alert(typeof dishesComplete)
 
   // Itera sull'array di oggetti JSON e crea una nuova riga per ogni oggetto
 for (let i = 0; i < data.length; i++) {
-
-
-
 
   const row = table.insertRow();
 
   // Crea le celle della riga e assegna i valori delle proprietà degli oggetti JSON
   const cell1 = row.insertCell();
+
+  //Se qualche campo è null, stampa " "
+  data[i].nameLan = data[i].nameLan ?? "";
+  data[i].descriptionLan = data[i].descriptionLan ?? "";
+  data[i].categoryName = data[i].categoryName ?? "Nessuna";
+  data[i].nameAllergens = data[i].nameAllergens ?? "nessuno";
+
+
+   
+
+
   cell1.innerHTML = `<div class="d-flex px-2 py-1">
                         <div>
                           <img src="../vendor/argon/img/meal.png" class="avatar avatar-sm me-3" alt="user1">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">${data[i].name}</h6>
+                          <h6 class="mb-0 text-sm">${data[i].name} / ${data[i].nameLan} </h6>
                           <p class="text-xs text-secondary mb-0">${data[i].description}</p>
-                          <p class="text-xs text-secondary mb-0">${data[i].description}</p>
+                          <p class="text-xs text-secondary mb-0">${data[i].descriptionLan}</p>
 
                         </div>
                       </div>`;
@@ -113,7 +121,22 @@ for (let i = 0; i < data.length; i++) {
 }
   
 
+//FUNZIONE PER LO SWITCH ABILITA/DISABILITA SECONDA LINGUA
+function abilitaLanguage(){
+  const mySwitch = document.getElementById("abilitaLan");
+const input1 = document.getElementById("nameDishLan");
+const input2 = document.getElementById("tag-input2");
 
+mySwitch.addEventListener("change", function() {
+  if (this.checked) {
+    input1.disabled = false;
+    input2.disabled = false;
+  } else {
+    input1.disabled = true;
+    input2.disabled = true;
+  }
+});
+}
 
 
 
@@ -165,11 +188,22 @@ function getSelectedCheckboxes() {
 
 
 
+// FUNZIONE DI INSERIMENTO DI UNA PORTA CHIAMANDO QUINDI L'API DI INSERIMENTO PORTATA
 
 function addPortata() {
 
   var nomePortata = document.getElementById("search").value
   var descPortata = descrizioneInput.value
+  const mySwitch = document.getElementById("abilitaLan");
+  if(mySwitch.disabled == true){
+    var nomePortataLan = null;
+    var descPortataLan = null;
+  }
+  else{
+  var nomePortataLan = document.getElementById("nameDishLan").value
+  var descPortataLan = descrizioneInput2.value
+  }
+
   var allergeniPortata = getSelectedCheckboxes();
 
 
@@ -181,6 +215,15 @@ function addPortata() {
 
 
   var prezzo = document.getElementById("price").value
+
+/*
+  alert( "NomePortata: "+nomePortata)
+  alert(descPortata)
+  alert(nomePortataLan)
+  alert(descPortataLan)
+  alert(allergeniPortata)
+  alert(categoria)
+  alert(prezzo)*/
 
 
 
@@ -198,6 +241,8 @@ function addPortata() {
     data: {
       name: nomePortata,
       description: descPortata,
+      nameLan: nomePortataLan,
+      descriptionLan: descPortataLan,
       allergens: allergeniPortata,
       cost: prezzo,
       categoryName: categoria,

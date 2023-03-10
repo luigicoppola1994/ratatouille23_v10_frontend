@@ -19,7 +19,7 @@
   <link href="./vendor/argon/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="./vendor/argon/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
-  
+  <link id="pagestyle2" href="/custom/css/login.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -263,7 +263,7 @@
                     <!--Gestione ordinazioni-->
                           
                     
-                   <!-- <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
 
 <ul id="myUL">
   <li><a href="#">Adele</a>
@@ -313,7 +313,7 @@
     }
     </script>
 
-  -->
+
 
 
 
@@ -400,60 +400,6 @@
       </footer>
     </div>
   </main>
-
-
-
-
-
-
-
- <!-- Modal -->
- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <br>
-          <div class="modal-header-2">
-              <h1 class="modal-title fs-5" id="exampleModalLabel"><center>OCCUPA IL TAVOLO</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
-          </div>
-          
-              <div class="modal-body">
-                <div class="container-fluid">
-
-
-                  <div class="container text-center">
-
-                    <div class="row">
-                      <div class="col-md-6 offset-md-3"><img src="../custom/img/tavolo.png"></img></div>
-                    </div>
-                  </div>
-
-                  <div class="container text-center">
-                    <div class="row justify-content-evenly">
-                      <div class="col-4">
-                        <input type="number" class="form-control"></input><h6>N° tavolo</h6>
-                      </div>
-                      <div class="col-4">
-                        <input type="number" class="form-control"></input><h6>N° posti</h6>
-                      </div>
-                    </div> 
-                  </div>
-                </div>
-           
-                <div class="modal-footer align-items-center d-flex justify-content-center">
-                  <button type="btnstyle" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #43aca0" id="btn_insertTable" onclick="addPortata()">OCCUPA</button>
-                </div>
-                
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
   <!--   Core JS Files   -->
   <script src="./vendor/argon/js/core/popper.min.js"></script>
   <script src="./vendor/argon/js/core/bootstrap.min.js"></script>

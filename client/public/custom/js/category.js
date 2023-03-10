@@ -228,7 +228,7 @@ function creaJSONdish() {
       let obj4 = JSON.parse(JSON.stringify(dishAllergensRes.data));
       const dishes_allergens = JSON.parse(JSON.stringify(obj4.data));
 
-      //alert(JSON.stringify(obj2.data))
+      alert(JSON.stringify(obj1.data))
 
 
 
@@ -248,6 +248,8 @@ function creaJSONdish() {
         return {
           name: dish.name,
           description: dish.description,
+          nameLan: dish.nameLan,
+          descriptionLan: dish.descriptionLan,
           cost: dish.cost,
           categoryName,
           nameAllergens: allergenNames,
@@ -258,7 +260,7 @@ function creaJSONdish() {
         };
       });
 
-      console.log(dishesComplete);
+      alert(JSON.stringify(dishesComplete));
       printMenuRes(dishesComplete);
 
 
@@ -276,6 +278,11 @@ function creaJSONdish() {
   //PRENDE IL JSON COMPLETO DI TUTTE LE INFO E CREA UN NUOVO JSON DOVE OGNI PORTATA E' ORDINATA NELLA PROPRIA CATEGORIA 
   //A SUA VOLTA ORDINATA IN MODO CRESCENTE IN BASE ALLA PRIORITY
   function printMenuRes(dishesComplete){
+
+
+ 
+
+
     const menuElement = document.querySelector('.menu');
   
     const result = dishesComplete.reduce((acc, curr) => {
@@ -315,6 +322,10 @@ function creaJSONdish() {
         const dishNameElement = document.createElement('h3');
         dishNameElement.innerText = dish.name;
         dishElement.appendChild(dishNameElement);
+
+        const dishNameLanElement = document.createElement('h6');
+       dishNameLanElement.innerText = '('+ dish.nameLan +')';
+       dishElement.appendChild(dishNameLanElement);
         
         const dishPriceElement = document.createElement('p');
         dishPriceElement.classList.add('dish-price');
@@ -325,6 +336,11 @@ function creaJSONdish() {
         dishDescriptionElement.classList.add('dish-description');
         dishDescriptionElement.innerText = dish.description;
         dishElement.appendChild(dishDescriptionElement);
+
+        const dishDescriptionLanElement = document.createElement('p');
+        dishDescriptionLanElement.classList.add('dish-descriptionLan');
+        dishDescriptionLanElement.innerText = '('+dish.descriptionLan+')';
+        dishElement.appendChild(dishDescriptionLanElement);
     
         const dishAllergensElement = document.createElement('p');
         dishAllergensElement.classList.add('dish-allergens');

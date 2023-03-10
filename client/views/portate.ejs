@@ -31,7 +31,8 @@
     <link href="../vendor/argon//css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="../vendor/argon/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
-    <!--<link id="pagestyle3" href="../custom/css/dish.css" rel="stylesheet" />-->
+    <link id="pagestyle3" href="../custom/css/dish.css" rel="stylesheet" />
+    <link id="pagestyle3" href="../custom/css/category.css" rel="stylesheet" />
 
 
     <link id="pagestyle2" href="../custom/css/login.css" rel="stylesheet" />
@@ -146,69 +147,35 @@
 
 
 
+        .switch-container {
+  display: flex;
+  align-items: center;
+}
+
+
+#abilita-lingua li {
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.abilita-name {
+  margin-left: 10px;
+}
+
+
+   
 
 
 
-
-
-
-
-        /* stile per allergeni*/
-        /* allergeni */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #43aca0;
-        }
-
-        table {
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #43aca0;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-        }
-
-        th,
-        td {
-            padding: 10px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        tr {
-
-            background-color: white;
-        }
-
-        input[type=checkbox] {
-            margin: 0;
-            vertical-align: middle;
-        }
-
-        button {
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            background-color: #43aca0;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #43aca0;
-        }
+       
     </style>
 
 
 </head>
 
 <body class="g-sidenav-show   " style="background-color: #afdadc"
-    onload=" change(), generateListAllergens(),generateListCategorie(), buildTableDishes()">
+    onload=" change(), generateListAllergens(),generateListCategorie(), buildTableDishes(), abilitaLanguage()">
 
     <div class="min-height-300 position-absolute w-100" style="background-color: #43aca0"></div>
     <aside
@@ -317,9 +284,9 @@
                     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                         <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white"
                                 href="javascript:;">Pages</a></li>
-                        <li class="breadcrumb-item text-sm text-white active" aria-current="page">Dipendenti</li>
+                        <li class="breadcrumb-item text-sm text-white active" aria-current="page">Attività</li>
                     </ol>
-                    <h6 class="font-weight-bolder text-white mb-0">Dipendenti</h6>
+                    <h6 class="font-weight-bolder text-white mb-0">Portate</h6>
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -448,7 +415,7 @@
                     <div class="card mb-4">
                         <div class="card-header pb-0">
                             <button class="btn" id="addOp" type="submit" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal" href="forget-password.html"
+                            data-toggle="modal" data-target="#exampleModalCenter" href="forget-password.html"
                                 style="position: absolute ; right:20px"><svg xmlns="http://www.w3.org/2000/svg"
                                     width="16" height="16" fill="currentColor" class="bi bi-person-add"
                                     viewBox="0 0 16 16">
@@ -464,7 +431,7 @@
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
+                                <table class="table-p align-items-center mb-0">
                                     <thead>
                                         <tr>
                                             <th
@@ -529,11 +496,11 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Aggiungi dipendente</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Aggiungi una portata</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
                 </div>
                 <div class="modal-body justify-content-center">
-                    <p class="recupero justify-content-center">Crea un account a ciascun dipendente inserendo i seguenti
+                    <p class="recupero justify-content-center">Crea una portata da aggiungere al tuo menù
                         dati:</p>
 
                     <!-- FORM --->
@@ -593,107 +560,14 @@
 
                         <!--FINE PORTATA-->
 
-                        <!-- ABILITA SECONDA LINGUA 
-                        <select id="language-select">
-                            <option value="">Seleziona una lingua</option>
-                            <option value="ar">Arabo</option>
-                            <option value="bg">Bulgaro</option>
-                            <option value="bn">Bengalese</option>
-                            <option value="ca">Catalano</option>
-                            <option value="cs">Ceco</option>
-                            <option value="da">Danese</option>
-                            <option value="de">Tedesco</option>
-                            <option value="el">Greco</option>
-                            <option value="en">Inglese</option>
-                            <option value="es">Spagnolo</option>
-                            <option value="et">Estone</option>
-                            <option value="fa">Persiano</option>
-                            <option value="fi">Finlandese</option>
-                            <option value="fr">Francese</option>
-                            <option value="he">Ebraico</option>
-                            <option value="hi">Hindi</option>
-                            <option value="hr">Croato</option>
-                            <option value="hu">Ungherese</option>
-                            <option value="id">Indonesiano</option>
-                            <option value="it">Italiano</option>
-                            <option value="ja">Giapponese</option>
-                            <option value="ka">Georgiano</option>
-                            <option value="kk">Kazako</option>
-                            <option value="ko">Coreano</option>
-                            <option value="lt">Lituano</option>
-                            <option value="lv">Lettone</option>
-                            <option value="ms">Malese</option>
-                            <option value="nl">Olandese</option>
-                            <option value="no">Norvegese</option>
-                            <option value="pl">Polacco</option>
-                            <option value="pt">Portoghese</option>
-                            <option value="ro">Rumeno</option>
-                            <option value="ru">Russo</option>
-                            <option value="sk">Slovacco</option>
-                            <option value="sl">Sloveno</option>
-                            <option value="sr">Serbo</option>
-                            <option value="sv">Svedese</option>
-                            <option value="th">Thailandese</option>
-                            <option value="tr">Turco</option>
-                            <option value="uk">Ucraino</option>
-                            <option value="vi">Vietnamita</option>
-                            <option value="zh">Cinese</option>
-                          </select>
-                          -->
 
 
 
 
 
 
-                        <!-- NOME PORTATA CON AUTOCOMPLETAMENTO SECONDA LINGUA-->
-                        <div class="mb-3">
-                            <label for="searchLan">Nome Portata:</label>
-                            <input class="inputText" type="text" id="search" name="searchLan" autocomplete="off">
-                            <ul id="product-list"></ul>
-                        </div>
 
-                        <script>
-                            const searchInputLan = document.querySelector('#search');
-                            const productListLan = document.querySelector('#product-list');
-
-
-                            searchInput.addEventListener('input', async (event) => {
-                                const searchTerm = event.target.value;
-                                if (searchTerm.length < 2) {
-                                    productList.innerHTML = '';
-                                    return;
-                                }
-
-                                const response = await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&search_simple=1&action=process&json=1`);
-                                const data = await response.json();
-                                const products = data.products.filter(product => {
-                                    const productName = product.product_name_it;
-                                    return productName && (productName.toLowerCase() === searchTerm.toLowerCase() || productName.toLowerCase().startsWith(`${searchTerm.toLowerCase()} `));
-                                });
-
-                                productList.innerHTML = '';
-                                products.forEach(product => {
-                                    const li = document.createElement('li');
-                                    li.textContent = product.product_name_it;
-                                    li.addEventListener('click', () => {
-                                        searchInput.value = product.product_name_it;
-                                        productList.innerHTML = '';
-                                    });
-                                    productList.appendChild(li);
-                                });
-                            });
-
-                            // Nasconde la lista dei prodotti quando si clicca fuori dall'input
-                            document.addEventListener('click', (event) => {
-                                if (event.target !== searchInput && event.target !== productList) {
-                                    productList.innerHTML = '';
-                                }
-                            });
-                        </script>
-
-
-                        <!--FINE PORTATA SECONDA LINGUA-->
+                       
 
                         <div class="mb-3">
                             <!--  INGREDIENTI -->
@@ -747,6 +621,172 @@
 
 
                         <!-- FINE INGREDIENTI-->
+
+
+
+                          <!-- TASTO ENABLE E SELECT LINGUA-->
+                          <div class="row mb-3">
+
+                            
+                            <ul id="abilita-lingua">
+                                <li>
+                                  <label class="switch">
+                                    <input type="checkbox" id="abilitaLan">
+                                    <span class="slider"></span>
+                                  </label>
+                                  <span class="abilita-name">Abilita seconda lingua</span>
+                                </li>
+                              </ul>
+                              
+                              
+                              
+
+                                
+                                <!-- ABILITA SECONDA LINGUA 
+                        <select id="language-select">
+                            <option value="">Seleziona una lingua</option>
+                            <option value="ar">Arabo</option>
+                            <option value="bg">Bulgaro</option>
+                            <option value="bn">Bengalese</option>
+                            <option value="ca">Catalano</option>
+                            <option value="cs">Ceco</option>
+                            <option value="da">Danese</option>
+                            <option value="de">Tedesco</option>
+                            <option value="el">Greco</option>
+                            <option value="en">Inglese</option>
+                            <option value="es">Spagnolo</option>
+                            <option value="et">Estone</option>
+                            <option value="fa">Persiano</option>
+                            <option value="fi">Finlandese</option>
+                            <option value="fr">Francese</option>
+                            <option value="he">Ebraico</option>
+                            <option value="hi">Hindi</option>
+                            <option value="hr">Croato</option>
+                            <option value="hu">Ungherese</option>
+                            <option value="id">Indonesiano</option>
+                            <option value="it">Italiano</option>
+                            <option value="ja">Giapponese</option>
+                            <option value="ka">Georgiano</option>
+                            <option value="kk">Kazako</option>
+                            <option value="ko">Coreano</option>
+                            <option value="lt">Lituano</option>
+                            <option value="lv">Lettone</option>
+                            <option value="ms">Malese</option>
+                            <option value="nl">Olandese</option>
+                            <option value="no">Norvegese</option>
+                            <option value="pl">Polacco</option>
+                            <option value="pt">Portoghese</option>
+                            <option value="ro">Rumeno</option>
+                            <option value="ru">Russo</option>
+                            <option value="sk">Slovacco</option>
+                            <option value="sl">Sloveno</option>
+                            <option value="sr">Serbo</option>
+                            <option value="sv">Svedese</option>
+                            <option value="th">Thailandese</option>
+                            <option value="tr">Turco</option>
+                            <option value="uk">Ucraino</option>
+                            <option value="vi">Vietnamita</option>
+                            <option value="zh">Cinese</option>
+                          </select>
+                            </div>-->
+
+                            <!-- NOME PORTATA CON AUTOCOMPLETAMENTO SECONDA LINGUA-->
+                        <div class="mb-3">
+                            <label for="searchLan">Nome Portata:</label>
+                            <input class="inputText" type="text" id="nameDishLan" name="searchLan" disabled>
+                        </div>
+
+                        
+
+
+                        <!--FINE PORTATA SECONDA LINGUA-->
+
+                        <div class="mb-3">
+                            <!--  INGREDIENTI -->
+                            <label>Descrizione:</label>
+                            <div class="tag-input-container">
+                                <div class="tag-input">
+                                    <input type="text" id="tag-input2"
+                                        placeholder="Clicca ENTER per aggiungere l'ingrediente." disabled>
+                                    <input type="hidden" id="descDishLan" name="descrizioneLan" >
+                                </div>
+                                <div class="tags-container2"></div>
+                            </div>
+                        </div>
+
+
+                        <script>
+                            const tagInput2 = document.querySelector('#tag-input2');
+                            const tagsContainer2 = document.querySelector('.tags-container2');
+                            const descrizioneInput2 = document.querySelector('#descDishLan');
+                            let tags2 = [];
+                          
+                            tagInput2.addEventListener('keydown', (event) => {
+                              if (event.key === 'Enter') {
+                                event.preventDefault();
+                                const tag = tagInput2.value.trim();
+                                if (tag !== '') {
+                                  tags2.push(tag);
+                                  tagInput2.value = '';
+                                  renderTags2();
+                                }
+                              }
+                            });
+                          
+                            function renderTags2() {
+                              tagsContainer2.innerHTML = '';
+                              tags2.forEach((tag, index) => {
+                                const tagElement = document.createElement('div');
+                                tagElement.classList.add('tag');
+                                tagElement.innerHTML = `
+                                  <span class="tag-name">${tag}</span>
+                                  <span class="tag-remove" data-index="${index}">&times;</span>
+                                `;
+                                tagElement.querySelector('.tag-remove').addEventListener('click', (event) => {
+                                  const index = parseInt(event.target.getAttribute('data-index'));
+                                  tags2.splice(index, 1);
+                                  renderTags2();
+                                });
+                                tagsContainer2.appendChild(tagElement);
+                              });
+                              descrizioneInput2.value = tags2.join(', ');
+                            }
+                          </script>
+                          
+
+                        <!-- FINE INGREDIENTI-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+                          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                         <!--ALLERGENI -->
 
