@@ -72,6 +72,12 @@ export class DishController {
         return this.dishService.getDishesByCategoryId(id,req.user)
     }
 
+    @UseGuards(AuthenticatedGuard)
+    @Get('/api/tablerestaurant/all')
+    async getListTables(@Request() req) {
+        return this.dishService.getListTables( req.user)
+    }
+
 
 
 

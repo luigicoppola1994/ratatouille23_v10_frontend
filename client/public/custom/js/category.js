@@ -280,10 +280,7 @@ function creaJSONdish() {
   function printMenuRes(dishesComplete){
 
 
- 
-
-
-    const menuElement = document.querySelector('.menu');
+     const menuElement = document.querySelector('.menu');
   
     const result = dishesComplete.reduce((acc, curr) => {
       const categoryName = curr.categoryName;

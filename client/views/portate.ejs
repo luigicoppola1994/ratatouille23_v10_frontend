@@ -34,7 +34,6 @@
     <link id="pagestyle3" href="../custom/css/dish.css" rel="stylesheet" />
     <link id="pagestyle3" href="../custom/css/category.css" rel="stylesheet" />
 
-
     <link id="pagestyle2" href="../custom/css/login.css" rel="stylesheet" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
@@ -45,6 +44,7 @@
     <!--<script src="../custom/js/globals.js"></script>-->
     <script src="../custom/js/dish.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
 
     <style>
         /*  autocompletamento   */
@@ -414,8 +414,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
-                            <button class="btn" id="addOp" type="submit" data-bs-toggle="modal"
-                            data-toggle="modal" data-target="#exampleModalCenter" href="forget-password.html"
+                            <button class="btn" id="addPortata" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"
                                 style="position: absolute ; right:20px"><svg xmlns="http://www.w3.org/2000/svg"
                                     width="16" height="16" fill="currentColor" class="bi bi-person-add"
                                     viewBox="0 0 16 16">
@@ -492,8 +491,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Aggiungi una portata</h1>
@@ -855,7 +854,26 @@
     </div>
 
 
-
+<!-- Modal 
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>-->
 
 
 

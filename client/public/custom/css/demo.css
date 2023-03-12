@@ -183,3 +183,43 @@ code{
     padding: 2px;
     border-radius: 2px;
 }
+
+
+.remove-button {
+   position: relative;
+   display: inline-block;
+   width: 20px;
+   height: 20px;
+   border: none;
+   background: transparent;
+   cursor: pointer;
+   text-align: center;
+ }
+ 
+ .remove-button:before, .remove-button:after {
+   content: "";
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   width: 2px;
+   height: 10px;
+   background: #000;
+   transform: translate(-50%, -50%) rotate(45deg);
+ }
+ 
+ .remove-button:after {
+   transform: translate(-50%, -50%) rotate(-45deg);
+ }
+ 
+
+ #tables {
+   background-color: white;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   padding: 5px;
+   font-size: 16px;
+   font-family: Arial, sans-serif;
+   color: #333;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+ }
+ 
