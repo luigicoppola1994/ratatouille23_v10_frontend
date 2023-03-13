@@ -281,34 +281,34 @@ function createElementByCategory(idCategory) {
          */
 
 
-         $.ajax({
-            // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-            url: 'http://localhost:3000/api/dish/category/'+idCategory,
-            type: 'GET', //send it through get method
-            dataType: "json",
-            success: function (data, textStatus, xhr) {
-    
-                const obj = JSON.parse(xhr.responseText);
-                var categories = JSON.stringify(obj.data)
-                var categorie = JSON.parse(categories)
-                console.log(categorie);
-                creaListMenuPrint(categorie)
-            },
-            error: function (xhr, status, error) {
-                alert("Auth ko")
-                console.log(xhr.responseText);
-    
-            }
-        });
+    $.ajax({
+        // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+        url: 'http://localhost:3000/api/dish/category/' + idCategory,
+        type: 'GET', //send it through get method
+        dataType: "json",
+        success: function (data, textStatus, xhr) {
+
+            const obj = JSON.parse(xhr.responseText);
+            var categories = JSON.stringify(obj.data)
+            var categorie = JSON.parse(categories)
+            console.log(categorie);
+            creaListMenuPrint(categorie)
+        },
+        error: function (xhr, status, error) {
+            alert("Auth ko")
+            console.log(xhr.responseText);
+
+        }
+    });
 
 
 }
 
 
-function creaListMenuPrint(categorie){
+function creaListMenuPrint(categorie) {
 
     const dishesComplete = categorie;
-    alert("DISHES RICEVUTI: "+dishesComplete)
+    alert("DISHES RICEVUTI: " + dishesComplete)
     const menuItems = document.querySelector('.menu-items');
 
     for (let i = 0; i < dishesComplete.length; i++) {
@@ -318,7 +318,7 @@ function creaListMenuPrint(categorie){
         menuItem.classList.add('menu-item');
 
         const menuImage = document.createElement('img');
-        menuImage.src = '../vendor/argon/img/meal.png'; 
+        menuImage.src = '../vendor/argon/img/meal.png';
         menuImage.alt = dish.name;
         menuImage.classList.add('menu-image');
         menuItem.appendChild(menuImage);
@@ -342,6 +342,7 @@ function creaListMenuPrint(categorie){
         addButton.textContent = 'Add to Cart';
         addButton.dataset.title = dish.name;
         addButton.dataset.price = dish.cost;
+        addButton.dataset.id = dish.id
         menuItem.appendChild(addButton);
 
         menuItems.appendChild(menuItem);
@@ -451,18 +452,67 @@ function listTablesSelect() {
 }
 
 
-
-function createTablesSelect(table){
+//RIEMPIE LA SELECT CON I TAVOLI DEL RISTORANTE
+function createTablesSelect(table) {
     const tables = table;
     alert("ID PASSATI:" + JSON.stringify(tables))
     const select = document.getElementById("tables");
 
-for (let i = 0; i < tables.length; i++) {
-  const option = document.createElement("option");
-  option.value = tables[i].id;
-  option.text = "Tavolo " + tables[i].id;
-  select.appendChild(option);
-    
-}
+    for (let i = 0; i < tables.length; i++) {
+        const option = document.createElement("option");
+        option.value = tables[i].id;
+        option.text = "Tavolo " + tables[i].id;
+        select.appendChild(option);
+
+    }
 
 }
+
+
+
+//INSERISCE L'ORDINE DEL TAVOLO NEL DB
+/*function creaTable() {
+
+    const selectedTable = document.getElementById("tables").value;
+
+
+    $.ajax({
+        // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+        url: 'http://localhost:3000/auth/signup/op',
+        type: 'POST', //send it through get method
+        dataType: "json",
+
+        data: {
+            email: email,
+            password: password,
+            name: name,
+            surname: surname,
+            role: role
+        },
+        success: function (data, textStatus, xhr) {
+
+
+            alert("Auth ok")
+            const token = data
+            if (token) {
+                sessionStorage.setItem("jwt", token);
+                window.location.replace("dashboard");
+                addListOp(email, password, name, surname, role)
+
+            }
+        },
+        error: function (xhr, status, error) {
+            alert("Auth ko")
+            console.log(xhr.responseText);
+
+        }
+    });
+})
+                }
+            }
+        }
+pageObjt.functions.initPage()
+    })
+
+}
+*/

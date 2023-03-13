@@ -4,6 +4,7 @@ import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { DishRequestDto } from "./dish.request.dto";
 import { CategoryRequestDto } from "./category.request.dto";
 import { AllergensRequestDto } from "./allergens.request.dto";
+import { CartRequestDto } from "./cart.request.dto"
 
 
 @Controller()
@@ -76,6 +77,13 @@ export class DishController {
     @Get('/api/tablerestaurant/all')
     async getListTables(@Request() req) {
         return this.dishService.getListTables( req.user)
+    }
+
+
+    @UseGuards(AuthenticatedGuard)
+    @Post('/api/cart/add/table/:idTavolo')
+    async addOrder(@Param("idTavolo") idTavolo: Number, @Body() cartDto: CartRequestDto, @Request() req){
+        return this.dishService.addOrder(idTavolo,cartDto,req.user)
     }
 
 

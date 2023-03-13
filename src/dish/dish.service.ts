@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Injectable, Logger, UnauthorizedException } 
 import { ConfigService } from '@nestjs/config';
 import { CategoryRequestDto } from './category.request.dto';
 import { DishRequestDto } from './dish.request.dto';
+import { CartRequestDto } from './cart.request.dto';
 
 @Injectable()
 export class DishService {
@@ -205,6 +206,24 @@ export class DishService {
         }
         return response
 
+    }
+
+
+    async addOrder(idTavolo: Number, cartDto: CartRequestDto, token: string): Promise<boolean> {
+        let response: boolean | undefined = undefined
+        this.logger.log("register() - incoming request with obj: " + JSON.stringify(idTavolo))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        try {
+            response = (await this.httpService.axiosRef.post("http://localhost:8080/api/dish/add",cartDto,config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
     }
 
 
