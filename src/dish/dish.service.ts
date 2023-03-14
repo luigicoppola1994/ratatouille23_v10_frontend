@@ -218,7 +218,7 @@ export class DishService {
             }
         }
         try {
-            response = (await this.httpService.axiosRef.post("http://localhost:8080/api/dish/add",cartDto,config)).data
+            response = (await this.httpService.axiosRef.post("http://localhost:8080/api/cart/add/table/"+idTavolo,cartDto,config)).data
         } catch (error) {
             this.logger.error("register() - error: " + JSON.stringify(error))
             throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)

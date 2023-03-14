@@ -1,4 +1,224 @@
-<!DOCTYPE html>
+<html>
+
+<head>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* Personalizzazione del grafico */
+
+/* Cambia il colore di sfondo */
+body {
+  background-color: #f9f9f9;
+}
+
+/* Aggiungi bordo e padding alla sezione del grafico */
+#chart {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+/* Modifica il font del titolo del grafico */
+.chart-title {
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Aggiungi un po' di spazio tra il titolo del grafico e il grafico stesso */
+.chart-container {
+  margin-top: 20px;
+}
+
+/* Modifica il colore della linea del grafico */
+.chart-line {
+  background-color: rgba(54, 162, 235, 0.2);
+  border-color: rgba(54, 162, 235, 1);
+  border-width: 2px;
+}
+
+/* Modifica il colore dei punti del grafico */
+.chart-point {
+  background-color: rgba(54, 162, 235, 1);
+  border-color: rgba(54, 162, 235, 1);
+  border-width: 2px;
+}
+
+/* Modifica il colore degli assi del grafico */
+.chart-axis {
+  color: #333;
+}
+
+/* Modifica il font delle etichette degli assi del grafico */
+.chart-axis-label {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+/* Modifica il font delle etichette delle barre del grafico */
+.chart-bar-label {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-align: center;
+}
+
+</style>
+
+</head>
+
+<body>
+  <div>
+    <label for="userId">User ID:</label>
+    <select id="userId">
+      <option value="107">107</option>
+      <option value="108">108</option>
+      <option value="109">109</option>
+    </select>
+  </div>
+  <div>
+    <label for="startDate">Start date:</label>
+    <input type="date" id="startDate">
+  </div>
+  <div>
+    <label for="endDate">End date:</label>
+    <input type="date" id="endDate">
+  </div>
+  <div>
+    <canvas id="chart"></canvas>
+  </div>
+
+  <script>
+
+const ordini = [
+  {
+    "id": 225,
+    "cartId": 224,
+    "dishId": 200,
+    "userId": 107,
+    "createdAt": "2023-03-10T00:16:20",
+    "updateAt": "2023-03-10T00:16:20"
+  },
+  {
+    "id": 226,
+    "cartId": 224,
+    "dishId": 202,
+    "userId": 107,
+    "createdAt": "2023-03-10T00:16:20",
+    "updateAt": "2023-03-10T00:16:20"
+  },
+  {
+    "id": 235,
+    "cartId": 234,
+    "dishId": 199,
+    "userId": 107,
+    "createdAt": "2023-03-13T11:48:23",
+    "updateAt": "2023-03-13T11:48:23"
+  }
+];
+
+
+    // Get the select and input elements
+const userIdSelect = document.getElementById('userId');
+const startDateInput = document.getElementById('startDate');
+const endDateInput = document.getElementById('endDate');
+
+// Get the canvas element and set its context
+const canvas = document.getElementById('chart');
+const ctx = canvas.getContext('2d');
+
+// Define the chart options
+const chartOptions = {
+  responsive: true,
+  scales: {
+    xAxes: [{
+      type: 'time',
+      time: {
+        unit: 'day'
+      },
+      ticks: {
+        source: 'auto'
+      }
+    }],
+    yAxes: [{
+      ticks: {
+        beginAtZero: true
+      }
+    }]
+  }
+};
+
+
+// Define the chart data
+const chartData = {
+  labels: [],
+  datasets: [{
+    label: '',
+    data: [],
+    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+    borderColor: 'rgba(54, 162, 235, 1)',
+    borderWidth: 1
+  }]
+};
+
+// Initialize the chart
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: chartData,
+  options: chartOptions
+});
+
+// Define the function to filter the orders
+const filterOrders = () => {
+  const userId = userIdSelect.value;
+  const startDate = new Date(startDateInput.value);
+  const endDate = new Date(endDateInput.value);
+  const filteredOrders = ordini.filter(order => order.userId == userId && new Date(order.createdAt) >= startDate && new Date(order.createdAt) <= endDate);
+  const ordersByDay = {};
+  filteredOrders.forEach(order => {
+    const day = new Date(order.createdAt).toISOString().slice(0, 10);
+    if (ordersByDay[day]) {
+      ordersByDay[day]++;
+    } else {
+      ordersByDay[day] = 1;
+    }
+  });
+  const data = [];
+  const labels = [];
+  for (let day in ordersByDay) {
+    data.push({
+      x: day,
+      y: ordersByDay[day]
+    });
+    labels.push(day);
+  }
+  chartData.datasets[0].data = data;
+  chartData.labels = labels;
+  chartData.datasets[0].label = `User ${userId}`;
+  chart.update();
+};
+
+// Add event listeners to the select and input elements
+userIdSelect.addEventListener('change', filterOrders);
+startDateInput.addEventListener('input', filterOrders);
+endDateInput.addEventListener('input', filterOrders);
+
+// Initialize the chart with default data
+filterOrders();
+
+  </script>
+
+</body>
+
+
+
+
+
+
+</html>
+
+
+<!--<!DOCTYPE html>
 <html>
 
 <head>
@@ -248,7 +468,7 @@
 
 
   <div class="contain">
-    <!-- CREO LA CARD DI SINISTRA-->
+     CREO LA CARD DI SINISTRA
     <div class="card">
       <button class="btn" id="add-select-btn">Aggiungi categoria</button>
       <button class="btn" id="generaMenu" onclick="generaMenu()">Genera menu</button>
@@ -585,4 +805,4 @@
 
 </body>
 
-</html>
+</html>-->

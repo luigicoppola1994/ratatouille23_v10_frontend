@@ -3,7 +3,7 @@ let cart = [];
 
 
 const calculateTax = subtotal => {
-  const tax = subtotal * 0.13;
+  const tax = subtotal * 0;
   const formattedTax = tax.toFixed(2);
   return formattedTax;
 };
@@ -47,16 +47,9 @@ $(document).on('click', '.add-button', function () {
   const total = calculateTotal(subtotal);
 
   $('.cart-math').html(`
+        
     <p class="cart-math-item">
-      <span class="cart-math-header">Subtotal:</span>
-      <span class="g-price subtotal">€${formattedSubtotal}</span>
-    </p>
-    <p class="cart-math-item">
-      <span class="cart-math-header">Tax:</span>
-      <span class="g-price tax">€${tax}</span>
-    </p>
-    <p class="cart-math-item">
-      <span class="cart-math-header">Total:</span>
+      <span class="cart-math-header">Totale:</span>
       <span class="g-price total">€${total}</span>
     </p>
   `);
@@ -81,21 +74,74 @@ $(document).on('click', '.remove-button', function () {
   
 
 $('.cart-math').html(`
+  
   <p class="cart-math-item">
-    <span class="cart-math-header">Subtotal:</span>
-    <span class="g-price subtotal">€${formattedSubtotal}</span>
-  </p>
-  <p class="cart-math-item">
-    <span class="cart-math-header">Tax:</span>
-    <span class="g-price tax">€${tax}</span>
-  </p>
-  <p class="cart-math-item">
-    <span class="cart-math-header">Total:</span>
+    <span class="cart-math-header">Totale:</span>
     <span class="g-price total">€${total}</span>
   </p>
 `);
 
 alert(`'${title}' (ID: ${id}) removed from cart.`);
+})
+
+
+
+//INSERIMENTO ORDINE NEL DB CHIAMANDO API
+let pageObjt = undefined;
+
+$(function(){
+    pageObjt = {
+        selectors: {
+            tableNumber: $('#tables'),
+            insertButton: $('#btn_addOrder'),
+        },
+        functions: {
+            initPage: function () {
+                pageObjt.functions.initEvents()
+            },
+            initEvents: function (){
+
+                pageObjt.selectors.insertButton.click(function(e) {
+                    console.log('clicked')
+                    const table= pageObjt.selectors.tableNumber.val()
+                    const carrello= cart
+                    
+                  alert("TAVOLO SELEZIONATO: "+table)
+                  alert("PORTATE: "+cart)
+                   
+
+                    $.ajax({
+                        // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+                        url: 'http://localhost:3000/api/cart/add/table/'+table,
+                        type: 'POST', //send it through get method
+                        dataType: "json",
+                    
+                        data: {
+                         dishes: cart
+                        },
+                        success: function(data, textStatus, xhr) {
+
+
+                            alert("ORDINE INSERITO CON SUCCESSO")
+                            const token = data
+                            if(token) {
+                                sessionStorage.setItem("jwt", token);
+                                window.location.replace("ordinazioni");
+                              //  addListOp(email,password,name,surname,role)
+                                
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("Auth ko")
+                            console.log(xhr.responseText);
+
+                        }
+                    });
+                })
+            }
+        }
+    }
+    pageObjt.functions.initPage()
 })
 
 
