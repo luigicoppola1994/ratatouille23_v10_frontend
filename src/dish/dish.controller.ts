@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request, Response, Body, Get, Res, Param, Query, Render, Redirect } from "@nestjs/common";
+import { Controller, Post, UseGuards, Request, Response, Body, Get, Res, Param, Query, Render, Redirect, Put } from "@nestjs/common";
 import { DishService } from './dish.service';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { DishRequestDto } from "./dish.request.dto";
@@ -105,6 +105,13 @@ export class DishController {
     @Get('/api/cartdish/all')
     async getCartDishAll(@Request() req) {
         return this.dishService.getCartDishAll( req.user)
+    }
+
+
+    @UseGuards(AuthenticatedGuard)
+    @Put('/api/cart/close/:idCart')
+    async closeOrder(@Param("idCart") idCart: Number, @Request() req) {
+        return this.dishService.closeOrder( idCart,req.user)
     }
 
 

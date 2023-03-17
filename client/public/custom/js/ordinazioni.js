@@ -589,6 +589,12 @@ function creaTableOrders() {
         const cartdishWithOpenCarts = cartdish.filter(cd => openCarts.find(c => c.id === cd.cartId));
         buildTableOrders(openCarts)
 
+        const closedCarts = groupedCartWithDishes.filter(c => c.status === 'CLOSED');
+        const cartdishWithClosedCarts = cartdish.filter(cd => openCarts.find(c => c.id === cd.cartId));
+
+        console.log(closedCarts)
+        buildTableClosedOrders(closedCarts)
+
 
 
         //printScontrino(scontrino);
@@ -880,49 +886,73 @@ function buildTableOrders(groupedCartWithNameAndDishes) {
                 const orderId = event.target.getAttribute('data-id');
 
 
+
+
                 // Recupera i dati dell'ordine corrispondente dall'array "cartWithNames"
                 const orderData = cartWithNames.find(order => order.id == orderId);
-                alert(orderData)
+                alert("ORDERDATA:" +orderId)
 
-                alert("ORDERDATA: " + JSON.stringify(orderData))
-                // Crea un nuovo documento PDF utilizzando jsPDF
-                window.jsPDF = window.jspdf.jsPDF;
+                $.ajax({
+                    url: '/api/cart/close/'+orderId,
+                    method: 'PUT',
+                    
+                    success: function(response) {
+                      console.log('Dati aggiornati con successo', response);
+                      alert("ORDERDATA: " + JSON.stringify(orderData))
+                      // Crea un nuovo documento PDF utilizzando jsPDF
+                      window.jsPDF = window.jspdf.jsPDF;
+      
+      
+                      alert("PORTATE: " + JSON.stringify(orderData.dishes))
+      
+                      const doc = new jsPDF();
+      
+      
+      
+      
+      
+      
+      
+                      // Aggiungi i dati dell'ordine al documento PDF
+                      doc.setFontSize(12);
+                      doc.text('Ordine #' + orderData.id, 10, 20);
+                      doc.text('Tavolo: ' + orderData.tableId, 10, 30);
+                      doc.text('Dipendente: ' + orderData.name + ' ' + orderData.surname, 10, 40);
+                      doc.text('Portate:', 10, 60);
+                      doc.setFontSize(10);
+      
+      
+      
+      
+                      let y = 50; // coordinata y iniziale
+                      orderData.dishes.forEach(function (dish) {
+                          doc.text(dish + "\n", 50, y);
+                          y += 10; // aggiorna la coordinata y per la portata successiva
+                      });
+      
+      
+                      doc.setFontSize(12);
+                      doc.text('Totale: ' + 100 + ' euro', 10, y + 10);
+      
+      
+                      // Opzionalmente, puoi fornire all'utente un'opzione per scaricare o stampare il PDF
+                      doc.save('Ordine_\'' + orderData.id.pdf + '\'');
+      
+                    },
+                    error: function(error) {
+                      console.error('Errore durante l\'aggiornamento dei dati', error);
+                    }
+                  });
 
 
-                alert("PORTATE: " + JSON.stringify(orderData.dishes))
-
-                const doc = new jsPDF();
 
 
 
-
-
-
-
-                // Aggiungi i dati dell'ordine al documento PDF
-                doc.setFontSize(12);
-                doc.text('Ordine #' + orderData.id, 10, 20);
-                doc.text('Tavolo: ' + orderData.tableId, 10, 30);
-                doc.text('Dipendente: ' + orderData.name + ' ' + orderData.surname, 10, 40);
-                doc.text('Portate:', 10, 60);
-                doc.setFontSize(10);
-
-
+               
+                
                 
 
-                let y = 50; // coordinata y iniziale
-                orderData.dishes.forEach(function (dish) {
-                    doc.text(dish + "\n", 50, y);
-                    y += 10; // aggiorna la coordinata y per la portata successiva
-                });
 
-
-                doc.setFontSize(12);
-                doc.text('Totale: ' + 100 + ' euro', 10, y + 10);
-
-
-                // Opzionalmente, puoi fornire all'utente un'opzione per scaricare o stampare il PDF
-                doc.save('Ordine_\'' + orderData.id.pdf + '\'');
             });
         });
     });
@@ -930,6 +960,77 @@ function buildTableOrders(groupedCartWithNameAndDishes) {
 
 }
 
+
+
+function buildTableClosedOrders(closedCart) {
+
+
+
+
+    const list = document.getElementById('closedList'); // assuming there's a list with id 'myList'
+
+
+    closedCart.forEach(cart => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg';
+
+        const div1 = document.createElement('div');
+        div1.className = 'd-flex flex-column';
+
+        const h6 = document.createElement('h6');
+        h6.className = 'mb-1 text-dark font-weight-bold text-sm';
+        h6.textContent = `Tavolo ${cart.tableId}`;
+
+        const span = document.createElement('span');
+        span.className = 'text-xs';
+        span.textContent = `Ordine #MS-${cart.id}`;
+
+        div1.appendChild(h6);
+        div1.appendChild(span);
+
+        const div2 = document.createElement('div');
+        div2.className = 'd-flex align-items-center text-sm';
+
+        const button = document.createElement('button');
+        button.className = 'btn btn-link text-dark text-sm mb-0 px-0 ms-4';
+
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-file-pdf text-lg me-1';
+
+        button.appendChild(icon);
+        button.textContent = 'PDF';
+
+        div2.appendChild(button);
+
+        li.appendChild(div1);
+        li.appendChild(div2);
+
+        list.appendChild(li);
+
+        // Aggiungi l'event listener per il button PDF
+        button.addEventListener('click', () => {
+            // Crea un nuovo oggetto jsPDF
+            window.jsPDF = window.jspdf.jsPDF;
+
+            const doc = new jsPDF();
+
+            // Aggiungi il contenuto del PDF
+            doc.text(`Dettagli dell'ordine #MS-${cart.id}`, 10, 10);
+            doc.text(`Tavolo: ${cart.tableId}`, 10, 20);
+            doc.text(`Piatti ordinati:`, 10, 30);
+            cart.dishes.forEach((dish, index) => {
+                doc.text(`${index + 1}. ${dish}`, 10, 40 + (index * 10));
+            });
+
+            // Salva il PDF e apri il file
+            doc.save(`Ordine-${cart.id}.pdf`);
+        });
+    });
+
+
+
+
+}
 
 
 

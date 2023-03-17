@@ -287,6 +287,25 @@ export class DishService {
 
     }
 
+    async closeOrder(idCart: Number, token: string): Promise<boolean>{
+        let response: boolean | undefined = undefined
+        this.logger.log("closeOrder() - incoming request with obj: " + JSON.stringify(token))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.put("http://localhost:8080/api/cart/close/"+idCart,null,config)).data
+        } catch (error) {
+            this.logger.error("closeOrder() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+
+    }
+
    
 
    
