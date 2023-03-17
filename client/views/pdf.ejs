@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Crea PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+	<button onclick="creaPDF()">Crea PDF</button>
+
+	<script>
+		function creaPDF() {
+			// Crea un nuovo oggetto PDF
+            window.jsPDF = window.jspdf.jsPDF;
+
+
+			var doc = new jsPDF();
+
+			// Aggiungi il testo "ciao" alla pagina
+			doc.text("ciao", 10, 10);
+
+			// Salva il PDF
+			doc.save("documento.pdf");
+		}
+	</script>
+</body>
+</html>

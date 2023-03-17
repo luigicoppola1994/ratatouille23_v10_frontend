@@ -8,7 +8,7 @@ import { resetRequestDto } from './auth.op.resetpsw';
 import { AuthRequestDto } from './auth.request.dto';
 import { SignupOpRequestDto } from './signup.op.request.dto';
 import { SignupRequestDto } from './signup.request.dto';
-const PDFDocument = require('pdfkit-table')
+
 
 @Injectable()
 export class AuthService {
@@ -148,33 +148,7 @@ export class AuthService {
     }
 
 
-    async createPdf() : Promise<Buffer>{
-        const pdfBuffer : Buffer = await new Promise( resolve =>{
-            const doc = new PDFDocument(
-                {
-                    size : 'LETTER',
-                    bufferPages : true
-
-                })
-
-                doc.text("Generazione PDF")
-                doc.moveDown();
-                doc.text("Questo è un esempio del pdf che si crea.")
-
-                const buffer = []
-                doc.on('data', buffer.push.bind(buffer))
-                doc.on('end', () => {
-                    const data = Buffer.concat(buffer)
-                    resolve(data)
-                })
-                doc.end()
-
-        })
-        return pdfBuffer;
-
-    }
-
-
+    
 
     async createListOp(token: string): Promise<boolean> {
         let response: boolean | undefined = undefined

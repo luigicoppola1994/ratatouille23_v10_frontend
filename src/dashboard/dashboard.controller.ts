@@ -79,5 +79,9 @@ export class DashboardController {
      @Render('portate')
      async portate() { return }
 
+     @Get('/pdf')    
+     @Render('pdf')
+     async pdfGenerate() { return }
+
 
 }

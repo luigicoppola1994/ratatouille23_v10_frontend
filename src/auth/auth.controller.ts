@@ -72,20 +72,7 @@ export class AuthController {
 
 
 
-    @Get("pdf/download")
-    async downloadPDF(@Res() res) : Promise<void>{
-        const buffer = await this.authService.createPdf();
-
-        res.set({
-            'Content-type': 'application/pdf',
-             'Content-Disposition' : 'attachment; filename-example.pdf',
-             'Content-Lenght': buffer.length,
-
-        })
-
-        res.end(buffer)
-    }
-
+    
 
 
     
