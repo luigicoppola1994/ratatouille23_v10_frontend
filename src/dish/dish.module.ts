@@ -20,4 +20,3 @@ import { SessionSerializer } from 'src/auth/session.serializer';
   exports: [DishModule]
 })
 export class DishModule {}
-

@@ -471,48 +471,419 @@ function createTablesSelect(table) {
 
 
 //INSERISCE L'ORDINE DEL TAVOLO NEL DB
-/*function creaTable() {
-
-    const selectedTable = document.getElementById("tables").value;
-
-
-    $.ajax({
-        // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-        url: 'http://localhost:3000/auth/signup/op',
-        type: 'POST', //send it through get method
-        dataType: "json",
-
-        data: {
-            email: email,
-            password: password,
-            name: name,
-            surname: surname,
-            role: role
-        },
-        success: function (data, textStatus, xhr) {
+function creaTableOrders() {
+    axios.all([
+        axios.get('/api/cart/all'),
+        axios.get('/api/cartdish/all'),
+        axios.get('/api/user'),
+        axios.get('/api/cart/bill/all'),
+        axios.get('/api/dish/all')
+    ]).then(axios.spread((cartRes, cartdishRes, usersRes, billRes, dishesRes) => {
 
 
-            alert("Auth ok")
-            const token = data
-            if (token) {
-                sessionStorage.setItem("jwt", token);
-                window.location.replace("dashboard");
-                addListOp(email, password, name, surname, role)
 
+
+
+        let obj1 = JSON.parse(JSON.stringify(cartRes.data));
+        const cart = JSON.parse(JSON.stringify(obj1.data))
+        alert("CART: " + JSON.stringify(cart))
+
+
+
+
+        let obj2 = JSON.parse(JSON.stringify(cartdishRes.data));
+        const cartdish = JSON.parse(JSON.stringify(obj2.data))
+        alert("CARTDISH: "+JSON.stringify(cartdish))
+
+        
+        // CREO IL JSON CON USERID ED ARRAY DI DISHID
+        const updatedCart = cart.map(cartItem => {
+            const cartDishItems = cartdish.filter(cartDishItem => cartDishItem.cartId === cartItem.id);
+            const dishIds = cartDishItems.map(cartDishItem => cartDishItem.dishId);
+            return {
+              ...cartItem,
+              userId: cartDishItems.length > 0 ? cartDishItems[0].userId : null,
+              dishIds: dishIds
+            };
+          });
+          
+          
+
+          alert("CA: "+JSON.stringify(updatedCart))
+
+
+       /*  output = 
+          [
+            {
+              "id": 120,
+              "tableId": 111,
+              "status": "OPEN",
+              "createdAt": "2023-02-26T12:35:41",
+              "updateAt": "2023-03-10T00:08:12",
+              "userId": 107,
+              "dishes": [
+                204,
+                223
+              ]
+            }*/
+
+        // ----------------------------------------------//
+
+
+
+        let obj3 = JSON.parse(JSON.stringify(usersRes.data));
+        const users = JSON.parse(JSON.stringify(obj3.data));
+        alert("UTENTI: " + JSON.stringify(users))
+
+        // CREO IL JSON SOSTITUENDO L'ID USER CON NOME E COGNOME DELL'USER
+
+        updatedCart.forEach(cartItem => {
+            const user = users.find(userItem => userItem.id === cartItem.userId);
+            if (user) {
+              cartItem.name = user.name;
+              cartItem.surname = user.surname;
             }
-        },
-        error: function (xhr, status, error) {
-            alert("Auth ko")
-            console.log(xhr.responseText);
+          });
+          
 
-        }
-    });
-})
+        //---------------------------------//
+        alert("TOTALE nome: " + JSON.stringify(updatedCart))
+
+
+        
+        let obj5 = JSON.parse(JSON.stringify(dishesRes.data));
+        const dishes = JSON.parse(JSON.stringify(obj5.data));
+        alert("dishes: " + JSON.stringify(dishes))
+
+         let lun= updatedCart.length
+
+       
+        // SOSTITUZIONE IDS PORTATE CON I NOMI DISHES
+        const groupedCartWithDishes = updatedCart.map((cart) => {
+            // Controllo se la proprietà dishIds esiste
+            if (cart.dishIds) {
+              // Se esiste, creo un nuovo array con i nomi dei piatti corrispondenti
+              const dishNames = cart.dishIds.map((dishId) => {
+                const dish = dishes.find((dish) => dish.id === dishId);
+                return dish ? dish.name : null;
+              });
+              // Aggiungo l'array dei nomi come una nuova proprietà chiamata dishes all'oggetto cart
+              return { ...cart, dishes: dishNames };
+            } else {
+              // Se la proprietà dishIds non esiste, cerco il piatto con l'id corrispondente
+              const dish = dishes.find((dish) => dish.id === cart.dishId);
+              // Aggiungo il nome del piatto come una nuova proprietà chiamata dishes all'oggetto cart
+              return { ...cart, dishName: dish ? [dish.name] : [], dishCost : dish.cost};
+            }
+          });
+          
+        
+     
+        
+        alert("dishmap: "+JSON.stringify( groupedCartWithDishes))
+
+        const openCarts = groupedCartWithDishes.filter(c => c.status === 'OPEN');
+        const cartdishWithOpenCarts = cartdish.filter(cd => openCarts.find(c => c.id === cd.cartId));
+
+
+        alert("APERTI: "+JSON.stringify(openCarts))
+        buildTableOrders(openCarts)
+        const scontrino = {
+            id: 123,
+            items: [
+              { name: 'Pasta al pomodoro', price: 10.0, quantity: 2 },
+              { name: 'Insalata mista', price: 5.0, quantity: 1 },
+            ],
+            total: 25.0,
+          };
+
+          printScontrino(scontrino);
+
+
+        //----------------------------------//
+        
+          
+          
+
+
+
+
+        //FUNZIONE CHE MI RAGGRUPPA IL JSON IN BASE ALL'ID DELL'ORDINE
+        /*const result = cartdish.reduce((acc, curr) => {
+            const cartId = curr.cartId;
+            const userId = curr.userId;
+            const tableId = curr.tableId;
+            const dishId = curr.dishId;
+            const status = curr.status;
+            const createdAt = curr.createdAt;
+
+            if (!acc[cartId]) {
+                acc[cartId] = {
+                    userId: userId,
+                    tableId: tableId,
+                    dishIds: [dishId],
+                    createdAt: createdAt,
+                    status : status
+                };
+            } else {
+                acc[cartId].dishIds.push(dishId);
+            }
+
+            return acc;
+        }, {});
+
+        alert("NEW: " + JSON.stringify(result));
+
+
+        //---------------------------------------------//
+
+        const resultArray = Object.values(result);
+        alert("OBJ: "+JSON.stringify(resultArray))*/
+
+
+
+// qui puoi fare qualsiasi cosa con l'array 'mappedResultArray'
+
+
+
+
+
+
+     
+
+
+       
+/*
+
+        // ASSOCIA NOME E COGNOME //
+        const groupedCartWithName = cartdish.map(cart => {
+            const user = users.find(user => user.id === cart.userId);
+            return {
+                ...cart,
+                name: user.name,
+                surname: user.surname
+            };
+        });
+
+        //---------------------------------//
+        alert("TOTALE nome: " + JSON.stringify(groupedCartWithName))
+
+
+
+        
+        const groupedCarts = groupedCartWithName.reduce((acc, cart) => {
+            const cartId = cart.cartId;
+            const cartWithoutDishes = { ...cart };
+            delete cartWithoutDishes.dishId;
+            delete cartWithoutDishes.dishIds;
+            const existingCart = acc[cartId];
+            if (existingCart) {
+              existingCart.dishes = existingCart.dishes || [];
+              if (cart.dishId) {
+                existingCart.dishes.push(cart.dishId);
+              }
+              if (cart.dishIds) {
+                existingCart.dishes.push(...cart.dishIds);
+              }
+            } else {
+              const newCart = {
+                idCart: cartId,
+                userId: cart.userId,
+                createdAt: cart.createdAt,
+                dishes: [],
+              };
+              if (cart.dishId) {
+                newCart.dishes.push(cart.dishId);
+              }
+              if (cart.dishIds) {
+                newCart.dishes.push(...cart.dishIds);
+              }
+              acc[cartId] = { ...cartWithoutDishes, ...newCart };
+            }
+            return acc;
+          }, {});
+          
+          const groupedCartsArray = Object.values(groupedCarts);
+          
+          console.log(groupedCartsArray);
+
+
+
+        let obj5 = JSON.parse(JSON.stringify(dishesRes.data));
+        const dishes = JSON.parse(JSON.stringify(obj5.data));
+        alert("dishes: " + JSON.stringify(dishes))
+
+
+        
+
+
+        const groupedCartWithDishes = groupedCartWithName.map((cart) => {
+            // Controllo se la proprietà dishIds esiste
+            if (cart.dishIds) {
+              // Se esiste, creo un nuovo array con i nomi dei piatti corrispondenti
+              const dishNames = cart.dishIds.map((dishId) => {
+                const dish = dishes.find((dish) => dish.id === dishId);
+                return dish ? dish.name : null;
+              });
+              // Aggiungo l'array dei nomi come una nuova proprietà chiamata dishes all'oggetto cart
+              return { ...cart, dishes: dishNames };
+            } else {
+              // Se la proprietà dishIds non esiste, cerco il piatto con l'id corrispondente
+              const dish = dishes.find((dish) => dish.id === cart.dishId);
+              // Aggiungo il nome del piatto come una nuova proprietà chiamata dishes all'oggetto cart
+              return { ...cart, dishName: dish ? [dish.name] : [], dishCost : dish.cost};
+            }
+          });
+          
+          
+        //------------------------------------------------------------//
+        alert("array lettere " + JSON.stringify(groupedCartWithDishes))
+
+
+
+        groupedCartWithName.sort(function(a, b) {
+            return a.cartId - b.cartId;
+          });
+
+          
+
+          groupedCartWithName.forEach(function(cart) {
+            cart.dishesName = [];
+            if (Array.isArray(cart.dishIds)) {
+              cart.dishIds.forEach(function(dishId) {
+                const dish = dishes.find(function(dish) {
+                  return dish.id === dishId;
+                });
+                if (dish) {
+                  cart.dishesName.push(dish.name);
                 }
+              });
+            } else {
+              const dish = dishes.find(function(dish) {
+                return dish.id === cart.dishId;
+              });
+              if (dish) {
+                cart.dishesName.push(dish.name);
+              }
             }
-        }
-pageObjt.functions.initPage()
-    })
+          });
+          
+          alert("FINITO--> "+JSON.stringify(groupedCartWithName))
+
+        const openCarts = cart.filter(c => c.status === 'OPEN');
+        const cartdishWithOpenCarts = cartdish.filter(cd => openCarts.find(c => c.id === cd.cartId));
+        buildTableOrders(cartdishWithOpenCarts)
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+        
+        
+                const dishesComplete = dishes.map(dish => {
+                    const categoryName = category.find(cat => cat.id === dish.categoryId)?.name || '';
+                    const allergenNames = dishes_allergens.filter(da => da.dishId === dish.id)
+                        .map(da => allergens.find(a => a.id === da.allergenId)?.name)
+                        .join(', ');
+                    return {
+                        id: dish.id,
+                        name: dish.name,
+                        nameLan: dish.nameLan,
+                        description: dish.description,
+                        descriptionLan: dish.descriptionLan,
+                        cost: dish.cost,
+                        categoryName,
+                        idCategory: dish.idCategory,
+                        nameAllergens: allergenNames
+                    };
+                });*/
+
+
+    }));
 
 }
-*/
+
+
+function buildTableOrders(groupedCartWithNameAndDishes) {
+
+    const cartWithNames = groupedCartWithNameAndDishes;
+    // Get a reference to the parent element
+    const parentElement = document.querySelector('.list-group');
+
+    // Loop through the cartWithNames array
+    cartWithNames.forEach(order => {
+        // Create the list item element
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-group-item', 'border-0', 'd-flex', 'p-4', 'mb-2', 'bg-gray-100', 'border-radius-lg');
+
+        // Create the order details
+        const orderDetails = document.createElement('div');
+        orderDetails.classList.add('d-flex', 'flex-column');
+
+        const orderId = document.createElement('h6');
+        orderId.classList.add('mb-3', 'text-sm');
+        orderId.innerText = `#${order.id}`;
+
+        const tableNumber = document.createElement('span');
+        tableNumber.classList.add('mb-2', 'text-xs');
+        tableNumber.innerHTML = `Tavolo:<span class="text-dark font-weight-bold ms-sm-2">${order.tableId}</span>`;
+
+        const employeeName = document.createElement('span');
+        employeeName.classList.add('mb-2', 'text-xs');
+        employeeName.innerHTML = `Dipendente:<span class="text-dark ms-sm-2 font-weight-bold">${order.name} ${order.surname}</span>`;
+
+        const orderTotal = document.createElement('span');
+        orderTotal.classList.add('text-xs');
+        orderTotal.innerHTML = `Portate:<span class="text-dark ms-sm-2 font-weight-bold">${order.dishes}</span>`;
+
+        orderDetails.appendChild(orderId);
+        orderDetails.appendChild(tableNumber);
+        orderDetails.appendChild(employeeName);
+        orderDetails.appendChild(orderTotal);
+
+        // Create the action buttons
+        const actionButtons = document.createElement('div');
+        actionButtons.classList.add('ms-auto', 'text-end');
+
+        const deleteButton = document.createElement('a');
+        deleteButton.classList.add('btn', 'btn-link', 'text-danger', 'text-gradient', 'px-3', 'mb-0');
+        deleteButton.href = 'javascript:;';
+        deleteButton.innerHTML = '<i class="far fa-trash-alt me-2"></i>Chiudi';
+
+        const detailsButton = document.createElement('a');
+        detailsButton.classList.add('btn', 'btn-link', 'text-dark', 'px-3', 'mb-0');
+        detailsButton.href = 'javascript:;';
+        detailsButton.innerHTML = '<i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Dettagli';
+
+        actionButtons.appendChild(deleteButton);
+        actionButtons.appendChild(detailsButton);
+
+        // Add the order details and action buttons to the list item
+        listItem.appendChild(orderDetails);
+        listItem.appendChild(actionButtons);
+
+        // Add the list item to the parent element
+        parentElement.appendChild(listItem);
+    });
+
+
+}
+
+
+
+
+
+
+
+
+
+
+

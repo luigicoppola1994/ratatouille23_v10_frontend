@@ -87,10 +87,31 @@ export class DishController {
     }
 
 
+    @UseGuards(AuthenticatedGuard)
+    @Get('/api/cart/all')
+    async getCartAll(@Request() req) {
+        return this.dishService.getCartAll( req.user)
+    }
 
 
+    @UseGuards(AuthenticatedGuard)
+    @Get('/api/cart/bill/all')
+    async getBillAll(@Request() req) {
+        return this.dishService.getBillAll( req.user)
+    }
 
 
+    @UseGuards(AuthenticatedGuard)
+    @Get('/api/cartdish/all')
+    async getCartDishAll(@Request() req) {
+        return this.dishService.getCartDishAll( req.user)
+    }
+
+
+    
+    
+
+    
 
 
 

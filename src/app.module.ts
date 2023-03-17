@@ -1,3 +1,4 @@
+
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { Module } from '@nestjs/common';
@@ -11,6 +12,7 @@ import { DishController } from './dish/dish.controller';
 
 @Module({
   imports: [
+    AuthModule,
     ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env` }), 
     DashboardModule, UserModule, DishModule
   ],

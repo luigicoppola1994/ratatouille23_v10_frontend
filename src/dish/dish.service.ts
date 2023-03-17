@@ -227,5 +227,70 @@ export class DishService {
     }
 
 
+    async getCartAll(token: string): Promise<boolean>{
+        let response: boolean | undefined = undefined
+        this.logger.log("getCartAll() - incoming request with obj: " + JSON.stringify(token))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/cart/all",config)).data
+        } catch (error) {
+            this.logger.error("cart() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+
+    }
+
+
+
+    async getBillAll(token: string): Promise<boolean>{
+        let response: boolean | undefined = undefined
+        this.logger.log("getBill() - incoming request with obj: " + JSON.stringify(token))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/cart/bill/all",config)).data
+        } catch (error) {
+            this.logger.error("register() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+
+    }
+
+
+    async getCartDishAll(token: string): Promise<boolean>{
+        let response: boolean | undefined = undefined
+        this.logger.log("getBill() - incoming request with obj: " + JSON.stringify(token))
+        const config = {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            }
+        }
+        
+        try {
+            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/cartdish/all",config)).data
+        } catch (error) {
+            this.logger.error("bill() - error: " + JSON.stringify(error))
+            throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        return response
+
+    }
+
+   
+
+   
+
+   
 
 }
