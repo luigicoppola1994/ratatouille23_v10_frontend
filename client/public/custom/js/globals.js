@@ -125,7 +125,7 @@ function generateListOp(){
 
  $.ajax({
       // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-      url: 'http://localhost:3000/api/restaurant/users/SUPERVISOR',
+      url: 'http://localhost:3000/api/user',
       type: 'GET', //send it through get method
         dataType: "json",
    
@@ -136,9 +136,13 @@ function generateListOp(){
         const obj = JSON.parse(xhr.responseText);
         var utente = JSON.stringify(obj.data)
         var user = JSON.parse(utente)   
+
+        //filtro solo gli op escludendo gli admins
+        const filteredUsers = user.filter(user => user.role !== "ADMIN");
+
         
         
-        buildTable(user)
+        buildTable(filteredUsers)
        
 
 

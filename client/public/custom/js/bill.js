@@ -1,4 +1,4 @@
-import pdfMake from 'pdfmake/build/pdfmake';
+/*import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 // Definisci il CSS personalizzato
@@ -76,3 +76,4 @@ function printScontrino(scontrino) {
   // Crea il PDF e lo apre in una nuova finestra
   pdfMake.createPdf(documentDefinition).open();
 }
+*/

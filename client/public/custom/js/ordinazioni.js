@@ -474,7 +474,8 @@ function createTablesSelect(table) {
 
 
 //INSERISCE L'ORDINE DEL TAVOLO NEL DB
-function creaTableOrders() {
+function creaTableOrdersOpen() {
+
     axios.all([
         axios.get('/api/cart/all'),
         axios.get('/api/cartdish/all'),
@@ -587,224 +588,12 @@ function creaTableOrders() {
 
         const openCarts = groupedCartWithDishes.filter(c => c.status === 'OPEN');
         const cartdishWithOpenCarts = cartdish.filter(cd => openCarts.find(c => c.id === cd.cartId));
-        buildTableOrders(openCarts)
+        buildTableOrdersDip(openCarts)
 
-        const closedCarts = groupedCartWithDishes.filter(c => c.status === 'CLOSED');
-        const cartdishWithClosedCarts = cartdish.filter(cd => openCarts.find(c => c.id === cd.cartId));
-
-        console.log(closedCarts)
-        buildTableClosedOrders(closedCarts)
+      
 
 
 
-        //printScontrino(scontrino);
-
-
-        //----------------------------------//
-
-
-
-
-
-
-
-        //FUNZIONE CHE MI RAGGRUPPA IL JSON IN BASE ALL'ID DELL'ORDINE
-        /*const result = cartdish.reduce((acc, curr) => {
-            const cartId = curr.cartId;
-            const userId = curr.userId;
-            const tableId = curr.tableId;
-            const dishId = curr.dishId;
-            const status = curr.status;
-            const createdAt = curr.createdAt;
-
-            if (!acc[cartId]) {
-                acc[cartId] = {
-                    userId: userId,
-                    tableId: tableId,
-                    dishIds: [dishId],
-                    createdAt: createdAt,
-                    status : status
-                };
-            } else {
-                acc[cartId].dishIds.push(dishId);
-            }
-
-            return acc;
-        }, {});
-
-        alert("NEW: " + JSON.stringify(result));
-
-
-        //---------------------------------------------//
-
-        const resultArray = Object.values(result);
-        alert("OBJ: "+JSON.stringify(resultArray))*/
-
-
-
-        // qui puoi fare qualsiasi cosa con l'array 'mappedResultArray'
-
-
-
-
-
-
-
-
-
-
-        /*
-        
-                // ASSOCIA NOME E COGNOME //
-                const groupedCartWithName = cartdish.map(cart => {
-                    const user = users.find(user => user.id === cart.userId);
-                    return {
-                        ...cart,
-                        name: user.name,
-                        surname: user.surname
-                    };
-                });
-        
-                //---------------------------------//
-                alert("TOTALE nome: " + JSON.stringify(groupedCartWithName))
-        
-        
-        
-                
-                const groupedCarts = groupedCartWithName.reduce((acc, cart) => {
-                    const cartId = cart.cartId;
-                    const cartWithoutDishes = { ...cart };
-                    delete cartWithoutDishes.dishId;
-                    delete cartWithoutDishes.dishIds;
-                    const existingCart = acc[cartId];
-                    if (existingCart) {
-                      existingCart.dishes = existingCart.dishes || [];
-                      if (cart.dishId) {
-                        existingCart.dishes.push(cart.dishId);
-                      }
-                      if (cart.dishIds) {
-                        existingCart.dishes.push(...cart.dishIds);
-                      }
-                    } else {
-                      const newCart = {
-                        idCart: cartId,
-                        userId: cart.userId,
-                        createdAt: cart.createdAt,
-                        dishes: [],
-                      };
-                      if (cart.dishId) {
-                        newCart.dishes.push(cart.dishId);
-                      }
-                      if (cart.dishIds) {
-                        newCart.dishes.push(...cart.dishIds);
-                      }
-                      acc[cartId] = { ...cartWithoutDishes, ...newCart };
-                    }
-                    return acc;
-                  }, {});
-                  
-                  const groupedCartsArray = Object.values(groupedCarts);
-                  
-                  console.log(groupedCartsArray);
-        
-        
-        
-                let obj5 = JSON.parse(JSON.stringify(dishesRes.data));
-                const dishes = JSON.parse(JSON.stringify(obj5.data));
-                alert("dishes: " + JSON.stringify(dishes))
-        
-        
-                
-        
-        
-                const groupedCartWithDishes = groupedCartWithName.map((cart) => {
-                    // Controllo se la proprietà dishIds esiste
-                    if (cart.dishIds) {
-                      // Se esiste, creo un nuovo array con i nomi dei piatti corrispondenti
-                      const dishNames = cart.dishIds.map((dishId) => {
-                        const dish = dishes.find((dish) => dish.id === dishId);
-                        return dish ? dish.name : null;
-                      });
-                      // Aggiungo l'array dei nomi come una nuova proprietà chiamata dishes all'oggetto cart
-                      return { ...cart, dishes: dishNames };
-                    } else {
-                      // Se la proprietà dishIds non esiste, cerco il piatto con l'id corrispondente
-                      const dish = dishes.find((dish) => dish.id === cart.dishId);
-                      // Aggiungo il nome del piatto come una nuova proprietà chiamata dishes all'oggetto cart
-                      return { ...cart, dishName: dish ? [dish.name] : [], dishCost : dish.cost};
-                    }
-                  });
-                  
-                  
-                //------------------------------------------------------------//
-                alert("array lettere " + JSON.stringify(groupedCartWithDishes))
-        
-        
-        
-                groupedCartWithName.sort(function(a, b) {
-                    return a.cartId - b.cartId;
-                  });
-        
-                  
-        
-                  groupedCartWithName.forEach(function(cart) {
-                    cart.dishesName = [];
-                    if (Array.isArray(cart.dishIds)) {
-                      cart.dishIds.forEach(function(dishId) {
-                        const dish = dishes.find(function(dish) {
-                          return dish.id === dishId;
-                        });
-                        if (dish) {
-                          cart.dishesName.push(dish.name);
-                        }
-                      });
-                    } else {
-                      const dish = dishes.find(function(dish) {
-                        return dish.id === cart.dishId;
-                      });
-                      if (dish) {
-                        cart.dishesName.push(dish.name);
-                      }
-                    }
-                  });
-                  
-                  alert("FINITO--> "+JSON.stringify(groupedCartWithName))
-        
-                const openCarts = cart.filter(c => c.status === 'OPEN');
-                const cartdishWithOpenCarts = cartdish.filter(cd => openCarts.find(c => c.id === cd.cartId));
-                buildTableOrders(cartdishWithOpenCarts)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-                /*
-                
-                
-                        const dishesComplete = dishes.map(dish => {
-                            const categoryName = category.find(cat => cat.id === dish.categoryId)?.name || '';
-                            const allergenNames = dishes_allergens.filter(da => da.dishId === dish.id)
-                                .map(da => allergens.find(a => a.id === da.allergenId)?.name)
-                                .join(', ');
-                            return {
-                                id: dish.id,
-                                name: dish.name,
-                                nameLan: dish.nameLan,
-                                description: dish.description,
-                                descriptionLan: dish.descriptionLan,
-                                cost: dish.cost,
-                                categoryName,
-                                idCategory: dish.idCategory,
-                                nameAllergens: allergenNames
-                            };
-                        });*/
 
 
     }));
@@ -812,17 +601,20 @@ function creaTableOrders() {
 }
 
 
-function buildTableOrders(groupedCartWithNameAndDishes) {
+function buildTableOrdersDip(groupedCartWithNameAndDishes) {
 
+   // alert("ENTRATO"+JSON.stringify(groupedCartWithNameAndDishes))
+    document.getElementById("nAperti").innerHTML = "CONTI APERTI: "+groupedCartWithNameAndDishes.length;
 
 
 
     const cartWithNames = groupedCartWithNameAndDishes;
     // Get a reference to the parent element
-    const parentElement = document.querySelector('.list-group-2');
+    const parentElement = document.querySelector('.list-group-3');
 
     // Loop through the cartWithNames array
     cartWithNames.forEach(order => {
+        //alert("AGGIUNGO")
         // Create the list item element
         const listItem = document.createElement('li');
         listItem.classList.add('list-group-item', 'border-0', 'd-flex', 'p-4', 'mb-2', 'bg-gray-100', 'border-radius-lg');
@@ -852,110 +644,17 @@ function buildTableOrders(groupedCartWithNameAndDishes) {
         orderDetails.appendChild(employeeName);
         orderDetails.appendChild(orderTotal);
 
-        // Create the action buttons
-        const actionButtons = document.createElement('div');
-        actionButtons.classList.add('ms-auto', 'text-end');
-
-        const deleteButton = document.createElement('a');
-        deleteButton.classList.add('btn', 'btn-link', 'text-danger', 'text-gradient', 'px-3', 'mb-0');
-        deleteButton.href = 'javascript:;';
-        deleteButton.setAttribute('data-id', order.id); // Aggiungi l'attributo data-id
-        deleteButton.innerHTML = '<i class="far fa-trash-alt me-2"></i>Chiudi';
-
-
-        const detailsButton = document.createElement('a');
-        detailsButton.classList.add('btn', 'btn-link', 'text-dark', 'px-3', 'mb-0');
-        detailsButton.href = 'javascript:;';
-        detailsButton.innerHTML = '<i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Dettagli';
-
-        actionButtons.appendChild(deleteButton);
-        actionButtons.appendChild(detailsButton);
-
-
-        // Add the order details and action buttons to the list item
         listItem.appendChild(orderDetails);
-        listItem.appendChild(actionButtons);
-
-        // Add the list item to the parent element
-        parentElement.appendChild(listItem);
-
-        const closeButtonList = document.querySelectorAll('.btn-link.text-danger.text-gradient.px-3.mb-0');
-        closeButtonList.forEach((button) => {
-            button.addEventListener('click', (event) => {
-                // Recupera l'ID dell'ordine selezionato
-                const orderId = event.target.getAttribute('data-id');
+       parentElement.appendChild(listItem);
 
 
+      
 
-
-                // Recupera i dati dell'ordine corrispondente dall'array "cartWithNames"
-                const orderData = cartWithNames.find(order => order.id == orderId);
-                alert("ORDERDATA:" +orderId)
-
-                $.ajax({
-                    url: '/api/cart/close/'+orderId,
-                    method: 'PUT',
-                    
-                    success: function(response) {
-                      console.log('Dati aggiornati con successo', response);
-                      alert("ORDERDATA: " + JSON.stringify(orderData))
-                      // Crea un nuovo documento PDF utilizzando jsPDF
-                      window.jsPDF = window.jspdf.jsPDF;
+           
       
-      
-                      alert("PORTATE: " + JSON.stringify(orderData.dishes))
-      
-                      const doc = new jsPDF();
-      
-      
-      
-      
-      
-      
-      
-                      // Aggiungi i dati dell'ordine al documento PDF
-                      doc.setFontSize(12);
-                      doc.text('Ordine #' + orderData.id, 10, 20);
-                      doc.text('Tavolo: ' + orderData.tableId, 10, 30);
-                      doc.text('Dipendente: ' + orderData.name + ' ' + orderData.surname, 10, 40);
-                      doc.text('Portate:', 10, 60);
-                      doc.setFontSize(10);
-      
-      
-      
-      
-                      let y = 50; // coordinata y iniziale
-                      orderData.dishes.forEach(function (dish) {
-                          doc.text(dish + "\n", 50, y);
-                          y += 10; // aggiorna la coordinata y per la portata successiva
-                      });
-      
-      
-                      doc.setFontSize(12);
-                      doc.text('Totale: ' + 100 + ' euro', 10, y + 10);
-      
-      
-                      // Opzionalmente, puoi fornire all'utente un'opzione per scaricare o stampare il PDF
-                      doc.save('Ordine_\'' + orderData.id.pdf + '\'');
-      
-                    },
-                    error: function(error) {
-                      console.error('Errore durante l\'aggiornamento dei dati', error);
-                    }
-                  });
-
-
-
-
-
-               
-                
-                
-
-
-            });
-        });
     });
+
+   
 
 
 }
@@ -966,15 +665,15 @@ function buildTableClosedOrders(closedCart) {
 
     const reversedData = [];
 
-    for(let i = closedCart.length - 1; i >= 0; i--) {
-      reversedData.push(closedCart[i]);
+    for (let i = closedCart.length - 1; i >= 0; i--) {
+        reversedData.push(closedCart[i]);
     }
 
 
     const list = document.getElementById('closedList'); // assuming there's a list with id 'myList'
 
 
-   reversedData.forEach(cart => {
+    reversedData.forEach(cart => {
         const li = document.createElement('li');
         li.className = 'list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg';
 
