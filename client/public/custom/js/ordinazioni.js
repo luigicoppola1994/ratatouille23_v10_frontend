@@ -964,13 +964,17 @@ function buildTableOrders(groupedCartWithNameAndDishes) {
 
 function buildTableClosedOrders(closedCart) {
 
+    const reversedData = [];
 
+    for(let i = closedCart.length - 1; i >= 0; i--) {
+      reversedData.push(closedCart[i]);
+    }
 
 
     const list = document.getElementById('closedList'); // assuming there's a list with id 'myList'
 
 
-    closedCart.forEach(cart => {
+   reversedData.forEach(cart => {
         const li = document.createElement('li');
         li.className = 'list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg';
 
