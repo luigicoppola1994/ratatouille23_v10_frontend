@@ -20,6 +20,7 @@ $(function(){
                     const confirm= pageObj.selectors.passwordConfirm.val()
                     
 
+                    
 
                    
                    
@@ -47,7 +48,8 @@ $(function(){
                             const token = data
                             if(token) {
                                 sessionStorage.setItem("jwt", token);
-                                window.location.replace("/dashboard");
+                                
+                                window.location.replace("/login");
                                 
                                 
                             }
