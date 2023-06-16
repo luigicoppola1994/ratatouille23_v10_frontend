@@ -1,3 +1,83 @@
+//INSERISCE L'ORDINE DEL TAVOLO NEL DB
+function creaTableOrders() {
+    axios.all([
+        axios.get('/api/user'),
+        axios.get('/api/restaurant'),
+        
+    ]).then(axios.spread((userRes, restaurantRes) => {
+
+
+
+
+
+        let obj1 = JSON.parse(JSON.stringify(userRes.data));
+        const users = JSON.parse(JSON.stringify(obj1.data))
+        //alert("USERS: " + JSON.stringify(users))
+
+
+
+
+        let obj2 = JSON.parse(JSON.stringify(restaurantRes.data));
+        const restaurant = JSON.parse(JSON.stringify(obj2.data))
+        //alert("RESTAURANTS: " + JSON.stringify(cartdish))
+
+
+
+
+
+
+
+
+
+
+    }));
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -22,13 +102,13 @@ $(function () {
 
                     const titleActivity = pageObj.selectors.nameActivity.val()
                     const addressActivityCompleted = pageObj.selectors.addressCompleted.val()
-                    alert(titleActivity)
+                   // alert(titleActivity)
 
 
 
                     $.ajax({
                         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-                        url: 'http://localhost:3000/api/restaurant',
+                        url: '/restaurant',
                         type: 'POST', //send it through get method
                         dataType: "json",
 
@@ -41,20 +121,45 @@ $(function () {
                         success: function (data, textStatus, xhr) {
 
 
-                            alert(" ok")
+                            alert("LOCALE OK")
 
 
-                            const token = data
-                            if (token) {
-                                sessionStorage.setItem("jwt", token);
-                                window.location.replace("attivita");
+                            $.ajax({
+                                // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+                                url: '/api/menu/add',
+                                type: 'POST', //send it through get method
+                                dataType: "json",
+        
+                                
+                                success: function (data, textStatus, xhr) {
+        
+        
+                                    //alert("menu OK")
+        
+        
+                                    const token = data
+                                    if (token) {
+                                        sessionStorage.setItem("jwt", token);
+                                        window.location.replace("attivita");
+        
+        
+        
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    alert("REGISTRAZIONE LOCALE E MENU' AVVENUTA CON SUCCESSO!")
+                                    console.log(xhr.responseText);
+        
+                                }
+                            });
 
 
 
-                            }
+
+
                         },
                         error: function (xhr, status, error) {
-                            alert("ko")
+                           // alert("ko")
                             console.log(xhr.responseText);
 
                         }
@@ -105,7 +210,7 @@ function creaTableOrders() {
     axios.all([
         axios.get('/api/cart/all'),
         axios.get('/api/cartdish/all'),
-        axios.get('/api/user'),
+        axios.get('/api/get/all/user'),
         axios.get('/api/cart/bill/all'),
         axios.get('/api/dish/all')
     ]).then(axios.spread((cartRes, cartdishRes, usersRes, billRes, dishesRes) => {
@@ -364,7 +469,7 @@ function buildTableOrders(groupedCartWithNameAndDishes) {
 
                 // Recupera i dati dell'ordine corrispondente dall'array "cartWithNames"
                 const orderData = cartWithNames.find(order => order.id == orderId);
-                alert("ORDERDATA:" + orderId)
+                //alert("ORDERDATA:" + orderId)
 
                 $.ajax({
                     url: '/api/cart/close/' + orderId,
@@ -372,12 +477,12 @@ function buildTableOrders(groupedCartWithNameAndDishes) {
 
                     success: function (response) {
                         console.log('Dati aggiornati con successo', response);
-                        alert("ORDERDATA: " + JSON.stringify(orderData))
+                        //alert("ORDERDATA: " + JSON.stringify(orderData))
                         // Crea un nuovo documento PDF utilizzando jsPDF
                         window.jsPDF = window.jspdf.jsPDF;
 
 
-                        alert("PORTATE: " + JSON.stringify(orderData.dishes))
+                        //alert("PORTATE: " + JSON.stringify(orderData.dishes))
 
 
 
@@ -440,19 +545,19 @@ function buildTableOrders(groupedCartWithNameAndDishes) {
                 // Recupera l'ID dell'ordine selezionato
                 const orderId = event.target.getAttribute('data-id');
 
-                alert(JSON.stringify(cartWithNames))
+               // alert(JSON.stringify(cartWithNames))
 
 
                 // Recupera i dati dell'ordine corrispondente dall'array "cartWithNames"
                 const orderData2 = cartWithNames.find(order2 => order2.id2 == orderId);
 
 
-                alert("ORDERDATA: " + JSON.stringify(orderData2))
+               // alert("ORDERDATA: " + JSON.stringify(orderData2))
                 // Crea un nuovo documento PDF utilizzando jsPDF
                 window.jsPDF = window.jspdf.jsPDF;
 
 
-                alert("PORTATE: " + JSON.stringify(orderData2.dishes))
+                //alert("PORTATE: " + JSON.stringify(orderData2.dishes))
 
 
 
@@ -556,7 +661,7 @@ function buildTableClosedOrders(closedCart) {
         // Aggiungi l'event listener per il button PDF
         button.addEventListener('click', () => {
 
-            // Crea un nuovo oggetto jsPDF
+            /* Crea un nuovo oggetto jsPDF
             window.jsPDF = window.jspdf.jsPDF;
 
             const doc = new jsPDF();
@@ -570,7 +675,44 @@ function buildTableClosedOrders(closedCart) {
             });
 
             // Salva il PDF e apri il file
-            doc.save(`Ordine-${cart.id}.pdf`);
+            doc.save(`Ordine-${cart.id}.pdf`);*/
+
+            // Creare un nuovo documento PDF
+            window.jsPDF = window.jspdf.jsPDF;
+
+            const docScontrino = new jsPDF();
+
+            // Aggiungere il testo "Scontrino" come titolo
+            docScontrino.setFontSize(18);
+            docScontrino.text('Scontrino', 10, 20);
+            
+            // Aggiungere le informazioni dell'ordine come intestazione
+            docScontrino.setFontSize(12);
+            docScontrino.text('Ordine #' + cart.id, 10, 40);
+            docScontrino.text('Tavolo: ' + cart.tableId, 10, 50);
+            docScontrino.text('Dipendente: ' + cart.name + ' ' + cart.surname, 10, 60);
+            
+            // Aggiungere le portate con i prezzi
+            docScontrino.setFontSize(10);
+            let y = 90; // coordinata y iniziale
+           cart.dishesWithCost.forEach(function (dish) {
+              docScontrino.cell(10, y, 70, 10, dish.name);
+              docScontrino.cell(80, y, 20, 10, dish.cost + ' €', 0, 'right');
+              y += 10; // aggiorna la coordinata y per la portata successiva
+            });
+            
+            // Calcolare e aggiungere il totale
+            docScontrino.setFontSize(12);
+            let total = cart.dishesWithCost.reduce(function(acc, curr) {
+              return acc + curr.cost;
+            }, 0);
+            docScontrino.text('Totale: ' + total + ' euro', 10, y + 10);
+            
+            // Scaricare il PDF come file
+            docScontrino.save('Scontrino.pdf');
+            
+
+
         });
     });
 
@@ -578,6 +720,134 @@ function buildTableClosedOrders(closedCart) {
 
 
 
+       
+         
+    }
 
 
-}
+
+
+
+
+
+
+    
+
+
+    let pageObjt = undefined;
+
+    $(function(){
+        pageObjt = {
+            selectors: {
+                seatsNumber: $('#seatsNumber'),
+                insertButton: $('#btn_insertTable'),
+            },
+            functions: {
+                initPage: function () {
+                    pageObjt.functions.initEvents()
+                },
+                initEvents: function (){
+                    pageObjt.selectors.insertButton.click(function(e) {
+                        console.log('clicked')
+                        
+                        const seats = pageObjt.selectors.seatsNumber.val();
+                        
+                        let hasError = false;
+                        
+                        if (seats <= 0) {
+                            
+                            pageObjt.selectors.seatsNumber.addClass('input-error');
+                            hasError = true;
+                        }
+                        
+                        if (!hasError) {
+                            $.ajax({
+                                url: '/api/tablerestaurant/add',
+                                type: 'POST',
+                                dataType: "json",
+                                data: {
+                                    "id": null,
+                                    "seats": seats,
+                                },
+                                success: function(data, textStatus, xhr) {
+                                    alert("TAVOLO REGISTRATO.");
+                                    $('#tableModal').modal('hide');
+                                    window.location.reload()
+
+                                },
+                                error: function(xhr, status, error) {
+                                    alert("NUMERO PERSONE NON VALIDO");
+                                    console.log(xhr.responseText);
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        }
+        pageObjt.functions.initPage();
+    });
+
+
+
+
+    // GESTIONE CONTEGGIO TAVOLI
+    function guestTable(){
+        $.ajax({
+            // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+            url: '/api/tablerestaurant/all',
+            type: 'GET', //send it through get method
+            dataType: "json",
+
+           
+            success: function (data, textStatus, xhr) {
+
+                const obj = JSON.parse(xhr.responseText);
+                var table = JSON.stringify(obj.data)
+                var tables = JSON.parse(table)
+                document.getElementById("totalTables").textContent = tables.length
+            },
+            error: function (xhr, status, error) {
+                //alert("ko")
+                console.log(xhr.responseText);
+
+            }
+        });
+    }
+
+
+      // GESTIONE CONTEGGIO TAVOLI
+      function openCarts(){
+        $.ajax({
+            // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+            url: '/api/get/all/user',
+      type: 'GET', //send it through get method
+        dataType: "json",
+   
+      
+  
+      success: function(data, textStatus, xhr) {
+       
+        const obj = JSON.parse(xhr.responseText);
+        var utente = JSON.stringify(obj.data)
+        var user = JSON.parse(utente)   
+       // alert(xhr.responseText)
+
+        //filtro solo gli op escludendo gli admins
+        const filteredUsers = user.filter(user => user.role !== "ADMIN" && user.enabled !== false);
+                             
+       
+
+                document.getElementById("freeTables").textContent = filteredUsers.length
+
+
+            },
+            error: function (xhr, status, error) {
+               // alert("ko")
+                console.log(xhr.responseText);
+
+            }
+        });
+    }
+
+  

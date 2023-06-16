@@ -17,6 +17,8 @@ export class AuthService {
     private readonly AUTH_ACTIVATE_ACCOUNT: string
     private readonly AUTH_ACTIVATE_ACCOUNT_OP: string
     private readonly AUTH_ACTIVATE_ACCOUNT_ACTIVITY: string
+    private readonly HOST_BACKEND: string
+
     private readonly logger = new Logger(AuthService.name)
 
     constructor(
@@ -28,6 +30,7 @@ export class AuthService {
         this.AUTH_ACTIVATE_ACCOUNT = this.configService.getOrThrow('AUTH_ACTIVATE_ACCOUNT')
         this.AUTH_ACTIVATE_ACCOUNT_OP = this.configService.getOrThrow('AUTH_ACTIVATE_ACCOUNT_OP')
         this.AUTH_ACTIVATE_ACCOUNT_ACTIVITY = this.configService.getOrThrow('AUTH_ACTIVATE_ACCOUNT_ACTIVITY')
+        this.HOST_BACKEND = this.configService.getOrThrow('HOST_BACKEND')
     }
 
     async validate(user: AuthRequestDto): Promise<string> {
@@ -90,7 +93,7 @@ export class AuthService {
 
     async resetPsw(password : resetRequestDto, token: string): Promise<boolean> {
         let response: boolean | undefined = undefined
-        this.logger.log("register() - incoming request with obj: " + JSON.stringify(password))
+        this.logger.log("resetPsw() - incoming request with obj: " + JSON.stringify(password))
         const config = {
             headers: {
               Authorization: 'Bearer ' + token,
@@ -98,9 +101,9 @@ export class AuthService {
         }
         
         try {
-            response = (await this.httpService.axiosRef.post("http://localhost:8080/api/auth/signup/op/resetpassword/",password,config)).data
+            response = (await this.httpService.axiosRef.post(this.HOST_BACKEND+"/api/auth/signup/op/resetpassword",password,config)).data
         } catch (error) {
-            this.logger.error("register() - error: " + JSON.stringify(error))
+            this.logger.error("resetPsw() - error: " + JSON.stringify(error))
             throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
         }
         return response
@@ -110,13 +113,13 @@ export class AuthService {
 
     async enableUser(token: string): Promise<boolean> {
         let response: boolean | undefined = undefined
-        this.logger.log("register() - incoming request with obj: " + JSON.stringify(token))
+        this.logger.log("enableUser() - incoming request with obj: " + JSON.stringify(token))
         
         
         try {
-            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/auth/validate/user/"+token)).data
+            response = (await this.httpService.axiosRef.get(this.HOST_BACKEND+"/api/auth/validate/user/"+token)).data
         } catch (error) {
-            this.logger.error("register() - error: " + JSON.stringify(error))
+            this.logger.error("enableUser() - error: " + JSON.stringify(error))
             throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
         }
         return response
@@ -160,7 +163,7 @@ export class AuthService {
         }
         
         try {
-            response = (await this.httpService.axiosRef.get("http://localhost:8080/api/restaurant/users/SUPERVISOR",config)).data
+            response = (await this.httpService.axiosRef.get(this.HOST_BACKEND+"/api/restaurant/users/SUPERVISOR",config)).data
         } catch (error) {
             this.logger.error("register() - error: " + JSON.stringify(error))
             throw new HttpException("Error", HttpStatus.INTERNAL_SERVER_ERROR)
@@ -170,6 +173,8 @@ export class AuthService {
 
     
 
+
+   
 
   
 

@@ -3,20 +3,20 @@ function generateListUsers(){
 
     $.ajax({
          // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-         url: 'http://localhost:3000/api/user',
+         url: '/api/get/all/user',
          type: 'GET', //send it through get method
            dataType: "json",
       
          
      
          success: function(data, textStatus, xhr) {
-          
+           
            const obj = JSON.parse(xhr.responseText);
            var user = JSON.stringify(obj.data)
            var users = JSON.parse(user)   
            
            
-           console.log(users);
+          //alert("ciao"+users);
   
            buildSelectUsers(users)
           
@@ -27,7 +27,7 @@ function generateListUsers(){
                      
          },
          error: function(xhr, status, error) {
-             alert("Auth ko")
+             //alert("Auth ko")
              console.log(xhr.responseText);
    
          }
@@ -38,22 +38,22 @@ function generateListUsers(){
    } 
   
   
-   function buildSelectUsers(users){
+   function buildSelectUsers(users) {
+    const select = document.getElementById("userId");
     
-    const select = document.getElementById("userId"); // seleziona l'elemento select dal DOM
-
-    users.forEach(user => { // itera l'array di utenti
-      const option = document.createElement("option"); // crea un nuovo elemento option
-      option.value = user.id; // imposta l'attributo value della option
-
-
-      const text = document.createTextNode(user.name.slice(0, 1).toUpperCase() + user.name.slice(1) + ' ' + user.surname.slice(0, 1).toUpperCase() + user.surname.slice(1)); // crea un nuovo nodo di testo per l'opzione
-      option.appendChild(text); // aggiungi il nodo di testo all'opzione
-      select.appendChild(option); // aggiungi l'opzione al menu a discesa
-    });
-    
+    // Filtra gli utenti in base al ruolo "ADMIN"
+    const filteredUsers = users.filter(user => user.role !== "ADMIN");
   
-   }
+    filteredUsers.forEach(user => {
+      const option = document.createElement("option");
+      option.value = user.id;
+    
+      const text = document.createTextNode(user.name.slice(0, 1).toUpperCase() + user.name.slice(1) + ' ' + user.surname.slice(0, 1).toUpperCase() + user.surname.slice(1));
+      option.appendChild(text);
+      select.appendChild(option);
+    });
+  }
+  
 
 
 
@@ -80,7 +80,7 @@ function generateListUsers(){
     axios.all([
         axios.get('/api/cart/all'),
         axios.get('/api/cartdish/all'),
-        axios.get('/api/user'),
+        axios.get('/api/get/all/user'),
         axios.get('/api/cart/bill/all'),
         axios.get('/api/dish/all')
     ]).then(axios.spread((cartRes, cartdishRes, usersRes, billsRes, dishesRes) => {
@@ -158,7 +158,7 @@ function generateListUsers(){
 
         let obj5 = JSON.parse(JSON.stringify(dishesRes.data));
         const dishes = JSON.parse(JSON.stringify(obj5.data));
-        // alert("dishes: " + JSON.stringify(dishes))
+         //alert("dishes: " + JSON.stringify(dishes))
 
         let lun = updatedCart.length
 
@@ -198,7 +198,7 @@ function generateListUsers(){
 
         let obj4 = JSON.parse(JSON.stringify(billsRes.data));
         const billRes = JSON.parse(JSON.stringify(obj4.data));
-        alert("billRes: " + JSON.stringify(billRes))
+        //alert("billRes: " + JSON.stringify(billRes))
 
 
         
@@ -237,6 +237,7 @@ creaChart(result)
 function creaChart(result){
 
     const ordini = result
+   // alert(JSON.stringify(ordini))
  
     // Get the select and input elements
 const userIdSelect = document.getElementById('userId');
@@ -261,15 +262,13 @@ const chartOptions = {
     yAxes: [{
       ticks: {
         beginAtZero: true,
-        callback: function(value) {
-          if (value % 1 === 0) {
-            return value;
-          }
-        }
+        stepSize: 1,
+        precision: 0
       }
     }]
   }
 };
+
 
 // Define the chart data
 const chartData = {
@@ -293,10 +292,13 @@ const filterOrders = () => {
   const userId = userIdSelect.value;
   const startDate = new Date(startDateInput.value);
   const endDate = new Date(endDateInput.value);
+  // Imposto l'ora di endDate come 23:59:59 per includere l'intero giorno
+  endDate.setHours(23, 59, 59);
   
   const dateRange = getDateRange(startDate, endDate);
   
   const filteredOrders = ordini.filter(order => order.userId == userId && new Date(order.createdAt) >= startDate && new Date(order.createdAt) <= endDate);
+  
   const ordersByDay = {};
   filteredOrders.forEach(order => {
     const day = new Date(order.createdAt).toISOString().slice(0, 10);
@@ -306,6 +308,17 @@ const filterOrders = () => {
       ordersByDay[day] = 1;
     }
   });
+
+  // Aggiungi questa parte per gestire i giorni senza ordini
+  dateRange.forEach(date => {
+    const day = date.toISOString().slice(0, 10);
+    if (!ordersByDay[day]) {
+      ordersByDay[day] = 0;
+    }
+  });
+
+
+
   const data = [];
   const labels = [];
   dateRange.forEach(date => {
@@ -353,7 +366,7 @@ creaCard(result)
 
 
 function creaCard(result){
-    alert("RESULTI")
+   // alert("RESULTI")
      // Get the select and input elements
 
      const userIdSelect = document.getElementById('userId');
@@ -365,6 +378,7 @@ userIdSelect.addEventListener("change", () => {
     const userId = userIdSelect.value;
     const startDate = startDateInput.value;
     const endDate = endDateInput.value;
+    
     updateResults(userId, startDate, endDate);
   });
   
@@ -394,7 +408,7 @@ userIdSelect.addEventListener("change", () => {
       (order) =>
         order.userId === userId &&
         new Date(order.createdAt) >= startDate &&
-        new Date(order.createdAt) <= endDate
+        new Date(order.createdAt) < new Date(endDate.getTime() + 86400000)
     );
   
     const cartIds = [...new Set(filteredResults.map((order) => order.cartId))];
@@ -405,7 +419,6 @@ userIdSelect.addEventListener("change", () => {
     document.getElementById("cartIdCount").textContent = cartCount;
     document.getElementById("cartIdTotal").textContent = cartTotal.toFixed(2);
   }
-  
 
  
   

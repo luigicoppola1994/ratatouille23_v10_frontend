@@ -43,7 +43,8 @@
 
     <!--<script src="../custom/js/globals.js"></script>-->
     <script src="../custom/js/dish.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     
 
     <style>
@@ -164,6 +165,18 @@
 }
 
 
+
+  .input-error {
+  border: 2px solid red;
+}
+
+.red-label {
+  color: red;
+}
+
+
+
+
    
 
 
@@ -192,90 +205,43 @@
         </div>
         <hr class="horizontal dark mt-0">
         <div class="navbar-absolute " id="sidenav-collapse-main">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link " href="/dashboard">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/dipendenti">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Dipendenti</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="/attivita">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Attività</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="../pages/virtual-reality.html">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-app text-info text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Virtual Reality</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="../pages/rtl.html">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">RTL</span>
-                    </a>
-                </li>
-                <li class="nav-item mt-3">
-                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="../pages/profile.html">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Profile</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="../pages/sign-in.html">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Sign In</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="../pages/sign-up.html">
-                        <div
-                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-collection text-info text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Sign Up</span>
-                    </a>
-                </li>
-            </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link " href="/dashboard">
+                <div
+                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                </div>
+                <span class="nav-link-text ms-1">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="/dipendenti">
+                <div
+                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+                </div>
+                <span class="nav-link-text ms-1">Gestione dipendenti</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/attivita">
+                <div
+                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                  <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+                </div>
+                <span class="nav-link-text ms-1">Attività</span>
+              </a>
+            </li>
+           
+          </ul>
         </div>
         </div>
         </div>
         </div>
         </div>
-    </aside>
-    <main class="main-content position-relative border-radius-lg ">
+      </aside>
+      <main class="main-content position-relative border-radius-lg ">
         <!-- Navbar -->
         <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
             data-scroll="false">
@@ -290,17 +256,13 @@
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                        <div class="input-group">
-                            <span class="input-group-text text-body"><i class="fas fa-search"
-                                    aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" placeholder="Type here...">
-                        </div>
+                        
                     </div>
                     <ul class="navbar-nav  justify-content-end">
                         <li class="nav-item d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
-                                <span class="d-sm-inline d-none" id="signUser">Sign In</span>
+                                <span class="d-sm-inline d-none" id="signUserPortata"></span>
                             </a>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -312,16 +274,16 @@
                                 </div>
                             </a>
                         </li>
-                        <li class="nav-item px-3 d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-white p-0">
-                                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+                        <li class="nav-item px-3 d-flex align-items-center dropdown">
+                            <a href="javascript:void(0);" class="nav-link text-white p-0 dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                             </a>
-                        </li>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="javascript:void(0);" onclick="logout()">Logout</a></li>
+                            </ul>
+                          </li>
                         <li class="nav-item dropdown pe-2 d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-bell cursor-pointer"></i>
-                            </a>
+                            
                             <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                                 aria-labelledby="dropdownMenuButton">
                                 <li class="mb-2">
@@ -487,16 +449,19 @@
 
 
 
-
+    
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Aggiungi una portata</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                    <button type="button" class="btn-closemodal" data-bs-dismiss="modal" aria-label="Chiudi">
+                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+
+                    </button>
                 </div>
                 <div class="modal-body justify-content-center">
                     <p class="recupero justify-content-center">Crea una portata da aggiungere al tuo menù
@@ -512,8 +477,8 @@
 
                         <!-- NOME PORTATA CON AUTOCOMPLETAMENTO-->
                         <div class="mb-3">
-                            <label for="search">Nome Portata:</label>
-                            <input class="inputText" type="text" id="search" name="search" autocomplete="off">
+                            <label for="search" id="labelNomePortata">Nome Portata:</label>
+                            <input class="inputText " type="text" id="search" name="search" autocomplete="off">
                             <ul id="product-list"></ul>
                         </div>
 
@@ -570,7 +535,7 @@
 
                         <div class="mb-3">
                             <!--  INGREDIENTI -->
-                            <label>Descrizione:</label>
+                            <label id="descrizioneLabel">Descrizione:</label>
                             <div class="tag-input-container">
                                 <div class="tag-input">
                                     <input type="text" id="tag-input"
@@ -583,7 +548,7 @@
 
 
                         <script>
-                            const tagInput = document.querySelector('#tag-input');
+                             const tagInput = document.querySelector('#tag-input');
                             const tagsContainer = document.querySelector('.tags-container');
                             const descrizioneInput = document.querySelector('#descrizione');
                             let tags = [];
@@ -636,62 +601,11 @@
                                   <span class="abilita-name">Abilita seconda lingua</span>
                                 </li>
                               </ul>
-                              
-                              
-                              
-
-                                
-                                <!-- ABILITA SECONDA LINGUA 
-                        <select id="language-select">
-                            <option value="">Seleziona una lingua</option>
-                            <option value="ar">Arabo</option>
-                            <option value="bg">Bulgaro</option>
-                            <option value="bn">Bengalese</option>
-                            <option value="ca">Catalano</option>
-                            <option value="cs">Ceco</option>
-                            <option value="da">Danese</option>
-                            <option value="de">Tedesco</option>
-                            <option value="el">Greco</option>
-                            <option value="en">Inglese</option>
-                            <option value="es">Spagnolo</option>
-                            <option value="et">Estone</option>
-                            <option value="fa">Persiano</option>
-                            <option value="fi">Finlandese</option>
-                            <option value="fr">Francese</option>
-                            <option value="he">Ebraico</option>
-                            <option value="hi">Hindi</option>
-                            <option value="hr">Croato</option>
-                            <option value="hu">Ungherese</option>
-                            <option value="id">Indonesiano</option>
-                            <option value="it">Italiano</option>
-                            <option value="ja">Giapponese</option>
-                            <option value="ka">Georgiano</option>
-                            <option value="kk">Kazako</option>
-                            <option value="ko">Coreano</option>
-                            <option value="lt">Lituano</option>
-                            <option value="lv">Lettone</option>
-                            <option value="ms">Malese</option>
-                            <option value="nl">Olandese</option>
-                            <option value="no">Norvegese</option>
-                            <option value="pl">Polacco</option>
-                            <option value="pt">Portoghese</option>
-                            <option value="ro">Rumeno</option>
-                            <option value="ru">Russo</option>
-                            <option value="sk">Slovacco</option>
-                            <option value="sl">Sloveno</option>
-                            <option value="sr">Serbo</option>
-                            <option value="sv">Svedese</option>
-                            <option value="th">Thailandese</option>
-                            <option value="tr">Turco</option>
-                            <option value="uk">Ucraino</option>
-                            <option value="vi">Vietnamita</option>
-                            <option value="zh">Cinese</option>
-                          </select>
-                            </div>-->
+                          
 
                             <!-- NOME PORTATA CON AUTOCOMPLETAMENTO SECONDA LINGUA-->
                         <div class="mb-3">
-                            <label for="searchLan">Nome Portata:</label>
+                            <label for="searchLan" id="labelNomePortataLan">Nome Portata:</label>
                             <input class="inputText" type="text" id="nameDishLan" name="searchLan" disabled>
                         </div>
 
@@ -702,7 +616,7 @@
 
                         <div class="mb-3">
                             <!--  INGREDIENTI -->
-                            <label>Descrizione:</label>
+                            <label id="descPortataLan">Descrizione:</label>
                             <div class="tag-input-container">
                                 <div class="tag-input">
                                     <input type="text" id="tag-input2"
@@ -830,8 +744,8 @@
                         <!--FINE CATEGORIE-->
 
                         <div class="mb-3">
-                            <label for="price">Prezzo:</label>
-                            <input class="inputText" type="text" id="price">
+                            <label for="price" id="costo">Prezzo:</label>
+                            <input class="inputText" type="number" id="price">
                         </div>
 
 
@@ -844,9 +758,9 @@
 
 
                 <div class="modal-footer">
-                    <button type="btnstyle" class="btn btn-secondary" data-bs-dismiss="modal"
-                        style="background-color: #43aca0" id="btn_insertPortata"
-                        onclick="addPortata()">INSERISCI</button>
+                    <button type="btnstyle" class="btn btn-secondary" 
+                        style="background-color: #43aca0" id="btn_insertPortata" onclick="addPortata()"
+                        >INSERISCI</button>
 
                 </div>
             </div>
@@ -874,6 +788,314 @@
     </div>
   </div>
 </div>-->
+
+<!-- MODAL MODIFICA/ELIMINA PORTATA-->
+
+<div class="modal fade" id="editDishModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Elimina portata</h1>
+          <button type="button" class="btn-closemodal" data-bs-dismiss="modal" aria-label="Chiudi">
+            <span aria-hidden="true"><i class="fas fa-times"></i></span>
+          </button>
+        </div>
+        
+        <div class="modal-body justify-content-center">
+          <p class="recupero justify-content-center">STAI MODIFICANDO IL SEGUENTE DIPENDENTE:</label>
+          </p>
+
+          <form>
+
+
+
+
+                        <!-- NOME PORTATA CON AUTOCOMPLETAMENTO-->
+                        <div class="mb-3">
+                            <label for="search" id="labelNomePortata">Nome Portata:</label>
+                            <input class="inputText " type="text" id="search" name="search" autocomplete="off">
+                            <ul id="product-list"></ul>
+                        </div>
+
+                        <script>
+                            const searchInputM = document.querySelector('#search');
+                            const productListM = document.querySelector('#product-list');
+
+
+                            searchInput.addEventListener('input', async (event) => {
+                                const searchTerm = event.target.value;
+                                if (searchTerm.length < 2) {
+                                    productList.innerHTML = '';
+                                    return;
+                                }
+
+                                const response = await fetch(`https://it.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerm}&search_simple=1&action=process&json=1&fields=product_name_it`);
+                                const data = await response.json();
+                                const products = data.products.filter(product => {
+                                    const productName = product.product_name_it;
+                                    return productName && (productName.toLowerCase() === searchTerm.toLowerCase() || productName.toLowerCase().startsWith(`${searchTerm.toLowerCase()} `));
+                                });
+
+                                productList.innerHTML = '';
+                                products.forEach(product => {
+                                    const li = document.createElement('li');
+                                    li.textContent = product.product_name_it;
+                                    li.addEventListener('click', () => {
+                                        searchInput.value = product.product_name_it;
+                                        productList.innerHTML = '';
+                                    });
+                                    productList.appendChild(li);
+                                });
+                            });
+
+                            // Nasconde la lista dei prodotti quando si clicca fuori dall'input
+                            document.addEventListener('click', (event) => {
+                                if (event.target !== searchInput && event.target !== productList) {
+                                    productList.innerHTML = '';
+                                }
+                            });
+                        </script>
+
+
+                        <!--FINE PORTATA-->
+
+
+
+
+
+
+
+
+                       
+
+                        <div class="mb-3">
+                            <!--  INGREDIENTI -->
+                            <label id="descrizioneLabel">Descrizione:</label>
+                            <div class="tag-input-container">
+                                <div class="tag-input">
+                                    <input type="text" id="tag-input"
+                                        placeholder="Clicca ENTER per aggiungere l'ingrediente.">
+                                    <input type="hidden" id="descrizione" name="descrizione">
+                                </div>
+                                <div class="tags-container"></div>
+                            </div>
+                        </div>
+
+
+                        <script>
+                             const tagInputM = document.querySelector('#tag-input');
+                            const tagsContainerM = document.querySelector('.tags-container');
+                            const descrizioneInputM = document.querySelector('#descrizione');
+                            let tagsM = [];
+                            tagInput.addEventListener('keydown', (event) => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault();
+                                    const tag = tagInput.value.trim();
+                                    if (tag !== '') {
+                                        tags.push(tag);
+                                        tagInput.value = '';
+                                        renderTags();
+                                    }
+                                }
+                            });
+                            function renderTags() {
+                                tagsContainer.innerHTML = '';
+                                tags.forEach((tag, index) => {
+                                    const tagElement = document.createElement('div');
+                                    tagElement.classList.add('tag');
+                                    tagElement.innerHTML = `
+                              <span class="tag-name">${tag}</span>
+                              <span class="tag-remove" data-index="${index}">&times;</span>
+                            `;
+                                    tagElement.querySelector('.tag-remove').addEventListener('click', (event) => {
+                                        const index = parseInt(event.target.getAttribute('data-index'));
+                                        tags.splice(index, 1);
+                                        renderTags();
+                                    });
+                                    tagsContainer.appendChild(tagElement);
+                                });
+                                descrizioneInput.value = tags.join(', ');
+                            }
+                        </script>
+
+
+                        <!-- FINE INGREDIENTI-->
+
+
+
+                          <!-- TASTO ENABLE E SELECT LINGUA-->
+                          <div class="row mb-3">
+
+                            
+                            <ul id="abilita-lingua">
+                                <li>
+                                  <label class="switch">
+                                    <input type="checkbox" id="abilitaLan">
+                                    <span class="slider"></span>
+                                  </label>
+                                  <span class="abilita-name">Abilita seconda lingua</span>
+                                </li>
+                              </ul>
+                          
+
+                            <!-- NOME PORTATA CON AUTOCOMPLETAMENTO SECONDA LINGUA-->
+                        <div class="mb-3">
+                            <label for="searchLan" id="labelNomePortataLan">Nome Portata:</label>
+                            <input class="inputText" type="text" id="nameDishLan" name="searchLan" disabled>
+                        </div>
+
+                        
+
+
+                        <!--FINE PORTATA SECONDA LINGUA-->
+
+                        <div class="mb-3">
+                            <!--  INGREDIENTI -->
+                            <label id="descPortataLan">Descrizione:</label>
+                            <div class="tag-input-container">
+                                <div class="tag-input">
+                                    <input type="text" id="tag-input2"
+                                        placeholder="Clicca ENTER per aggiungere l'ingrediente." disabled>
+                                    <input type="hidden" id="descDishLan" name="descrizioneLan" >
+                                </div>
+                                <div class="tags-container2"></div>
+                            </div>
+                        </div>
+
+
+                        <script>
+                            const tagInput2M = document.querySelector('#tag-input2');
+                            const tagsContainer2M = document.querySelector('.tags-container2');
+                            const descrizioneInput2M = document.querySelector('#descDishLan');
+                            let tags2M = [];
+                          
+                            tagInput2.addEventListener('keydown', (event) => {
+                              if (event.key === 'Enter') {
+                                event.preventDefault();
+                                const tag = tagInput2.value.trim();
+                                if (tag !== '') {
+                                  tags2.push(tag);
+                                  tagInput2.value = '';
+                                  renderTags2();
+                                }
+                              }
+                            });
+                          
+                            function renderTags2() {
+                              tagsContainer2.innerHTML = '';
+                              tags2.forEach((tag, index) => {
+                                const tagElement = document.createElement('div');
+                                tagElement.classList.add('tag');
+                                tagElement.innerHTML = `
+                                  <span class="tag-name">${tag}</span>
+                                  <span class="tag-remove" data-index="${index}">&times;</span>
+                                `;
+                                tagElement.querySelector('.tag-remove').addEventListener('click', (event) => {
+                                  const index = parseInt(event.target.getAttribute('data-index'));
+                                  tags2.splice(index, 1);
+                                  renderTags2();
+                                });
+                                tagsContainer2.appendChild(tagElement);
+                              });
+                              descrizioneInput2.value = tags2.join(', ');
+                            }
+                          </script>
+                          
+
+                        <!-- FINE INGREDIENTI-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+                          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!--ALLERGENI -->
+
+                        <section>
+
+                            <details>
+                                <summary>
+                                    Vuoi aggiungere allergeni?
+                                </summary>
+                                <p>
+                                <table id="checkbox-table">
+                                    <thead>
+
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                </p>
+                            </details>
+
+                        </section>
+
+                        <!-- FINE ALLERGENI-->
+                        <section>
+                            <!-- CATEGORIE-->
+                            <details>
+                                <summary>
+                                    Vuoi assegnare una categoria?
+                                </summary>
+                                <p>
+
+                                    <select id="select_elementi"></select>
+                                <div class="input-container">
+                                    <input type="text" placeholder="Categoria Personalizzata..."
+                                        id="input_nuovo_elemento">
+                                    <button type="buttonAddCtg" id="btn_aggiungiCtg">Aggiungi</button>
+                                </div>
+                                </p>
+                            </details>
+
+                        </section>
+
+                        <!--FINE CATEGORIE-->
+
+                        <div class="mb-3">
+                            <label for="price" id="costo">Prezzo:</label>
+                            <input class="inputText" type="number" id="price">
+                        </div>
+
+
+
+
+                    </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" style="background-color: #43aca0" id="btn_delete" onclick="deleteDish(); closeModal()">ELIMINA</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
 

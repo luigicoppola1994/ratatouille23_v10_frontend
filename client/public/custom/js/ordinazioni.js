@@ -5,7 +5,7 @@
 function listCategorieselect() {
     $.ajax({
         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-        url: 'http://localhost:3000/api/category/all',
+        url: '/api/category/all',
         type: 'GET', //send it through get method
         dataType: "json",
         success: function (data, textStatus, xhr) {
@@ -17,7 +17,7 @@ function listCategorieselect() {
             creaCategorieSelect(categorie)
         },
         error: function (xhr, status, error) {
-            alert("Auth ko")
+           // alert("Auth ko")
             console.log(xhr.responseText);
 
         }
@@ -182,7 +182,7 @@ function creaJSONdish() {
 //CREA IL MENU PER IL CAMERIERE IN BASE ALLA CATEGORIA
 function getDishesByCategory(idCategory) {
 
-    alert(idCategory)
+   // alert(idCategory)
     axios.all([
         axios.get('/api/dish/category/' + idCategory),
         axios.get('/api/category/all'),
@@ -233,7 +233,7 @@ function getDishesByCategory(idCategory) {
                 nameAllergens: allergenNames
             };
         });
-        alert("PER CATEGORIA:" + JSON.stringify(dishesComplete))
+        //alert("PER CATEGORIA:" + JSON.stringify(dishesComplete))
 
         createElementByCategory(idCategory)
 
@@ -286,7 +286,7 @@ function createElementByCategory(idCategory) {
 
     $.ajax({
         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-        url: 'http://localhost:3000/api/dish/category/' + idCategory,
+        url: '/api/dish/category/' + idCategory,
         type: 'GET', //send it through get method
         dataType: "json",
         success: function (data, textStatus, xhr) {
@@ -298,7 +298,7 @@ function createElementByCategory(idCategory) {
             creaListMenuPrint(categorie)
         },
         error: function (xhr, status, error) {
-            alert("Auth ko")
+           // alert("Auth ko")
             console.log(xhr.responseText);
 
         }
@@ -311,7 +311,7 @@ function createElementByCategory(idCategory) {
 function creaListMenuPrint(categorie) {
 
     const dishesComplete = categorie;
-    alert("DISHES RICEVUTI: " + dishesComplete)
+    //alert("DISHES RICEVUTI: " + dishesComplete)
     const menuItems = document.querySelector('.menu-items');
 
     for (let i = 0; i < dishesComplete.length; i++) {
@@ -385,13 +385,13 @@ function creaTable() {
                         const tableNumber = pageObjt.selectors.tableNum.val()
                         const sealsNumber = pageObjt.selectors.sealsNum.val()
 
-                        alert("TAVOLO: " + tableNum)
-                        alert("PERSONE: " + sealsNum)
+                        //alert("TAVOLO: " + tableNum)
+                        //alert("PERSONE: " + sealsNum)
 
 
                         $.ajax({
                             // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-                            url: 'http://localhost:3000/auth/signup/op',
+                            url: '/auth/signup/op',
                             type: 'POST', //send it through get method
                             dataType: "json",
 
@@ -405,7 +405,7 @@ function creaTable() {
                             success: function (data, textStatus, xhr) {
 
 
-                                alert("Auth ok")
+                                //alert("Auth ok")
                                 const token = data
                                 if (token) {
                                     sessionStorage.setItem("jwt", token);
@@ -415,7 +415,7 @@ function creaTable() {
                                 }
                             },
                             error: function (xhr, status, error) {
-                                alert("Auth ko")
+                                //alert("Auth ko")
                                 console.log(xhr.responseText);
 
                             }
@@ -436,7 +436,7 @@ function creaTable() {
 function listTablesSelect() {
     $.ajax({
         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-        url: 'http://localhost:3000/api/tablerestaurant/all',
+        url: '/api/tablerestaurant/all',
         type: 'GET', //send it through get method
         dataType: "json",
         success: function (data, textStatus, xhr) {
@@ -447,7 +447,7 @@ function listTablesSelect() {
             createTablesSelect(tables)
         },
         error: function (xhr, status, error) {
-            alert("Auth ko")
+           // alert("Auth ko")
             console.log(xhr.responseText);
 
         }
@@ -458,7 +458,7 @@ function listTablesSelect() {
 //RIEMPIE LA SELECT CON I TAVOLI DEL RISTORANTE
 function createTablesSelect(table) {
     const tables = table;
-    alert("ID PASSATI:" + JSON.stringify(tables))
+    //alert("ID PASSATI:" + JSON.stringify(tables))
     const select = document.getElementById("tables");
 
     for (let i = 0; i < tables.length; i++) {
@@ -479,7 +479,7 @@ function creaTableOrdersOpen() {
     axios.all([
         axios.get('/api/cart/all'),
         axios.get('/api/cartdish/all'),
-        axios.get('/api/user'),
+        axios.get('/api/get/all/user'),
         axios.get('/api/cart/bill/all'),
         axios.get('/api/dish/all')
     ]).then(axios.spread((cartRes, cartdishRes, usersRes, billRes, dishesRes) => {

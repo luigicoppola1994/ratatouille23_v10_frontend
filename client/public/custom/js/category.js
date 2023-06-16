@@ -2,7 +2,7 @@
 function generateListCategorie() {
     $.ajax({
         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-        url: 'http://localhost:3000/api/category/all',
+        url: '/api/category/all',
         type: 'GET', //send it through get method
         dataType: "json",
         success: function (data, textStatus, xhr) {
@@ -14,7 +14,7 @@ function generateListCategorie() {
             creaCategorieDragDrop(categorie)
         },
         error: function (xhr, status, error) {
-            alert("Auth ko")
+            //alert("Auth ko")
             console.log(xhr.responseText);
 
         }
@@ -117,7 +117,7 @@ function searchInListCategory(nameCategory, position) {
 
     $.ajax({
         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-        url: 'http://localhost:3000/api/category/all',
+        url: '/api/category/all',
         type: 'GET', //send it through get method
         dataType: "json",
 
@@ -146,7 +146,7 @@ function searchInListCategory(nameCategory, position) {
 
         },
         error: function (xhr, status, error) {
-            alert("Auth ko")
+            //alert("Auth ko")
             console.log(xhr.responseText);
 
         }
@@ -185,7 +185,7 @@ function addPriority(id, position) {
             }
         },
         error: function (xhr, status, error) {
-            alert("Auth ko")
+           // alert("Auth ko")
             console.log(xhr.responseText);
 
         }
@@ -228,7 +228,7 @@ function creaJSONdish() {
       let obj4 = JSON.parse(JSON.stringify(dishAllergensRes.data));
       const dishes_allergens = JSON.parse(JSON.stringify(obj4.data));
 
-      alert(JSON.stringify(obj1.data))
+      //alert(JSON.stringify(obj1.data))
 
 
 
@@ -260,7 +260,7 @@ function creaJSONdish() {
         };
       });
 
-      alert(JSON.stringify(dishesComplete));
+      //alert(JSON.stringify(dishesComplete));
       printMenuRes(dishesComplete);
 
 

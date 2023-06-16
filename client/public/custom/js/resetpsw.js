@@ -26,12 +26,12 @@ $(function(){
                     if(psw == confirm){
 
                     var pathname = window.location.pathname.split("/").pop()
-                    alert(pathname)
+                    //alert(pathname)
 
 
                     $.ajax({
                         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-                        url: "/api/auth/signup/op/resetpassword/",
+                        url: "/api/auth/signup/op/resetpassword",
                         type: 'POST', //send it through get method
                         dataType: "json",
                     
@@ -53,12 +53,12 @@ $(function(){
                             }
                         },
                         error: function(xhr, status, error) {
-                            alert("Auth ko")
+                           // alert("Auth ko")
                             console.log(xhr.responseText);
 
                         }
                     });
-                } else alert("non uguali")
+                } else alert("PASSWORD NON COINCIDONO!")
                 })
             }
         }

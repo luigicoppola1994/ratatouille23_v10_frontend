@@ -1,10 +1,12 @@
-import { Controller, Post, UseGuards, Request, Response, Body, Get, Res, Param, Query, Render, Redirect, Put } from "@nestjs/common";
+import { Controller, Post, UseGuards, Request, Response, Body, Get, Res, Param, Query, Render, Redirect, Put, Delete } from "@nestjs/common";
 import { DishService } from './dish.service';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { DishRequestDto } from "./dish.request.dto";
 import { CategoryRequestDto } from "./category.request.dto";
 import { AllergensRequestDto } from "./allergens.request.dto";
 import { CartRequestDto } from "./cart.request.dto"
+import { TableRestaurantDto} from "./tables.dto";
+import { menuDto } from "./menu.dto";
 
 
 @Controller()
@@ -13,7 +15,7 @@ export class DishController {
     constructor(private readonly dishService: DishService){}
 
     @UseGuards(AuthenticatedGuard)
-    @Post('api/dish/add')
+    @Post('/api/dish/add')
     async addDish(@Body() dishDto: DishRequestDto, @Request() req) {
         return this.dishService.addDish(dishDto, req.user)
     }
@@ -26,14 +28,14 @@ export class DishController {
 
 
     @UseGuards(AuthenticatedGuard)
-    @Get('api/category/all')
+    @Get('/api/category/all')
     async getCategory(@Request() req) {
         return this.dishService.getCategory( req.user)
     }
 
     
     @UseGuards(AuthenticatedGuard)
-    @Post('api/category/add')
+    @Post('/api/category/add')
     async addCategory(@Body() categoriaDto : CategoryRequestDto, @Request() req) {
         return this.dishService.addCategory( categoriaDto,req.user)
     }
@@ -68,9 +70,27 @@ export class DishController {
     }
 
     @UseGuards(AuthenticatedGuard)
+    @Post('/api/allergens/add')
+    async addAllergensDb(@Body("allergens") allergen: AllergensRequestDto,@Request() req) {
+        return this.dishService.addAllergensDb( allergen,req.user)
+    }
+
+    @UseGuards(AuthenticatedGuard)
     @Get('/api/dish/category/:id')
     async getDishesByCategoryId(@Param("id") id: Number, @Request() req){
         return this.dishService.getDishesByCategoryId(id,req.user)
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @Post('/api/tablerestaurant/add')
+    async addTable(@Body() table: TableRestaurantDto, @Request() req) {
+        return this.dishService.addTable(table, req.user)
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @Post('/api/menu/add')
+    async addMenu(@Body() menu: menuDto, @Request() req) {
+        return this.dishService.addMenu(menu, req.user)
     }
 
     @UseGuards(AuthenticatedGuard)
@@ -114,6 +134,12 @@ export class DishController {
         return this.dishService.closeOrder( idCart,req.user)
     }
 
+
+    @UseGuards(AuthenticatedGuard)
+    @Delete('/api/dish/:idDish')
+    async deleteOp(@Param("idDish") idDish: Number, @Request() req){
+        return this.dishService.deleteDish(idDish, req.user)
+    }
 
     
     

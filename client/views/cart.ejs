@@ -21,12 +21,14 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="./custom/js/ordinazioni.js"></script>
   <script src="./custom/js/bill.js"></script>
+  <script src="./custom/js/globals.js"></script>
+
 
     
 
   
   </head>
-  <body onload="listCategorieselect(), listTablesSelect(),pdf()">
+  <body onload="change(),listCategorieselect(), listTablesSelect(),pdf()">
  <header class="intro" style="background-color: #43aca0;">
 
 
@@ -37,7 +39,9 @@
  <p>Seleziona la categoria e le portate per creare l'ordine</p>
 
  <div class="action">
- <a id="btn_addOrder" class="btn back">Invia Ordine</a>
+  <a id="btn_nullOrder" class="btn back" onclick="window.location.href('/ordinazioni')">ANNULLA</a>
+
+ <a id="btn_addOrder" class="btn back">INVIA ORDINE</a>
  </div>
  </header>
   

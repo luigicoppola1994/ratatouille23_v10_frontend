@@ -5,7 +5,7 @@
 
 function buildTableDishes() {
 
-  
+
   axios.all([
     axios.get('/api/dish/all'),
     axios.get('/api/category/all'),
@@ -43,11 +43,12 @@ function buildTableDishes() {
       return {
         name: dish.name,
         description: dish.description,
-        nameLan : dish.nameLan,
+        nameLan: dish.nameLan,
         descriptionLan: dish.descriptionLan,
         cost: dish.cost,
         categoryName,
-        nameAllergens: allergenNames
+        nameAllergens: allergenNames,
+        id: dish.id
       };
     });
 
@@ -63,84 +64,103 @@ function buildTableDishes() {
 }
 
 
-//FUNZIONE PER POPOLARE LA TABELLA CON LE INFO DELLE PORTATE
-function  popolaDishes(dishesComplete){
-
-// Seleziona la tabella nel DOM
-const table = document.getElementById('myTableDishesComplete');
-// Esempio di dati JSON
-const data = dishesComplete
-
-  // Itera sull'array di oggetti JSON e crea una nuova riga per ogni oggetto
-for (let i = 0; i < data.length; i++) {
-
-  const row = table.insertRow();
-
-  // Crea le celle della riga e assegna i valori delle proprietà degli oggetti JSON
-  const cell1 = row.insertCell();
-
-  //Se qualche campo è null, stampa " "
-  data[i].nameLan = data[i].nameLan ?? "";
-  data[i].descriptionLan = data[i].descriptionLan ?? "";
-  data[i].categoryName = data[i].categoryName ?? "Nessuna";
-  data[i].nameAllergens = data[i].nameAllergens ?? "nessuno";
 
 
-   
-
-
-  cell1.innerHTML = `<div class="d-flex px-2 py-1">
-                        <div>
-                          <img src="../vendor/argon/img/meal.png" class="avatar avatar-sm me-3" alt="user1">
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">${data[i].name} / ${data[i].nameLan} </h6>
-                          <p class="text-xs text-secondary mb-0">${data[i].description}</p>
-                          <p class="text-xs text-secondary mb-0">${data[i].descriptionLan}</p>
-
-                        </div>
-                      </div>`;
-
-  const cell2 = row.insertCell();
-  cell2.innerHTML = `<span class="text-xs text-secondary mb-0">${data[i].nameAllergens}</span>`;
-
-  const cell3 = row.insertCell();
-  cell3.innerHTML = `<p class="text-xs font-weight-bold mb-0">${data[i].categoryName}</p>`;
-
-  const cell4 = row.insertCell();
-  cell4.innerHTML = `<p class="text-xs font-weight-bold mb-0">${data[i].cost}</p>
-  <p class="text-xs text-secondary mb-0">euro</p>`;
-
-  const cell5 = row.insertCell();
-  cell5.innerHTML = `<a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit ">
-                        Edit
-                      </a>`;
-}
-
-
-}
-  
 
 //FUNZIONE PER LO SWITCH ABILITA/DISABILITA SECONDA LINGUA
-function abilitaLanguage(){
+function abilitaLanguage() {
   const mySwitch = document.getElementById("abilitaLan");
-const input1 = document.getElementById("nameDishLan");
-const input2 = document.getElementById("tag-input2");
+  const input1 = document.getElementById("nameDishLan");
+  const input2 = document.getElementById("tag-input2");
 
-mySwitch.addEventListener("change", function() {
-  if (this.checked) {
-    input1.disabled = false;
-    input2.disabled = false;
-  } else {
-    input1.disabled = true;
-    input2.disabled = true;
-  }
-});
+  mySwitch.addEventListener("change", function () {
+    if (this.checked) {
+      input1.disabled = false;
+      input2.disabled = false;
+    } else {
+      input1.disabled = true;
+      input2.disabled = true;
+    }
+  });
 }
 
 
 
 
+
+
+function popolaDishes(dishesComplete) {
+  const table = document.getElementById('myTableDishesComplete');
+  const data = dishesComplete;
+
+  for (let i = 0; i < data.length; i++) {
+    const row = table.insertRow();
+
+    const cell1 = row.insertCell();
+    data[i].nameLan = data[i].nameLan ?? "";
+    data[i].descriptionLan = data[i].descriptionLan ?? "";
+    data[i].categoryName = data[i].categoryName ?? "Nessuna";
+    data[i].nameAllergens = data[i].nameAllergens ?? "nessuno";
+
+    cell1.innerHTML = `
+      <div class="d-flex px-2 py-1">
+        <div>
+          <img src="../vendor/argon/img/meal.png" class="avatar avatar-sm me-3" alt="user1">
+        </div>
+        <div class="d-flex flex-column justify-content-center">
+          <h6 class="mb-0 text-sm">${data[i].name} / ${data[i].nameLan}</h6>
+          <p class="text-xs text-secondary mb-0">${data[i].description}</p>
+          <p class="text-xs text-secondary mb-0">${data[i].descriptionLan}</p>
+        </div>
+      </div>
+    `;
+
+    const cell2 = row.insertCell();
+    cell2.innerHTML = `<span class="text-xs text-secondary mb-0">${data[i].nameAllergens}</span>`;
+
+    const cell3 = row.insertCell();
+    cell3.innerHTML = `<p class="text-xs font-weight-bold mb-0">${data[i].categoryName}</p>`;
+
+    const cell4 = row.insertCell();
+    cell4.innerHTML = `
+      <p class="text-xs font-weight-bold mb-0">${data[i].cost}</p>
+      <p class="text-xs text-secondary mb-0">euro</p>
+    `;
+
+    const cell5 = row.insertCell();
+    const editButton = document.createElement('button');
+    editButton.classList.add('btn', 'btn-editOp', 'ms-auto', 'me-1');
+
+
+    editButton.setAttribute('data-index', i);
+    editButton.setAttribute('data-dish-id', data[i].id); // Aggiungi l'attributo data-dish-id con l'ID della dish
+    editButton.textContent = 'Elimina';
+    cell5.appendChild(editButton);
+
+
+  }
+
+
+
+  const editButtons = document.querySelectorAll('.btn-editOp');
+  editButtons.forEach((button) => {
+    button.addEventListener('click', function (event) {
+
+      const dataIndex = event.target.getAttribute('data-index');
+      const dishId = event.target.getAttribute('data-dish-id'); // Ottieni l'ID della dish dall'attributo data-dish-id
+      const dish = data[dataIndex];
+
+      const dishDataString = `ID: ${dishId}\nName: ${dish.name}\nDescription: ${dish.description}\nLanguage Name: ${dish.nameLan}\nLanguage Description: ${dish.descriptionLan}\nAllergens: ${dish.nameAllergens}\nCategory: ${dish.categoryName}\nCost: ${dish.cost}`;
+      //alert(dishDataString);
+
+      deleteDish(dishId)
+
+      
+
+
+    });
+  });
+}
 
 
 
@@ -188,42 +208,101 @@ function getSelectedCheckboxes() {
 
 
 
+
+
+
+
+
+
 // FUNZIONE DI INSERIMENTO DI UNA PORTA CHIAMANDO QUINDI L'API DI INSERIMENTO PORTATA
 
 function addPortata() {
 
-  var nomePortata = document.getElementById("search").value
-  var descPortata = descrizioneInput.value
-  const mySwitch = document.getElementById("abilitaLan");
-  if(mySwitch.disabled == true){
-    var nomePortataLan = null;
-    var descPortataLan = null;
-  }
-  else{
-  var nomePortataLan = document.getElementById("nameDishLan").value
-  var descPortataLan = descrizioneInput2.value
-  }
-
+  var nomePortata = document.getElementById("search").value;
+  var descPortata = descrizioneInput.value;
+  var nomePortataLan = document.getElementById("nameDishLan").value;
+  var descPortataLan = descrizioneInput2.value;
   var allergeniPortata = getSelectedCheckboxes();
-
-
   var selectDaVerificare = document.getElementById("select_elementi");
   var indiceSelezionato = selectDaVerificare.selectedIndex;
   var valoreSelezionato = selectDaVerificare.options[indiceSelezionato];
   var valoreDentroLopzione = valoreSelezionato.value;
   var categoria = valoreSelezionato.text;
+  var prezzo = document.getElementById("price").value;
 
 
-  var prezzo = document.getElementById("price").value
+  /*alert("Nome Portata: " + nomePortata +
+    "\nDescrizione Portata: " + descPortata +
+    "\nNome Portata (Lan): " + nomePortataLan +
+    "\nDescrizione Portata (Lan): " + descPortataLan +
+    "\nAllergeni Portata: " + allergeniPortata +
+    "\nCategoria: " + categoria +
+    "\nPrezzo: " + prezzo);*/
 
-/*
-  alert( "NomePortata: "+nomePortata)
-  alert(descPortata)
-  alert(nomePortataLan)
-  alert(descPortataLan)
-  alert(allergeniPortata)
-  alert(categoria)
-  alert(prezzo)*/
+  // Verifica se uno o più campi sono vuoti
+  var isFormValid = true;
+
+  if (nomePortata === "") {
+    document.getElementById("labelNomePortata").classList.add("red-label");
+    isFormValid = false;
+  } else {
+    document.getElementById("labelNomePortata").classList.remove("red-label");
+  }
+
+  if (descPortata === "") {
+    document.getElementById("descrizioneLabel").classList.add("red-label");
+    isFormValid = false;
+  } else {
+    document.getElementById("descrizioneLabel").classList.remove("red-label");
+  }
+
+
+  var mySwitch = document.getElementById("abilitaLan");
+  var isSwitchOn = mySwitch.checked;
+
+  if (isSwitchOn) {
+    if (nomePortataLan === "") {
+      document.getElementById("labelNomePortataLan").classList.add("red-label");
+      isFormValid = false;
+    } else {
+      document.getElementById("labelNomePortataLan").classList.remove("red-label");
+    }
+
+    if (descPortataLan === "") {
+      document.getElementById("descPortataLan").classList.add("red-label");
+      isFormValid = false;
+    } else {
+      document.getElementById("descPortataLan").classList.remove("red-label");
+    }
+
+
+  } else {
+    nomePortataLan = null,
+      descPortataLan = null
+  }
+
+
+
+  if (prezzo <=0 ) {
+    document.getElementById("costo").classList.add("red-label");
+    isFormValid = false;
+  } else {
+    document.getElementById("costo").classList.remove("red-label");
+  }
+
+  if (!isFormValid) {
+    return; // Se uno o più campi sono vuoti, interrompi l'esecuzione della funzione
+  }
+
+
+  /*
+    alert( "NomePortata: "+nomePortata)
+    alert(descPortata)
+    alert(nomePortataLan)
+    alert(descPortataLan)
+    alert(allergeniPortata)
+    alert(categoria)
+    alert(prezzo)*/
 
 
 
@@ -234,7 +313,7 @@ function addPortata() {
 
   $.ajax({
     // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-    url: 'http://localhost:3000/api/dish/add',
+    url: '/api/dish/add',
     type: 'POST', //send it through get method
     dataType: "json",
 
@@ -251,18 +330,18 @@ function addPortata() {
     success: function (data, textStatus, xhr) {
 
 
-      alert("PORTATA AGGIUNTA")
+      alert("PORTATA AGGIUNTA CORRETTAMENTE")
 
       const token = data
       if (token) {
         sessionStorage.setItem("jwt", token);
-        window.location.replace("dashboard");
+        window.location.replace("portate");
         //addListOp(email,password,name,surname,role)
 
       }
     },
     error: function (xhr, status, error) {
-      alert("Auth ko")
+      //alert("Auth ko")
       console.log(xhr.responseText);
 
     }
@@ -271,6 +350,42 @@ function addPortata() {
 }
 
 
+
+
+//Elimina Dipendente
+function deleteDish(idDishDelete) {
+
+  const idDish = idDishDelete
+  //alert(idDish)
+
+
+  $.ajax({
+    // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
+    url: '/api/dish/' + idDish,
+    type: 'DELETE', //send it through get method
+    dataType: "json",
+
+
+
+    success: function (data, textStatus, xhr) {
+
+      alert("PORTATA ELIMINATA CORRETTAMENTE!")
+      location.reload();
+
+
+
+
+
+
+
+    },
+    error: function (xhr, status, error) {
+      alert("ERRORE ELIMINAZIONE!")
+      console.log(xhr.responseText);
+
+    }
+  });
+}
 
 
 

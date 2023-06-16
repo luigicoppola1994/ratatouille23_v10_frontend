@@ -8,15 +8,18 @@ import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { DishModule } from './dish/dish.module';
 import { DishController } from './dish/dish.controller';
+import { PassportModule } from '@nestjs/passport';
+import { LoginAuthGuard } from './auth/login.auth.guard';
+
 
 
 @Module({
   imports: [
     AuthModule,
     ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env` }), 
-    DashboardModule, UserModule, DishModule
+    PassportModule,DashboardModule, UserModule, DishModule
   ],
   controllers: [UserController], 
-  providers: [],
+  providers: [LoginAuthGuard],
 })
 export class AppModule { }

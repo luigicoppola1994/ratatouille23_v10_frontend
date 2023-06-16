@@ -26,7 +26,7 @@ $(document).on('click', '.add-button', function () {
   
 
   cart.push(id);
-  alert(JSON.stringify(cart))
+  //alert(JSON.stringify(cart))
 
   const element = `
   <li class="cart-item" data-id="${id}">
@@ -81,7 +81,7 @@ $('.cart-math').html(`
   </p>
 `);
 
-alert(`'${title}' (ID: ${id}) removed from cart.`);
+//alert(`'${title}' (ID: ${id}) removed from cart.`);
 })
 
 
@@ -106,13 +106,13 @@ $(function(){
                     const table= pageObjt.selectors.tableNumber.val()
                     const carrello= cart
                     
-                  alert("TAVOLO SELEZIONATO: "+table)
-                  alert("PORTATE: "+cart)
+                  //alert("TAVOLO SELEZIONATO: "+table)
+                  //alert("PORTATE: "+cart)
                    
 
                     $.ajax({
                         // todo: sbagliato, devi chiamare il tuo server e internamente il tuo server contatta il backend
-                        url: 'http://localhost:3000/api/cart/add/table/'+table,
+                        url: '/api/cart/add/table/'+table,
                         type: 'POST', //send it through get method
                         dataType: "json",
                     
@@ -122,17 +122,17 @@ $(function(){
                         success: function(data, textStatus, xhr) {
 
 
-                            alert("ORDINE INSERITO CON SUCCESSO")
+                            //alert("ORDINE INSERITO CON SUCCESSO")
                             const token = data
                             if(token) {
                                 sessionStorage.setItem("jwt", token);
-                                window.location.replace("ordinazioni");
+                                window.location.replace("/ordinazioni");
                               //  addListOp(email,password,name,surname,role)
                                 
                             }
                         },
                         error: function(xhr, status, error) {
-                            alert("Auth ko")
+                           // alert("ORDINE NON RIUSCITO")
                             console.log(xhr.responseText);
 
                         }
